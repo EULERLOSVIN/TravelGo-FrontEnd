@@ -1,0 +1,138 @@
+/* ===================================================== */
+/* FillData Styles (fd-) */
+/* ===================================================== */
+
+.fd-icon{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:#ecfff3;
+  color:#16a34a;
+}
+
+.fd-btn-dark{
+  background:#0f172a;
+  color:#fff;
+  border:none;
+}
+.fd-btn-dark:hover{
+  background:#0b1220;
+  color:#fff;
+}
+
+/* ===================================================== */
+/* MAP */
+/* ===================================================== */
+
+.fd-map{
+  height:220px;
+  background:#f1f5f9;
+  border:1px solid #e5e7eb;
+}
+
+.fd-note{
+  background:#f1f5f9;
+  border-radius:14px;
+  padding:12px;
+  font-size:12px;
+  color:#64748b;
+}
+
+/* ===================================================== */
+/* Tabs - Método de Pago (FIX BOTONES) */
+/* ===================================================== */
+
+.fd-tabs{
+  display:flex;
+  gap:12px;
+  flex-wrap:nowrap;
+}
+
+.fd-tabs .nav-item{
+  flex:1;
+}
+
+.fd-tabs .nav-link{
+  width:100%;
+  text-align:center;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:10px 12px;
+  font-weight:700;
+  background:#fff;
+  color:#111827;
+  white-space:nowrap;
+}
+
+.fd-tabs .nav-link.active{
+  border:2px solid #16a34a;
+  background:#f0fdf4;
+  color:#16a34a;
+}
+
+/* ===================================================== */
+/* Caja de Pago */
+/* ===================================================== */
+
+.fd-pay-box{
+  border:1px solid #eef2f7;
+  background:#fff;
+}
+
+.fd-qr{
+  height:120px;
+  border-radius:16px;
+  background:#0f172a;
+  color:#fff;
+}
+
+.fd-icon-pay{
+  height:120px;
+  border:1px solid #eef2f7;
+  background:#f8fafc;
+  color:#0f172a;
+}
+
+/* ===================================================== */
+/* Right Card - Resumen */
+/* ===================================================== */
+
+.fd-summary-header{
+  background:#0f172a;
+}
+
+.fd-summary-item{
+  padding:10px 0;
+}
+
+.fd-btn-pay{
+  background:#16a34a;
+  border:none;
+  border-radius:14px;
+  color:#fff;
+}
+
+.fd-btn-pay:hover{
+  background:#15803d;
+  color:#fff;
+}
+
+.fd-info{
+  background:#f1f5f9;
+  border-radius:14px;
+  padding:12px;
+  font-size:12px;
+  color:#64748b;
+}
+
+.fd-info a{
+  color:#16a34a;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.fd-info a:hover{
+  text-decoration:underline;
+}

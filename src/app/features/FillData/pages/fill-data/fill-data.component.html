@@ -1,0 +1,356 @@
+<div class="container py-4">
+  <div class="row g-4">
+
+    <!-- ===================================================== -->
+    <!-- LEFT -->
+    <!-- ===================================================== -->
+    <div class="col-12 col-lg-8">
+
+      <!-- ===================== -->
+      <!-- Datos del Pasajero -->
+      <!-- ===================== -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="fd-icon">
+            <i class="bi bi-person-badge"></i>
+          </span>
+          <h6 class="fw-bold mb-0">Datos del Pasajero</h6>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label text-muted small fw-semibold">
+              INGRESA TU DNI
+            </label>
+
+            <div class="input-group">
+              <input class="form-control" type="text" placeholder="Número de DNI">
+              <button class="btn fd-btn-dark" type="button">Validar</button>
+            </div>
+
+            <small class="text-muted d-block mt-2">Cargando al validar...</small>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label text-muted small fw-semibold">
+              NOMBRE COMPLETO
+            </label>
+            <input class="form-control" type="text" placeholder="Cargando al validar..." disabled>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label text-muted small fw-semibold">
+              TELÉFONO / WHATSAPP
+            </label>
+            <input class="form-control" type="text" placeholder="Ej: 999 999 999">
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label text-muted small fw-semibold">
+              CORREO ELECTRÓNICO (OPCIONAL)
+            </label>
+            <input class="form-control" type="email" placeholder="Para enviar tu comprobante">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===================== -->
+      <!-- ¿Dónde te recogemos? -->
+      <!-- ===================== -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="fd-icon">
+            <i class="bi bi-geo-alt"></i>
+          </span>
+          <h6 class="fw-bold mb-0">¿Dónde te recogemos?</h6>
+        </div>
+
+        <p class="text-muted small mb-3">
+          Selecciona un punto exacto en el mapa
+        </p>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input
+            class="form-control border-start-0"
+            type="text"
+            placeholder="Busca una dirección o referencia..."
+          >
+        </div>
+
+        <div class="fd-map rounded-4 d-flex align-items-center justify-content-center">
+          <div class="text-center">
+            <i class="bi bi-geo-fill fs-2 text-success"></i>
+            <div class="fw-bold small">PUNTO DE RECOJO</div>
+          </div>
+        </div>
+
+        <div class="fd-note mt-3">
+          <i class="bi bi-info-circle me-2"></i>
+          Nuestros conductores pasarán por este punto exacto 5 minutos antes de la hora de salida.
+        </div>
+
+      </div>
+
+      <!-- ===================== -->
+      <!-- Método de Pago -->
+      <!-- ===================== -->
+      <div class="card border-0 shadow-sm rounded-4 p-4">
+
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="fd-icon">
+            <i class="bi bi-credit-card"></i>
+          </span>
+          <h6 class="fw-bold mb-0">Método de Pago</h6>
+        </div>
+
+        <!-- ✅ Tabs Bootstrap (FIXED SIZE) -->
+        <ul class="nav nav-pills fd-tabs mb-4" id="pay-tab" role="tablist">
+
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="tab-yape"
+              data-bs-toggle="pill"
+              data-bs-target="#pane-yape"
+              type="button"
+              role="tab"
+              aria-controls="pane-yape"
+              aria-selected="true"
+            >
+              <i class="bi bi-phone me-2"></i> Yape / Plin
+            </button>
+          </li>
+
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="tab-card"
+              data-bs-toggle="pill"
+              data-bs-target="#pane-card"
+              type="button"
+              role="tab"
+              aria-controls="pane-card"
+              aria-selected="false"
+            >
+              <i class="bi bi-credit-card-2-front me-2"></i> Tarjeta
+            </button>
+          </li>
+
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="tab-cash"
+              data-bs-toggle="pill"
+              data-bs-target="#pane-cash"
+              type="button"
+              role="tab"
+              aria-controls="pane-cash"
+              aria-selected="false"
+            >
+              <i class="bi bi-cash-coin me-2"></i> Efectivo
+            </button>
+          </li>
+
+        </ul>
+
+        <!-- Contenido tabs -->
+        <div class="tab-content" id="pay-tabContent">
+
+          <!-- YAPE -->
+          <div
+            class="tab-pane fade show active"
+            id="pane-yape"
+            role="tabpanel"
+            aria-labelledby="tab-yape"
+            tabindex="0"
+          >
+            <div class="fd-pay-box rounded-4 p-3">
+              <div class="row g-3 align-items-center">
+
+                <div class="col-12 col-md-4">
+                  <div class="fd-qr rounded-4 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-qr-code fs-1"></i>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-8">
+                  <h6 class="fw-bold mb-1">Escanea y paga con Yape</h6>
+
+                  <p class="text-muted small mb-2">
+                    Escanea el código QR desde tu app favorita. Una vez realizado el pago,
+                    nuestro sistema validará la transacción automáticamente.
+                  </p>
+
+                  <label class="text-muted small fw-semibold mb-1 d-block">
+                    CÓDIGO DE OPERACIÓN
+                  </label>
+
+                  <input class="form-control" type="text" placeholder="Ej: 928374">
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- TARJETA -->
+          <div
+            class="tab-pane fade"
+            id="pane-card"
+            role="tabpanel"
+            aria-labelledby="tab-card"
+            tabindex="0"
+          >
+            <div class="fd-pay-box rounded-4 p-3">
+              <div class="row g-3 align-items-center">
+
+                <div class="col-12 col-md-4">
+                  <div class="fd-icon-pay rounded-4 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-credit-card-2-front fs-1"></i>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-8">
+                  <h6 class="fw-bold mb-1">Paga con tu tarjeta</h6>
+
+                  <p class="text-muted small mb-2">
+                    Realiza el pago con tu tarjeta de débito o crédito. Al finalizar,
+                    tu reserva quedará confirmada automáticamente.
+                  </p>
+
+                  <label class="text-muted small fw-semibold mb-1 d-block">
+                    REFERENCIA DE PAGO
+                  </label>
+
+                  <input class="form-control" type="text" placeholder="Ej: TRV-2026-00123">
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- EFECTIVO -->
+          <div
+            class="tab-pane fade"
+            id="pane-cash"
+            role="tabpanel"
+            aria-labelledby="tab-cash"
+            tabindex="0"
+          >
+            <div class="fd-pay-box rounded-4 p-3">
+              <div class="row g-3 align-items-center">
+
+                <div class="col-12 col-md-4">
+                  <div class="fd-icon-pay rounded-4 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-receipt fs-1"></i>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-8">
+                  <h6 class="fw-bold mb-1">Paga en agente con código</h6>
+
+                  <p class="text-muted small mb-2">
+                    Te generaremos un código de pago. Con ese código podrás acercarte a cualquier agente
+                    autorizado y pagar en efectivo.
+                  </p>
+
+                  <label class="text-muted small fw-semibold mb-1 d-block">
+                    CÓDIGO DE PAGO
+                  </label>
+
+                  <input class="form-control" type="text" value="PAG-928374" disabled>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- RIGHT -->
+    <!-- ===================================================== -->
+    <div class="col-12 col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+        <!-- Header -->
+        <div class="fd-summary-header p-4 text-white">
+          <small class="text-uppercase opacity-75" style="letter-spacing: 1px;">
+            Confirmación final
+          </small>
+          <h5 class="fw-bold mb-0">Tu Reserva</h5>
+        </div>
+
+        <!-- Body -->
+        <div class="p-4">
+
+          <div class="fd-summary-item">
+            <small class="text-muted">RUTA</small>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-semibold">Tingo María — Pucallpa</span>
+              <i class="bi bi-sign-turn-right text-muted"></i>
+            </div>
+          </div>
+
+          <div class="fd-summary-item">
+            <small class="text-muted">SALIDA</small>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-semibold">Hoy, 09:15 AM</span>
+              <i class="bi bi-clock text-muted"></i>
+            </div>
+          </div>
+
+          <div class="fd-summary-item">
+            <small class="text-muted">ASIENTO</small>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-semibold text-success">Asiento 01 (Ventana)</span>
+              <i class="bi bi-bus-front text-success"></i>
+            </div>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="d-flex justify-content-between align-items-end">
+            <div>
+              <small class="text-uppercase text-muted fw-semibold" style="letter-spacing: 1px;">
+                Total a pagar
+              </small>
+              <h3 class="fw-bold text-success mb-0">S/ 45.00</h3>
+            </div>
+
+            <small class="text-muted fst-italic">Incluye IGV</small>
+          </div>
+
+          <button class="btn fd-btn-pay w-100 mt-4 fw-bold py-3">
+            Finalizar Reserva <i class="bi bi-check-circle ms-2"></i>
+          </button>
+
+          <div class="fd-info mt-3">
+            <i class="bi bi-shield-check me-2"></i>
+            Pago 100% seguro. Tus datos están protegidos bajo nuestra
+            <a href="#">política de privacidad</a>.
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="p-3 pt-0">
+          <button class="btn btn-outline-secondary w-100 rounded-3 fw-semibold">
+            <i class="bi bi-arrow-left me-2"></i> Cambiar asiento
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
