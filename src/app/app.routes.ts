@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainPage } from './layouts/pages/main.page/main.page';
 import { HomePage } from './features/Home/pages/home/home.page';
+import { SelectSeatPage } from './features/SelectSeat/pages/select-seat/select-seat.page';
 
 export const routes: Routes = [
     {
@@ -15,7 +16,12 @@ export const routes: Routes = [
             {
                 path: 'home',
                 component:HomePage
+            },
+            {
+                path:'select-seat',
+                component: SelectSeatPage
             }
+
         ]
     }
 ];
