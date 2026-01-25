@@ -1,0 +1,39 @@
+.cover-image{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image{
+    width: 90%;
+    border-radius: 25px;
+    height: auto;
+}
+.badge{
+    background-color: #C8E6C9;
+    border-radius: 9999px !important;
+    color: #2c8932;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+.cover-title{
+    margin-bottom: 30px;
+}
+.title{
+    font-size: 90px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.description{
+    font-size: 25px;
+    color: rgb(71, 70, 71);
+}
+.highlight{
+    font-weight: bold;
+    color: #2c8932;
+}

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from "@angular/router";
-import{ CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-main.page',
-  imports: [RouterOutlet, CommonModule, RouterLink],
+  imports: [RouterOutlet, NavbarComponent],
   templateUrl: './main.page.html',
   styleUrl: './main.page.scss',
 })
