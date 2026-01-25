@@ -1,15 +1,22 @@
 import { Routes } from '@angular/router';
 import { MainPage } from './layouts/pages/main.page/main.page';
-import { SelectSeatPage } from './features/SelectSeat/pages/select-seat/select-seat.page';
+import { HomePage } from './features/Home/pages/home/home.page';
 
 export const routes: Routes = [
     {
         path: '',
-        component: MainPage
-    },
-    {
-        path: 'select-seat',
-        component:SelectSeatPage
+        component: MainPage,
+        children:[
+            {
+                path: '',
+                redirectTo: 'home',
+                pathMatch: 'full'
+            },
+            {
+                path: 'home',
+                component:HomePage
+            }
+        ]
     }
 ];
 
