@@ -1,22 +1,47 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 col-xl-6 border px-5">
+        <div class="col-12 col-xl-6">
             <div class="badge">VIAJA SEGURO CON LOS MEJORES</div>
-            <div class="cover-title">
-                <h1 class="title mb-0">Viaja con</h1>
-                <h1 class="title mb-0"><span class="text-danger">Seis</span> Especial</h1>
+            <div class="container-filters p-3 mb-4">
+                <div class="d-flex align-items-center justify-content-center gap-3">
+
+                    <select class="form-select" aria-label="lugar de origen">
+                        <option selected disabled>Origen</option>
+                        @if(listPlaces.length > 0){
+                            @for(place of listPlaces; track place.id){
+                                <option [value]="place.id">{{place.name}}</option>
+                            }
+                        }
+                    </select>
+
+                    <select class="form-select" aria-label="lugar de origen">
+                        <option selected disabled>Origen</option>
+                        @if(listPlaces.length > 0){
+                            @for(place of listPlaces; track place.id){
+                                <option [value]="place.id">{{place.name}}</option>
+                            }
+                        }
+                    </select>
+                    <input class="form-control" type="date">
+                    <button class="btn btn-danger px-4" routerLink="/select-route">Buscar</button>
+                </div>
             </div>
+            <div class="d-flex justify-content-center flex-column">
+                <div class="cover-title">
+                    <h1 class="title mb-0">Viaja con</h1>
+                    <h1 class="title mb-0"><span class="text-danger">TravelGo</span> Especial</h1>
+                </div>
 
-            <p class="description">
-                Experiencia Premium en transporte interprovincial.<br>
-                Unidades modernas, puntualidad y el respaldo de <strong class="highlight">El Original.</strong>
-            </p>
-
+                <p class="description">
+                    Experiencia Premium en transporte interprovincial.<br>
+                    Unidades modernas, puntualidad y el respaldo de <strong class="highlight">El Original.</strong>
+                </p>
+            </div>
         </div>
 
-        <div class="col-12 col-xl-6 border d-flex justify-content-center align-items-center">
-            <div class="cover-image">
-                <img class="image" src="/img/van2.png" alt="Imagen de viaje">
+        <div class="col-12 col-xl-6 d-flex justify-content-center align-items-center">
+            <div class="cover-image d-flex justify-content-end align-items-center">
+                <img class="image" src="/img/van1.png" alt="Imagen de viaje">
             </div>
         </div>
     </div>
