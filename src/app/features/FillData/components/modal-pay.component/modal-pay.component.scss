@@ -1,17 +1,83 @@
-/* ================= MODAL PAGO ================= */
+/* ===============================
+   MODAL MÉTODO DE PAGO
+   =============================== */
 
-.modal-content{
-  border-radius:16px;
+.modal-content {
+  border-radius: 18px;
 }
 
-.fd-qr{
-  height:120px;
-  background:#0f172a;
-  color:#fff;
-  border-radius:16px;
+/* Header */
+.modal-header {
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.fd-pay-box{
-  border:1px solid #e5e7eb;
-  background:#fff;
+.modal-title {
+  font-size: 1.1rem;
+}
+
+/* ===============================
+   TABS
+   =============================== */
+
+.fd-tabs {
+  gap: 10px;
+}
+
+.fd-tabs .nav-link {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-weight: 600;
+  color: #374151;
+  background: #fff;
+}
+
+.fd-tabs .nav-link.active {
+  background: #ecfdf5;
+  border-color: #22c55e;
+  color: #16a34a;
+}
+
+/* ===============================
+   CAJA CONTENIDO
+   =============================== */
+
+.fd-pay-box {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+/* ===============================
+   QR
+   =============================== */
+
+.fd-qr {
+  height: 120px;
+  border-radius: 14px;
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
+
+.modal-footer {
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Botón pagar */
+.fd-btn-pay {
+  background: #16a34a;
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 20px;
+}
+
+.fd-btn-pay:hover {
+  background: #15803d;
 }
