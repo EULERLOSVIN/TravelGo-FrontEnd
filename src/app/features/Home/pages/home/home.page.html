@@ -5,25 +5,29 @@
             <div class="container-filters p-3 mb-4">
                 <div class="d-flex align-items-center justify-content-center gap-3">
 
-                    <select class="form-select" aria-label="lugar de origen">
-                        <option selected disabled>Origen</option>
+                    <select class="form-select" aria-label="lugar de origen" [(ngModel)]="origen">
+                        <option value="" selected disabled>Origen</option>
+
                         @if(listPlaces.length > 0){
-                            @for(place of listPlaces; track place.id){
-                                <option [value]="place.id">{{place.name}}</option>
-                            }
+                        @for(place of listPlaces; track place.id){
+                        <option [value]="place.name">{{place.name}}</option>
+                        }
                         }
                     </select>
 
-                    <select class="form-select" aria-label="lugar de origen">
-                        <option selected disabled>Origen</option>
+
+                    <select class="form-select" aria-label="lugar de destino" [(ngModel)]="destino">
+                        <option value="" selected disabled>Destino</option>
+
                         @if(listPlaces.length > 0){
-                            @for(place of listPlaces; track place.id){
-                                <option [value]="place.id">{{place.name}}</option>
-                            }
+                        @for(place of listPlaces; track place.id){
+                        <option [value]="place.name">{{place.name}}</option>
+                        }
                         }
                     </select>
-                    <input class="form-control" type="date">
-                    <button class="btn btn-danger px-4" routerLink="/select-route">Buscar</button>
+
+                    <input class="form-control" type="date" [(ngModel)]="fecha">
+                    <button class="btn btn-danger px-4" type="button" (click)="buscar()">Buscar</button>
                 </div>
             </div>
             <div class="d-flex justify-content-center flex-column">
