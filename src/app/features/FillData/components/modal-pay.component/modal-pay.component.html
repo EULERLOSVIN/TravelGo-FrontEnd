@@ -1,0 +1,106 @@
+<!-- ===================================================== -->
+<!-- MODAL MÉTODO DE PAGO -->
+<!-- ===================================================== -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-credit-card me-2 text-success"></i>
+          Método de Pago
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Tabs -->
+        <ul class="nav nav-pills fd-tabs mb-4" role="tablist">
+
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pay-yape" type="button">
+              <i class="bi bi-phone me-2"></i> Yape / Plin
+            </button>
+          </li>
+
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pay-card" type="button">
+              <i class="bi bi-credit-card-2-front me-2"></i> Tarjeta
+            </button>
+          </li>
+
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pay-cash" type="button">
+              <i class="bi bi-cash-coin me-2"></i> Efectivo
+            </button>
+          </li>
+
+        </ul>
+
+        <!-- Contenido -->
+        <div class="tab-content">
+
+          <!-- YAPE -->
+          <div class="tab-pane fade show active" id="pay-yape">
+            <div class="fd-pay-box p-3 rounded-4">
+              <div class="row g-3 align-items-center">
+                <div class="col-md-4">
+                  <div class="fd-qr d-flex justify-content-center align-items-center">
+                    <i class="bi bi-qr-code fs-1"></i>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <h6 class="fw-bold">Escanea y paga con Yape</h6>
+                  <p class="text-muted small">
+                    Escanea el código QR desde tu app. La transacción se validará automáticamente.
+                  </p>
+                  <label class="small fw-semibold">Código de operación</label>
+                  <input class="form-control" placeholder="Ej: 928374">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TARJETA -->
+          <div class="tab-pane fade" id="pay-card">
+            <div class="fd-pay-box p-3 rounded-4">
+              <h6 class="fw-bold">Pago con tarjeta</h6>
+              <p class="text-muted small">
+                Realiza el pago con tarjeta de débito o crédito.
+                Tu reserva se confirmará automáticamente.
+              </p>
+              <input class="form-control" placeholder="Referencia de pago">
+            </div>
+          </div>
+
+          <!-- EFECTIVO -->
+          <div class="tab-pane fade" id="pay-cash">
+            <div class="fd-pay-box p-3 rounded-4">
+              <h6 class="fw-bold">Pago en efectivo</h6>
+              <p class="text-muted small">
+                Se generará un código para pagar en cualquier agente autorizado.
+              </p>
+              <input class="form-control" value="COD-894233" disabled>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+
+        <button class="btn fd-btn-pay fw-bold">
+          Realizar pago
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

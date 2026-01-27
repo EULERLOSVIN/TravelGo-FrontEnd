@@ -26,6 +26,7 @@ export const routes: Routes = [
             {
                 path: 'fill-data',
                 component: FillDataComponent
+                
             },
             {
                 path: 'select-route',
