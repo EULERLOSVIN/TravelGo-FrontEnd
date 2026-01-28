@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
 })
+
 export class HomePage {
 
   listPlaces = [
