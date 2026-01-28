@@ -2,137 +2,142 @@
 /* FillData Styles (fd-) */
 /* ===================================================== */
 
-.fd-icon{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:#ecfff3;
-  color:#16a34a;
+.fd-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #ecfff3;
+  color: #16a34a;
 }
 
-.fd-btn-dark{
-  background:#0f172a;
-  color:#fff;
-  border:none;
+.fd-btn-dark {
+  background: #0f172a;
+  color: #fff;
+  border: none;
 }
-.fd-btn-dark:hover{
-  background:#0b1220;
-  color:#fff;
+
+.fd-btn-dark:hover {
+  background: #0b1220;
 }
+
+/* ===================================================== */
+/* 🔥 TARJETAS (USANDO SOLO .card) */
+/* ===================================================== */
+
+.card {
+  background: #ffffff;
+  border-radius: 1.25rem;
+  border: none;
+  box-shadow:
+    0 8px 16px rgba(201, 206, 194, 0.35),
+    0 24px 48px rgba(223, 219, 216, 0.3) !important;
+
+
+
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+
+/* Hover sutil: efecto elevado */
+.card:hover {
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.14),
+    0 30px 60px rgba(0, 0, 0, 0.20);
+
+  transform: translateY(-2px);
+}
+
+/*
+  👉 AJUSTES RÁPIDOS DE SOMBRA
+  ----------------------------
+  Más suave  : baja los valores alpha (0.15 → 0.10)
+  Más fuerte : sube blur (40px → 60px)
+  Más plano  : elimina transform
+*/
 
 /* ===================================================== */
 /* MAP */
 /* ===================================================== */
 
-.fd-map{
-  height:220px;
-  background:#f1f5f9;
-  border:1px solid #e5e7eb;
+.fd-map {
+  height: 220px;
+  background: #f8fafc;
+  border-radius: 16px;
+
+  /* sombra suave interna */
+  box-shadow:
+    inset 0 0 0 1px #e5e7eb,
+    0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
-.fd-note{
-  background:#f1f5f9;
-  border-radius:14px;
-  padding:12px;
-  font-size:12px;
-  color:#64748b;
-}
-
-/* ===================================================== */
-/* Tabs - Método de Pago (FIX BOTONES) */
-/* ===================================================== */
-
-.fd-tabs{
-  display:flex;
-  gap:12px;
-  flex-wrap:nowrap;
-}
-
-.fd-tabs .nav-item{
-  flex:1;
-}
-
-.fd-tabs .nav-link{
-  width:100%;
-  text-align:center;
-  border:1px solid #e5e7eb;
-  border-radius:14px;
-  padding:10px 12px;
-  font-weight:700;
-  background:#fff;
-  color:#111827;
-  white-space:nowrap;
-}
-
-.fd-tabs .nav-link.active{
-  border:2px solid #16a34a;
-  background:#f0fdf4;
-  color:#16a34a;
+.fd-note {
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 12px;
+  color: #64748b;
 }
 
 /* ===================================================== */
-/* Caja de Pago */
+/* Tabs */
 /* ===================================================== */
 
-.fd-pay-box{
-  border:1px solid #eef2f7;
-  background:#fff;
+.fd-tabs {
+  display: flex;
+  gap: 12px;
 }
 
-.fd-qr{
-  height:120px;
-  border-radius:16px;
-  background:#0f172a;
-  color:#fff;
+.fd-tabs .nav-link {
+  border-radius: 14px;
+  border: none;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e5e7eb;
+  font-weight: 700;
 }
 
-.fd-icon-pay{
-  height:120px;
-  border:1px solid #eef2f7;
-  background:#f8fafc;
-  color:#0f172a;
+.fd-tabs .nav-link.active {
+  box-shadow:
+    inset 0 0 0 2px #16a34a,
+    0 6px 14px rgba(22, 163, 74, 0.20);
+  background: #f0fdf4;
+  color: #16a34a;
 }
 
 /* ===================================================== */
 /* Right Card - Resumen */
 /* ===================================================== */
 
-.fd-summary-header{
-  background:#0f172a;
+.fd-summary-header {
+  background: #0f172a;
 }
 
-.fd-summary-item{
-  padding:10px 0;
+.fd-summary-item {
+  padding: 10px 0;
 }
 
-.fd-btn-pay{
-  background:#16a34a;
-  border:none;
-  border-radius:14px;
-  color:#fff;
+.fd-btn-pay {
+  background: #16a34a;
+  border: none;
+  border-radius: 14px;
+  color: #fff;
 }
 
-.fd-btn-pay:hover{
-  background:#15803d;
-  color:#fff;
+.fd-btn-pay:hover {
+  background: #15803d;
 }
 
-.fd-info{
-  background:#f1f5f9;
-  border-radius:14px;
-  padding:12px;
-  font-size:12px;
-  color:#64748b;
+.fd-info {
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 12px;
+  color: #64748b;
 }
 
-.fd-info a{
-  color:#16a34a;
-  font-weight:700;
-  text-decoration:none;
-}
-
-.fd-info a:hover{
-  text-decoration:underline;
+.fd-info a {
+  color: #16a34a;
+  font-weight: 700;
+  text-decoration: none;
 }
