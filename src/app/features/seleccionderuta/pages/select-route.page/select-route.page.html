@@ -5,16 +5,24 @@
         <h2 class="accordion-header">
           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
             aria-expanded="true" aria-controls="collapseOne">
-            horario de salidas →
+            SELECCIONA EL HORARIO →
           </button>
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-          <div class="accordion-body d-flex flex-column gap-2">
-            <strong>8:00am  Tingo María → Pucallpa .</strong>
-            <strong>11:00am Tingo María → Pucallpa .</strong>
-            <strong>2:00pm  Tingo María → Pucallpa .</strong>
-            <strong>5:00pm  Tingo María → Pucallpa .</strong>    
+          <div class="accordion-body">
+            <div class="horarios-scroll">
+              <button type="button" class="horario-chip" *ngFor="let h of horarios" (click)="selectHorario(h)"
+                [class.active]="h === horarioSeleccionado">
+                {{ h }}
+              </button>
+            </div>
+
+            <!-- Aviso si no selecciona horario -->
+            <div *ngIf="reservaIntentada && !horarioSeleccionado" class="aviso-horario">
+              Selecciona un horario
+            </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -36,11 +44,25 @@
         <div class="salida-info">
           <span class="time">⏱ Sale en 15 minutos</span>
 
-          <h1>Tingo María → Pucallpa</h1>
+          <h1 *ngIf="origen && destino">
+            {{ origen }} → {{ destino }}
+          </h1>
+
+          <h1 *ngIf="!origen || !destino">
+            Ruta no definida
+          </h1>
+
 
           <div class="details">
             <span>👥 3 Asientos disponibles</span>
             <span>🚐 Toyota Hiace</span>
+          </div>
+          <!-- ✅ NUEVO: Origen / Destino / Fecha (viene desde la page 1) -->
+          <div class="resumen-busqueda" *ngIf="fecha">
+            <span><strong>Fecha:</strong> {{ fecha }}</span>
+          </div>
+          <div class="horario-elegido" *ngIf="horarioSeleccionado">
+            🕒 Horario seleccionado: <strong>{{ horarioSeleccionado }}</strong>
           </div>
 
           <div class="price">
@@ -48,7 +70,8 @@
             <span class="new">S/ 45.00</span>
           </div>
 
-          <button class="btn-main" routerLink="/select-seat">
+          <button class="btn-main" routerLink="/select-seat" (click)="onReservar($event)"
+            [class.disabled]="!horarioSeleccionado" [attr.aria-disabled]="!horarioSeleccionado">
             Reservar ahora
           </button>
         </div>
@@ -104,9 +127,10 @@
             <strong>15% de descuento</strong>.
           </p>
 
-          <button class="btn-promo">
+          <a class="btn-promo" [href]="whatsappUrl" target="_blank" rel="noopener">
             Cotizar viaje privado
-          </button>
+          </a>
+
         </div>
 
       </div>
