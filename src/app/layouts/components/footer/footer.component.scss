@@ -1,0 +1,164 @@
+// Variables de color
+$dark-bg: #050a06;
+$box-bg: #0c160e;
+$primary-green: #28a745; // Verde brillante para iconos
+$dark-green: #1a5a2a;    // Verde oscuro para los puntos
+$text-gray: #adb5bd;
+$text-muted: #6c757d;
+
+.footer-custom {
+  background-color: $dark-bg;
+  color: #ffffff;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+
+  // Estilos de la Marca (Columna 1)
+  .brand-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 0;
+    
+    span { color: #dc3545; } // Rojo para "SEIS"
+  }
+  
+  .brand-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: $text-muted;
+    font-weight: bold;
+  }
+
+  .brand-text {
+    font-size: 0.95rem;
+    color: $text-gray;
+    line-height: 1.6;
+  }
+
+  // Títulos de Secciones
+  .footer-title {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    margin-bottom: 1.5rem;
+  }
+
+  // Lista de Servicios (Columna 2)
+  .service-item {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-gray;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+    transition: color 0.3s;
+
+    &:hover { color: #ffffff; }
+
+    .custom-dot {
+      color: $dark-green;
+      font-size: 2.2rem;
+      margin-left: -10px; // Ajuste para alinear el punto
+    }
+  }
+
+
+  .icon-box {
+    background-color: $box-bg;
+    color: $primary-green;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    border: 1px solid rgba($primary-green, 0.1);
+  }
+
+  .contact-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+
+  .contact-label {
+    color: $text-muted;
+    font-size: 0.85rem;
+  }
+
+
+  .agency-icon {
+    color: $primary-green;
+    font-size: 1.2rem;
+    margin-top: 3px;
+  }
+
+  .agency-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .agency-address {
+    color: $text-muted;
+    font-size: 0.85rem;
+  }
+
+  // Accordion para móviles
+  @media (max-width: 767.98px) {
+    .footer-title {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      .chevron {
+        transition: transform 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      &.expanded {
+          margin-bottom: 0; 
+          border-bottom: none;
+          
+          .chevron {
+            transform: rotate(180deg);
+          }
+      }
+    }
+
+    .footer-collapse {
+      display: none;
+      overflow: hidden;
+      
+      &.expanded {
+        display: block;
+        padding-top: 1rem;
+        animation: slideDown 0.3s ease-out;
+      }
+    }
+  }
+
+  // Asegurar visibilidad en escritorio
+  @media (min-width: 768px) {
+    .footer-collapse {
+      display: block !important;
+    }
+    
+    .footer-title {
+        pointer-events: none; // Deshabilitar click en escritorio
+    }
+  }
+
+  @keyframes slideDown {
+    from { 
+      opacity: 0;
+      transform: translateY(-10px); 
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0); 
+    }
+  }
+}

@@ -1,74 +1,226 @@
-.cover-image{
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.image{
-    width: 90%;
-    border-radius: 25px;
-    height: auto;
-}
-.badge{
-    background-color: #C8E6C9;
-    border-radius: 9999px !important;
-    color: #2c8932;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: inline-block;
-    margin-bottom: 15px;
-}
-.cover-title{
-    margin-bottom: 30px;
-}
-.title{
-    font-size: 85px;
-    font-weight: bold;
-    margin-bottom: 20px;
+// --- Estilos de Cabecera (Tus originales mantenidos) ---
+.cover-image {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.description{
-    font-size: 25px;
-    color: rgb(71, 70, 71);
-}
-.highlight{
-    font-weight: bold;
-    color: #2c8932;
+.image {
+  width: 90%;
+  border-radius: 25px;
+  height: auto;
 }
 
-.select-section{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-.container-filters{
-    border-radius: 9999px !important;
-    border:2px  solid rgb(5, 138, 56);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.badge {
+  background-color: #c8e6c9;
+  color: #2c8932;
+  padding: 10px 20px;
+  border-radius: 9999px !important;
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 15px;
 }
 
-.route-option {
-    display: flex;
-    justify-content: space-between; /* Esto manda uno a cada canto */
-    align-items: center;
-    width: 100%;
-    padding: 5px 10px;
+.cover-title {
+  margin-bottom: 30px;
 }
 
-.origin-text {
-    font-weight: 600;
+.title {
+  font-size: 85px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 25px;
+  color: rgb(71, 70, 71);
+}
+
+.highlight {
+  font-weight: bold;
+  color: #2c8932;
+}
+
+// --- Nueva Sección de Filtros (Estilo de la Imagen) ---
+
+.select-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container-filters {
+  background-color: #ffffff;
+  border-radius: 100px !important; // Forma de píldora total
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  width: 85%;
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+}
+
+.filter-item {
+  padding: 10px 20px;
+
+  .filter-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #9e9e9e;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+    display: block;
+  }
+
+  .form-select,
+  .form-control {
+    font-weight: 700;
+    font-size: 1.1rem;
     color: #333;
+    cursor: pointer;
+    background-color: transparent;
+  }
 }
 
-.destination-text {
-    font-weight: 600;
-    color: #28A745; /* El verde de tu marca */
+// Iconos específicos
+.icon-green {
+  color: #28a745;
+  font-size: 1.2rem;
+}
+.icon-red {
+  color: #dc3545;
+  font-size: 1.2rem;
+}
+.icon-gray {
+  color: #6c757d;
+  font-size: 1.2rem;
 }
 
-.arrow-icon {
-    color: #ccc;
-    font-size: 0.8rem;
+// Botón de Intercambio (Swap)
+.swap-circle {
+  width: 40px;
+  height: 40px;
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  border: 1px solid #eee;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    background-color: #e9ecef;
+  }
+}
+
+// Botón Buscar
+.btn-buscar {
+  background-color: #1a9a44; // El verde de la imagen
+  color: white;
+  border-radius: 50px;
+  font-weight: 800;
+  border: none;
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+
+  &:hover {
+    background-color: #147a35;
+    transform: scale(1.05);
+  }
+}
+
+// Ajustes para los bordes finales
+.border-end {
+  border-right: 1px solid #eee !important;
+}
+
+.filter-item:last-of-type {
+  border-right: none !important;
+}
+
+// --- Estilos para Pantallas XXL (Horizontal) ---
+// Aseguramos que encaje perfecto sin romper la línea
+@media (min-width: 1400px) {
+  .filter-item {
+    padding: 10px 15px; // Reducir padding horizontal
+    
+    .form-select, .form-control {
+       font-size: 1rem; // Ajuste ligero de fuente
+    }
+  }
+  
+  .btn-buscar {
+      padding-left: 1.5rem !important;
+      padding-right: 1.5rem !important;
+  }
+}
+
+// --- Responsive Media Queries ---
+
+@media (max-width: 991px) {
+  // Ajuste de título para tablets/laptops pequeños
+  .title {
+    font-size: 60px;
+  }
+
+  .description {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 1399px) {
+  // Ajuste de título para móviles
+  .title {
+    font-size: 40px;
+  }
+
+  // Contenedor principal de filtros cambia a columna
+  .container-filters {
+    width: 95%;
+    border-radius: 25px !important; // Menos redondeado en móvil
+    padding: 15px;
+
+    // Forzamos que la row interna sea columna visualmente si es necesario
+    // pero lo manejaremos mejor con las clases col-12 de bootstrap en el HTML
+  }
+
+  // Items de filtro ocupan todo el ancho
+  .filter-item {
+    width: 100%;
+    padding: 10px 5px;
+    border-right: none !important; // Quitar borde lateral
+    border-bottom: 1px solid #eee; // Agregar borde inferior separador
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  // Quitar la clase border-end en móvil visualmente
+  .border-end {
+    border-right: none !important;
+  }
+
+  // Ajustar el botón de swap para que no quede raro
+  .swap-circle {
+    transform: rotate(90deg); // Girar flechas verticalmente
+    margin: 10px auto; // Centrar
+  }
+
+  // Ajustar imagen para que no sea tan grande o se oculte si se desea
+  .cover-image {
+    margin-top: 30px;
+  }
+
+  // Botón buscar al 100% de ancho
+  .btn-buscar {
+    width: 100%;
+    justify-content: center;
+    margin-top: 15px;
+  }
 }
