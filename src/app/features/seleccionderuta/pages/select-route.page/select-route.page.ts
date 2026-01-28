@@ -27,7 +27,7 @@ export class SelectRoutePage {
 
   whatsappUrl!: string;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {

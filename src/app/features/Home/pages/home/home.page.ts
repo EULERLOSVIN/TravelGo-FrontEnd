@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
 })
@@ -21,6 +21,7 @@ export class HomePage {
     { id: 6, name: 'Puno' },
     { id: 7, name: 'Chiclayo' }
   ];
+
 
   origen: string = '';
   destino: string = '';

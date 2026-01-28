@@ -1,0 +1,97 @@
+<footer class="footer-custom p-5">
+  <div class="container-fluid">
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6">
+        <h1 class="brand-title"><span class="text-danger">TravelGo</span> Especial</h1>
+        <p class="brand-subtitle">EL ORIGINAL</p>
+        <p class="brand-text mt-4">
+          Líderes en transporte interprovincial con más de 20 años conectando la selva central del
+          Perú con seguridad, confort y la bendición de Dios.
+        </p>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <h2
+          class="footer-title"
+          (click)="toggleSection('services')"
+          [class.expanded]="expandedSections['services']"
+        >
+          SERVICIOS PREMIUM
+          <i class="bi bi-chevron-down d-md-none chevron"></i>
+        </h2>
+        <div class="footer-collapse" [class.expanded]="expandedSections['services']">
+          <ul class="list-unstyled mt-4">
+            <li class="service-item">
+              <i class="bi bi-dot custom-dot"></i> Transporte de Pasajeros
+            </li>
+            <li class="service-item"><i class="bi bi-dot custom-dot"></i> Encomiendas y Carga</li>
+            <li class="service-item"><i class="bi bi-dot custom-dot"></i> Giros Nacionales</li>
+            <li class="service-item"><i class="bi bi-dot custom-dot"></i> Alquiler de Unidades</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <h2
+          class="footer-title"
+          (click)="toggleSection('help')"
+          [class.expanded]="expandedSections['help']"
+        >
+          CENTRAL DE AYUDA
+          <i class="bi bi-chevron-down d-md-none chevron"></i>
+        </h2>
+        <div class="footer-collapse" [class.expanded]="expandedSections['help']">
+          <div class="mt-4">
+            <div class="d-flex align-items-center mb-4">
+              <div class="icon-box me-3">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <div>
+                <div class="contact-value">987 654 321</div>
+                <div class="contact-label">Atención 24 horas</div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="icon-box me-3">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div>
+                <div class="contact-value">contacto@seisespecial.com</div>
+                <div class="contact-label">Ventas y Reclamos</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <h2
+          class="footer-title"
+          (click)="toggleSection('agencies')"
+          [class.expanded]="expandedSections['agencies']"
+        >
+          NUESTRAS AGENCIAS
+          <i class="bi bi-chevron-down d-md-none chevron"></i>
+        </h2>
+        <div class="footer-collapse" [class.expanded]="expandedSections['agencies']">
+          <div class="mt-4">
+            <div class="d-flex align-items-start mb-3">
+              <i class="bi bi-geo-alt me-3 agency-icon"></i>
+              <div>
+                <div class="agency-name">Tingo María</div>
+                <div class="agency-address">Av. Antonio Raimondi 456, Principal</div>
+              </div>
+            </div>
+            <div class="d-flex align-items-start">
+              <i class="bi bi-geo-alt me-3 agency-icon"></i>
+              <div>
+                <div class="agency-name">Huánuco</div>
+                <div class="agency-address">Jr. General Prado 321, Centro</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
