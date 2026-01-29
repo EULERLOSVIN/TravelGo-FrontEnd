@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
 })
+
 export class HomePage {
 
   listPlaces = [

@@ -26,3 +26,25 @@
 .tg-link:hover{
     text-decoration:underline;
 }
+.card {
+  background: #ffffff;
+  border-radius: 1.25rem;
+  border: none;
+  box-shadow:
+    0 8px 16px rgba(201, 206, 194, 0.35),
+    0 24px 48px rgba(223, 219, 216, 0.3) !important;
+
+
+
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+
+/* Hover sutil: efecto elevado */
+.card:hover {
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.14),
+    0 30px 60px rgba(0, 0, 0, 0.20);
+
+  transform: translateY(-2px);
+}
