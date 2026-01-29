@@ -9,6 +9,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   templateUrl: './select-route.page.html',
   styleUrl: './select-route.page.scss',
 })
+
 export class SelectRoutePage {
 
   origen = '';
@@ -38,10 +39,10 @@ export class SelectRoutePage {
 
     const phone = '51948287543';
     const message = `Hola TravelGo, quiero cotizar un viaje privado.
-Origen: ${this.origen}
-Destino: ${this.destino}
-Fecha: ${this.fecha}
-Pasajeros:`;
+      Origen: ${this.origen}
+      Destino: ${this.destino}
+      Fecha: ${this.fecha}
+      Pasajeros:`;
 
     this.whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   }

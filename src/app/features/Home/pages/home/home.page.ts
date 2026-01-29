@@ -20,26 +20,4 @@ export class HomePage {
     { id: 6, name: 'Puno' },
     { id: 7, name: 'Chiclayo' }
   ];
-
-
-  origen: string = '';
-  destino: string = '';
-  fecha: string = '';
-
-  constructor(private router: Router) {}
-
-  buscar(): void {
-    if (!this.origen || !this.destino || !this.fecha) {
-      alert('Selecciona origen, destino y fecha');
-      return;
-    }
-
-    this.router.navigate(['/select-route'], {
-      queryParams: {
-        origen: this.origen,
-        destino: this.destino,
-        fecha: this.fecha
-      }
-    });
-  }
 }
