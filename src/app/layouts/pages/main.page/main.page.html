@@ -1,11 +1,15 @@
-<app-navbar></app-navbar>
+<div class="d-flex flex-column min-vh-100">
+    <app-navbar></app-navbar>
 
-<main class="container-fluid p-0">
-    <div class="row g-0"> 
-        <div class="col-12">
-            <div class="p-4"> 
-                <router-outlet></router-outlet>
+    <main class="flex-grow-1 container-fluid p-0">
+        <div class="row g-0">
+            <div class="col-12">
+                <div class="px-4 py-5">
+                    <router-outlet></router-outlet>
+                </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+
+    <app-footer></app-footer>
+</div>
