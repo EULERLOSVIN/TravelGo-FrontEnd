@@ -1,0 +1,22 @@
+/* ==================================================
+   ADMIN CONTENT FIX (SCROLL REAL)
+================================================== */
+app-sidebar + main {
+  margin-left: 260px;      /* ancho sidebar */
+  height: 100vh;
+  overflow-y: auto;        /* 👈 solo aquí hay scroll */
+  background: #f9fafb;
+  transition: margin-left 0.3s ease;
+}
+
+/* COLLAPSED */
+.sidebar.collapsed ~ main {
+  margin-left: 80px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  app-sidebar + main {
+    margin-left: 80px;
+  }
+}

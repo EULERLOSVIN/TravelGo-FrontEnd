@@ -1,0 +1,154 @@
+<!-- ==================================================
+     VEHICLES / GESTIÓN DE FLOTA
+================================================== -->
+<section class="vehicles">
+
+  <!-- ===============================
+       HEADER
+  ================================ -->
+  <header class="vehicles-header">
+    <div class="header-text">
+      <h2>Gestión de Flota de Vehículos</h2>
+      <p>Supervisión y mantenimiento de las unidades de transporte.</p>
+    </div>
+
+    <div class="header-actions">
+      <input type="text" placeholder="Buscar unidad o placa..." />
+      <button class="btn-new">
+        <i class="bi bi-plus"></i>
+        Nuevo Vehículo
+      </button>
+    </div>
+  </header>
+
+  <!-- ===============================
+       STATS / KPIs
+  ================================ -->
+  <section class="vehicles-stats">
+
+    <article class="stat-card">
+      <small>Total unidades</small>
+      <h3>12</h3>
+      <div class="progress total"></div>
+    </article>
+
+    <article class="stat-card">
+      <small>En ruta</small>
+      <h3 class="text-green">5</h3>
+      <div class="progress route"></div>
+    </article>
+
+    <article class="stat-card">
+      <small>En mantenimiento</small>
+      <h3 class="text-red">1</h3>
+      <div class="progress maintenance"></div>
+    </article>
+
+  </section>
+
+  <!-- ===============================
+       TABLE / LISTADO
+  ================================ -->
+  <section class="table-card">
+
+    <table class="vehicles-table">
+      <thead>
+        <tr>
+          <th>Unidad</th>
+          <th>Placa</th>
+          <th>Modelo</th>
+          <th>Conductor</th>
+          <th>Estado</th>
+          <th>SOAT / LIC.</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td data-label="Unidad"><strong>U-001</strong></td>
+          <td data-label="Placa">ABC-123</td>
+          <td data-label="Modelo">
+            Toyota Hiace
+            <small>Van 15 pasajeros</small>
+          </td>
+          <td data-label="Conductor">
+            <span class="avatar">RC</span>
+            Ricardo Castillo
+          </td>
+          <td data-label="Estado">
+            <span class="badge blue">En fila</span>
+          </td>
+          <td data-label="SOAT / LIC.">
+            <i class="bi bi-check-circle success"></i>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <i class="bi bi-pencil"></i>
+            <i class="bi bi-trash"></i>
+          </td>
+        </tr>
+
+        <tr>
+          <td data-label="Unidad"><strong>U-005</strong></td>
+          <td data-label="Placa">XYZ-987</td>
+          <td data-label="Modelo">
+            Toyota Hiace
+            <small>Van 15 pasajeros</small>
+          </td>
+          <td data-label="Conductor">
+            <span class="avatar">MA</span>
+            Marco Arrieta
+          </td>
+          <td data-label="Estado">
+            <span class="badge green">En ruta</span>
+          </td>
+          <td data-label="SOAT / LIC.">
+            <i class="bi bi-check-circle success"></i>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <i class="bi bi-pencil"></i>
+            <i class="bi bi-trash"></i>
+          </td>
+        </tr>
+
+        <tr>
+          <td data-label="Unidad"><strong>U-012</strong></td>
+          <td data-label="Placa">DEF-456</td>
+          <td data-label="Modelo">
+            Toyota Hiace
+            <small>Van 15 pasajeros</small>
+          </td>
+          <td data-label="Conductor" class="muted">
+            Sin asignar
+          </td>
+          <td data-label="Estado">
+            <span class="badge red">Taller</span>
+          </td>
+          <td data-label="SOAT / LIC.">
+            <i class="bi bi-exclamation-triangle warning"></i>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <i class="bi bi-pencil"></i>
+            <i class="bi bi-trash"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ===============================
+         FOOTER / PAGINATION
+    ================================ -->
+    <footer class="table-footer">
+      <span>Mostrando 3 de 12 unidades</span>
+
+      <div class="pagination">
+        <button>&lt;</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>&gt;</button>
+      </div>
+    </footer>
+
+  </section>
+
+</section>

@@ -1,0 +1,155 @@
+<!-- ==================================================
+     SETTINGS / CONFIGURACIÓN DEL SISTEMA
+================================================== -->
+<section class="settings">
+
+  <!-- ===============================
+       HEADER
+  ================================ -->
+  <header class="settings-header">
+    <div class="header-text">
+      <h2>Configuración del Sistema</h2>
+      <p>Parámetros globales y datos de la empresa</p>
+    </div>
+
+    <div class="system-status">
+      <span class="dot"></span>
+      Sistema Online
+    </div>
+  </header>
+
+  <!-- ===============================
+       DATA COMPANY
+  ================================ -->
+  <section class="settings-card">
+
+    <h3>
+      <i class="bi bi-building"></i>
+      Datos de la Empresa
+    </h3>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Razón Social</label>
+        <input type="text" value="Transportes Seis Especial S.A.C." />
+      </div>
+
+      <div class="form-group">
+        <label>RUC</label>
+        <input type="text" value="20601234567" />
+      </div>
+
+      <div class="form-group">
+        <label>Teléfonos de contacto</label>
+        <input type="text" value="962 456 789 / 943 112 334" />
+      </div>
+
+      <div class="form-group full">
+        <label>Dirección legal (Tingo María)</label>
+        <input type="text" value="Av. Raimondi 456, Tingo María, Huánuco" />
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===============================
+       TICKET SETTINGS
+  ================================ -->
+  <section class="settings-card">
+
+    <h3>
+      <i class="bi bi-receipt"></i>
+      Configuración de Boletas
+    </h3>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Logo para impresión</label>
+
+        <div class="upload-box">
+          <i class="bi bi-image"></i>
+          <span>Click para subir logo</span>
+          <small>PNG / JPG (Máx. 2MB)</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Punto de partida serie boleta</label>
+        <div class="input-prefix">
+          <span>B001</span>
+          <input type="text" value="1054" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Punto de partida serie factura</label>
+        <div class="input-prefix">
+          <span>F001</span>
+          <input type="text" value="0422" />
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label>Mensaje de pie de página (footer)</label>
+        <textarea rows="3">
+¡Que Dios los bendiga! Gracias por viajar con Seis Especial - El Original.
+        </textarea>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===============================
+       SECURITY
+  ================================ -->
+  <section class="settings-card">
+
+    <h3>
+      <i class="bi bi-shield-lock"></i>
+      Seguridad y Accesos
+    </h3>
+
+    <div class="security-grid">
+
+      <div class="security-item">
+        <div>
+          <strong>Política de contraseñas global</strong>
+          <p>Requiere mayúsculas, números y símbolos</p>
+        </div>
+
+        <select>
+          <option>Segura</option>
+          <option>Media</option>
+          <option>Básica</option>
+        </select>
+      </div>
+
+      <div class="security-item">
+        <div>
+          <strong>Autenticación de dos factores (2FA)</strong>
+          <p>Protección adicional para accesos administrativos</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" checked />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===============================
+       ACTIONS
+  ================================ -->
+  <footer class="settings-actions">
+    <button class="btn-cancel">Cancelar</button>
+    <button class="btn-save">
+      <i class="bi bi-save"></i>
+      Guardar Cambios
+    </button>
+  </footer>
+
+</section>

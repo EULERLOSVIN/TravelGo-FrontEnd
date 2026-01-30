@@ -1,0 +1,208 @@
+/* ==================================================
+   SIDEBAR BASE (FIXED)
+================================================== */
+.sidebar {
+  position: fixed;              /* 👈 CLAVE: sidebar estático */
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  transition: width 0.3s ease;
+}
+
+/* ==================================================
+   HEADER
+================================================== */
+.sidebar-header {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  margin: 0;
+  font-weight: 800;
+}
+
+.seis {
+  color: #dc2626;
+}
+
+.especial {
+  color: #16a34a;
+  margin-left: 6px;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* ==================================================
+   MENU
+================================================== */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: #374151;
+  transition: background 0.2s ease;
+}
+
+.menu-item i {
+  font-size: 1.2rem;
+  min-width: 24px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.menu-item:hover {
+  background: #f0fdf4;
+}
+
+/* ACTIVO */
+.menu-item.active {
+  background: #e8f5ee;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.menu-item.active i {
+  color: #16a34a;
+}
+
+/* ==================================================
+   USER
+================================================== */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  background: #16a34a;
+  color: #ffffff;
+  border-radius: 50%;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🔥 FIX CLAVE AQUÍ */
+.user-info {
+  display: flex;
+  flex-direction: column;   /* nombre arriba / rol abajo */
+  line-height: 1.2;
+}
+
+.user-info strong {
+  font-size: 0.9rem;
+}
+
+.user-info small {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.logout {
+  margin-left: auto;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+/* ==================================================
+   COLLAPSED MODE (DESKTOP)
+================================================== */
+.sidebar.collapsed {
+  width: 80px;
+  padding: 16px 10px;
+}
+
+/* ocultar textos */
+.sidebar.collapsed .label,
+.sidebar.collapsed .subtitle,
+.sidebar.collapsed .user-info {
+  display: none;
+}
+
+/* centrar iconos */
+.sidebar.collapsed .menu-item {
+  justify-content: center;
+  padding: 12px;
+}
+
+.sidebar.collapsed .avatar {
+  margin: 0 auto;
+}
+
+.sidebar.collapsed .logout {
+  display: none;
+}
+
+/* ==================================================
+   RESPONSIVE (MOBILE)
+================================================== */
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 80px;
+    padding: 16px 10px;
+  }
+
+  .label,
+  .subtitle,
+  .user-info {
+    display: none;
+  }
+
+  .menu-item {
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .sidebar-header h2 {
+    font-size: 0;
+  }
+
+  .seis,
+  .especial {
+    font-size: 0;
+  }
+
+  .avatar {
+    margin: 0 auto;
+  }
+
+  .logout {
+    display: none;
+  }
+}

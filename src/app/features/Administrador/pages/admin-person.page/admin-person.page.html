@@ -1,0 +1,164 @@
+<!-- ==================================================
+     PEOPLE / GESTIÓN DE PERSONAL
+================================================== -->
+<section class="people">
+
+  <!-- ===============================
+       HEADER
+  ================================ -->
+  <header class="people-header">
+    <div class="header-text">
+      <h2>Gestión de Personal y Usuarios</h2>
+      <p>Administra los accesos y roles del equipo</p>
+    </div>
+
+    <div class="header-actions">
+      <input type="text" placeholder="Buscar personal..." />
+      <button class="btn-new">
+        <i class="bi bi-person-plus"></i>
+        Nuevo Personal
+      </button>
+    </div>
+  </header>
+
+  <!-- ===============================
+       STATS / KPIs
+  ================================ -->
+  <section class="people-stats">
+
+    <article class="stat-card">
+      <small>Total personal</small>
+      <h3>
+        42
+        <span class="up">+2 este mes</span>
+      </h3>
+    </article>
+
+    <article class="stat-card">
+      <small>Usuarios activos</small>
+      <h3>38</h3>
+    </article>
+
+    <article class="stat-card">
+      <small>Roles de operación</small>
+      <h3>24 Choferes</h3>
+    </article>
+
+  </section>
+
+  <!-- ===============================
+       TABLE / LISTADO
+  ================================ -->
+  <section class="table-card">
+
+    <table class="people-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>DNI</th>
+          <th>Cargo</th>
+          <th>Usuario</th>
+          <th>Contraseña</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td data-label="Nombre">
+            <div class="user">
+              <span class="avatar">AM</span>
+              <strong>Ana Martínez</strong>
+            </div>
+          </td>
+          <td data-label="DNI">45678912</td>
+          <td data-label="Cargo">
+            <span class="role blue">Secretaria</span>
+          </td>
+          <td data-label="Usuario">amartinez_seis</td>
+          <td data-label="Contraseña" class="password">
+            ••••••••
+            <i class="bi bi-eye"></i>
+          </td>
+          <td data-label="Estado">
+            <span class="status active">Activo</span>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <i class="bi bi-arrow-repeat"></i>
+            <i class="bi bi-pencil"></i>
+            <i class="bi bi-trash"></i>
+          </td>
+        </tr>
+
+        <tr>
+          <td data-label="Nombre">
+            <div class="user">
+              <span class="avatar">JS</span>
+              <strong>Jorge Sánchez</strong>
+            </div>
+          </td>
+          <td data-label="DNI">71234567</td>
+          <td data-label="Cargo">
+            <span class="role orange">Chofer</span>
+          </td>
+          <td data-label="Usuario">jsanchez_v402</td>
+          <td data-label="Contraseña" class="password">
+            ••••••••
+            <i class="bi bi-eye"></i>
+          </td>
+          <td data-label="Estado">
+            <span class="status active">Activo</span>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <i class="bi bi-arrow-repeat"></i>
+            <i class="bi bi-pencil"></i>
+            <i class="bi bi-trash"></i>
+          </td>
+        </tr>
+
+        <tr>
+          <td data-label="Nombre">
+            <div class="user">
+              <span class="avatar">LR</span>
+              <strong>Lucía Rojas</strong>
+            </div>
+          </td>
+          <td data-label="DNI">22884433</td>
+          <td data-label="Cargo">
+            <span class="role blue">Secretaria</span>
+          </td>
+          <td data-label="Usuario">lrojas_admin</td>
+          <td data-label="Contraseña" class="password">
+            ••••••••
+            <i class="bi bi-eye"></i>
+          </td>
+          <td data-label="Estado">
+            <span class="status inactive">Inactivo</span>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <i class="bi bi-arrow-repeat"></i>
+            <i class="bi bi-pencil"></i>
+            <i class="bi bi-trash"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ===============================
+         FOOTER / PAGINATION
+    ================================ -->
+    <footer class="table-footer">
+      <span>Mostrando 3 de 42 registros</span>
+
+      <div class="pagination">
+        <button>&lt;</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>&gt;</button>
+      </div>
+    </footer>
+
+  </section>
+
+</section>

@@ -1,0 +1,161 @@
+<!-- ==================================================
+     SALES HISTORY / HISTORIAL DE VENTAS
+================================================== -->
+<section class="sales-history">
+
+    <!-- ===============================
+       HEADER
+  ================================ -->
+    <header class="sales-header">
+        <div class="header-text">
+            <h2>Historial de Ventas</h2>
+            <p>Gestión de boletos y reportes financieros</p>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn-secondary">
+                <i class="bi bi-download"></i>
+                Descargar Excel
+            </button>
+            <button class="btn-primary">
+                <i class="bi bi-printer"></i>
+                Imprimir Reporte
+            </button>
+        </div>
+    </header>
+
+    <!-- ===============================
+       FILTERS
+  ================================ -->
+    <section class="filters">
+
+        <div class="filter">
+            <label>Rango de fechas</label>
+
+            <div class="date-range">
+                <i class="bi bi-calendar3"></i>
+
+                <input type="date" />
+                <span class="separator">—</span>
+                <input type="date" />
+            </div>
+        </div>
+
+
+        <div class="filter">
+            <label>Ruta</label>
+            <select>
+                <option>Todas las rutas</option>
+            </select>
+        </div>
+
+        <div class="filter">
+            <label>Vendedor</label>
+            <select>
+                <option>Todos los vendedores</option>
+            </select>
+        </div>
+
+        <div class="filter">
+            <label>Estado</label>
+            <div class="status-tabs">
+                <button class="active">Todos</button>
+                <button>Completado</button>
+                <button>Anulado</button>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ===============================
+       TABLE
+  ================================ -->
+    <section class="table-card">
+
+        <table class="sales-table">
+            <thead>
+                <tr>
+                    <th>Fecha / Hora</th>
+                    <th>Pasajero</th>
+                    <th>DNI</th>
+                    <th>Ruta</th>
+                    <th>Asiento</th>
+                    <th>Vendedor</th>
+                    <th>Monto (S/)</th>
+                    <th>Método</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td data-label="Fecha">24 Oct 2023<br><small>10:45 AM</small></td>
+                    <td data-label="Pasajero"><strong>Carlos Alberto Ruiz</strong></td>
+                    <td data-label="DNI">45829310</td>
+                    <td data-label="Ruta">
+                        <span class="route">HUÁNUCO</span>
+                        <span class="route-sub">TM</span>
+                    </td>
+                    <td data-label="Asiento" class="seat">A-03</td>
+                    <td data-label="Vendedor">Secretaría (Sede)</td>
+                    <td data-label="Monto" class="amount">S/ 25.00</td>
+                    <td data-label="Método">Efectivo</td>
+                    <td data-label="Acciones" class="actions">
+                        <i class="bi bi-eye"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td data-label="Fecha">24 Oct 2023<br><small>09:15 AM</small></td>
+                    <td data-label="Pasajero"><strong>María Fernanda L.</strong></td>
+                    <td data-label="DNI">70123456</td>
+                    <td data-label="Ruta">
+                        <span class="route alt">TM</span>
+                        <span class="route-sub alt">HUÁNUCO</span>
+                    </td>
+                    <td data-label="Asiento" class="seat">A-01</td>
+                    <td data-label="Vendedor">Venta Web</td>
+                    <td data-label="Monto" class="amount">S/ 30.00</td>
+                    <td data-label="Método">Yape</td>
+                    <td data-label="Acciones" class="actions">
+                        <i class="bi bi-eye"></i>
+                    </td>
+                </tr>
+
+                <tr class="canceled">
+                    <td data-label="Fecha">23 Oct 2023<br><small>05:20 PM</small></td>
+                    <td data-label="Pasajero"><strong>Jorge Ramírez Soto</strong></td>
+                    <td data-label="DNI">22998877</td>
+                    <td data-label="Ruta">
+                        <span class="route">HUÁNUCO</span>
+                        <span class="route-sub">TM</span>
+                    </td>
+                    <td data-label="Asiento">—</td>
+                    <td data-label="Vendedor">Terminal (Hco)</td>
+                    <td data-label="Monto" class="amount">S/ 25.00</td>
+                    <td data-label="Método"><span class="status canceled">ANULADO</span></td>
+                    <td data-label="Acciones" class="actions">
+                        <i class="bi bi-eye"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ===============================
+         FOOTER
+    ================================ -->
+        <footer class="table-footer">
+            <span>Mostrando 1–10 de 128 registros</span>
+
+            <div class="pagination">
+                <button>&lt;</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>&gt;</button>
+            </div>
+        </footer>
+
+    </section>
+
+</section>

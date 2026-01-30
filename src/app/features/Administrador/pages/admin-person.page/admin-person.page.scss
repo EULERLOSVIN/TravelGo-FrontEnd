@@ -1,0 +1,266 @@
+/* ==================================================
+   PEOPLE BASE
+================================================== */
+.people {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ==================================================
+   HEADER
+================================================== */
+.people-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-text h2 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.header-text p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.header-actions input {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  background: #eef2f7;
+}
+
+/* BUTTON */
+.btn-new {
+  background: #16a34a;
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==================================================
+   STATS / KPIs
+================================================== */
+.people-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 16px;
+}
+
+.stat-card small {
+  color: #6b7280;
+}
+
+.stat-card h3 {
+  margin: 6px 0 0;
+  font-size: 1.6rem;
+}
+
+.up {
+  font-size: 0.75rem;
+  color: #16a34a;
+  margin-left: 6px;
+}
+
+/* ==================================================
+   TABLE
+================================================== */
+.table-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.people-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.people-table thead th {
+  text-align: left;
+  font-size: 0.75rem;
+  color: #6b7280;
+  padding-bottom: 12px;
+}
+
+.people-table tbody td {
+  padding: 14px 0;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* USER CELL */
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* AVATAR */
+.avatar {
+  background: #e5e7eb;
+  color: #111827;
+  border-radius: 50%;
+  padding: 6px 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* ROLES */
+.role {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.role.blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.role.orange {
+  background: #ffedd5;
+  color: #f97316;
+}
+
+/* STATUS */
+.status {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.status.active {
+  color: #16a34a;
+}
+
+.status.inactive {
+  color: #9ca3af;
+}
+
+/* PASSWORD */
+.password {
+  color: #6b7280;
+}
+
+.password i {
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions i {
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.actions i:hover {
+  color: #16a34a;
+}
+
+/* ==================================================
+   FOOTER
+================================================== */
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.pagination {
+  display: flex;
+  gap: 6px;
+}
+
+.pagination button {
+  border: none;
+  background: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+@media (max-width: 1024px) {
+
+  .people-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .people-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .people-stats {
+    grid-template-columns: 1fr;
+  }
+
+  /* TABLE → CARDS */
+  .people-table thead {
+    display: none;
+  }
+
+  .people-table tr {
+    display: block;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 12px;
+  }
+
+  .people-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+
+  .people-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  .actions {
+    justify-content: flex-end;
+  }
+}

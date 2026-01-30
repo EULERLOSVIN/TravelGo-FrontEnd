@@ -1,0 +1,298 @@
+/* ==================================================
+   SALES HISTORY BASE
+================================================== */
+.sales-history {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ==================================================
+   HEADER
+================================================== */
+.sales-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-text h2 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.header-text p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* ==================================================
+   FILTERS
+================================================== */
+.filters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.filter label {
+  font-size: 0.7rem;
+  color: #6b7280;
+  display: block;
+}
+
+/* INPUTS / SELECTS */
+.filter input,
+.filter select {
+  margin-top: 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.8rem;
+}
+
+/* ==================================================
+   DATE RANGE PICKER (RANGO DE FECHAS)
+================================================== */
+.date-range {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.date-range i {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.date-range input[type="date"] {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.8rem;
+  color: #111827;
+  width: 120px;
+}
+
+.date-range .separator {
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+/* ==================================================
+   STATUS TABS
+================================================== */
+.status-tabs {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.status-tabs button {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.status-tabs button.active {
+  background: #16a34a;
+  color: #fff;
+}
+
+/* ==================================================
+   TABLE
+================================================== */
+.table-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.sales-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sales-table thead th {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: left;
+  padding-bottom: 12px;
+}
+
+.sales-table tbody td {
+  padding: 14px 0;
+  border-top: 1px solid #f1f5f9;
+}
+
+.sales-table small {
+  color: #6b7280;
+  font-size: 0.7rem;
+}
+
+/* ROUTES */
+.route {
+  background: #dbeafe;
+  color: #2563eb;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+}
+
+.route-sub {
+  background: #e0f2fe;
+  color: #0284c7;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  margin-left: 4px;
+}
+
+.route.alt,
+.route-sub.alt {
+  background: #ffedd5;
+  color: #f97316;
+}
+
+/* AMOUNT */
+.amount {
+  font-weight: 600;
+}
+
+/* SEAT */
+.seat {
+  font-weight: 600;
+}
+
+/* STATUS */
+.status.canceled {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* ACTIONS */
+.actions i {
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.actions i:hover {
+  color: #16a34a;
+}
+
+/* ==================================================
+   FOOTER
+================================================== */
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.pagination {
+  display: flex;
+  gap: 6px;
+}
+
+.pagination button {
+  border: none;
+  background: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: #16a34a;
+  color: #fff;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+@media (max-width: 1024px) {
+  .filters {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sales-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .date-range {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .date-range input[type="date"] {
+    width: 100%;
+  }
+
+  .sales-table thead {
+    display: none;
+  }
+
+  .sales-table tr {
+    display: block;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .sales-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+
+  .sales-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+  }
+}

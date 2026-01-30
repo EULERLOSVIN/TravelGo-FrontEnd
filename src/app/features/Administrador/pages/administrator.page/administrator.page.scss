@@ -1,0 +1,224 @@
+/* ==================================================
+   ADMIN PROFILE LAYOUT
+================================================== */
+.admin-profile {
+  max-width: 1150px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ==================================================
+   CARD BASE
+================================================== */
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 32px;
+  border: 1px solid rgba(22, 163, 74, 0.15); /* verde suave */
+  box-shadow:
+    0 10px 25px rgba(22, 163, 74, 0.08),
+    0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ==================================================
+   PROFILE HEADER
+================================================== */
+.profile-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 28px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.profile-info p {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* ==================================================
+   AVATAR
+================================================== */
+.avatar-box {
+  width: 110px;
+  height: 110px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #ecfdf5;
+  box-shadow:
+    0 10px 25px rgba(22, 163, 74, 0.25);
+}
+
+.avatar-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.edit-avatar {
+  position: absolute;
+  display: none; /* opcional ocultar */
+}
+
+/* ==================================================
+   STATUS
+================================================== */
+.status {
+  font-size: 0.65rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-left: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #16a34a;
+}
+
+/* ==================================================
+   HEADER ACTIONS
+================================================== */
+.header-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #ffffff;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.4);
+}
+
+.btn-cancel {
+  background: #ffffff;
+  border: 1px solid #d1fae5;
+  padding: 12px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #065f46;
+}
+
+/* ==================================================
+   CARD HEADER
+================================================== */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #ecfdf5;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.card-header small {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.edit-btn {
+  margin-left: auto;
+  border: none;
+  background: #ecfdf5;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #15803d;
+}
+
+/* ==================================================
+   FORM GRID
+================================================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 36px;
+}
+
+.form-group label {
+  font-size: 0.7rem;
+  color: #065f46;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.form-group input {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #d1fae5;
+  font-size: 0.9rem;
+  background: #f9fffb;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);
+}
+
+.form-group input:disabled {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* LOCKED INPUT */
+.input-lock {
+  position: relative;
+}
+
+.input-lock i {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #16a34a;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+@media (max-width: 900px) {
+
+  .profile-header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .header-actions {
+    justify-content: flex-end;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
