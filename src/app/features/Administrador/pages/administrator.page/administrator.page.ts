@@ -20,8 +20,8 @@ export class AdministratorComponent {
   editMode = false;
 
   admin = {
-    name: 'Carlos Rodriguez',
-    email: 'c.rodriguez@seisespecial.com',
+    name: 'Darwin Chamaya',
+    email: 'darwin.chamaya@travelgo.com',
     phone: '+34 600 000 000',
     dni: '12345678X',
     status: 'ACTIVO',
