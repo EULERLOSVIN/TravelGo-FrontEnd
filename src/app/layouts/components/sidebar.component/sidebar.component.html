@@ -23,6 +23,11 @@
       <span class="label">Resumen</span>
     </li>
 
+    <li class="menu-item" routerLink="/app-admin/alerts" routerLinkActive="active">
+      <i class="bi bi-bell bell-animation bell-dot" [class.bell-active]="hasAlerts"></i>
+      <span class="label">Alertas</span>
+    </li>
+
     <li class="menu-item" routerLink="/app-admin/routes" routerLinkActive="active">
       <i class="bi bi-signpost"></i>
       <span class="label">Rutas</span>

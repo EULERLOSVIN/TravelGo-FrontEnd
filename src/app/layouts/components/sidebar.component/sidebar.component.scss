@@ -83,6 +83,51 @@
   background: #f0fdf4;
 }
 
+/* ===============================
+   CAMPANA ALERTAS
+================================================== */
+.bell-animation {
+  display: inline-block;
+  transform-origin: top center;
+}
+
+.bell-active {
+  animation: bell-ring 1.5s infinite;
+}
+
+//###############################################################
+//solo para probar movimiento borra cuando funcione
+@keyframes bell-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+//###############################################################
+
+/*punto rojo */
+.bell-dot {
+  position: relative;
+}
+
+.bell-dot::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 8px;
+  height: 8px;
+  background: #dc2626;
+  border-radius: 50%;
+}
+
+
+
 /* ACTIVO */
 .menu-item.active {
   background: #e8f5ee;
@@ -93,6 +138,7 @@
 .menu-item.active i {
   color: #16a34a;
 }
+
 
 /* ==================================================
    USER
