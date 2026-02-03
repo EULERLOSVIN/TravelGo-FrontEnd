@@ -1,0 +1,64 @@
+.modal-custom {
+    max-width: 720px;
+    z-index: 1050;
+}
+
+.modal {
+    z-index: 1050;
+    overflow-y: auto;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.form-control,
+.form-select {
+    border-color: #e2e8f0;
+
+    &:focus {
+        border-color: #16a34a;
+        box-shadow: 0 0 0 0.25rem rgba(22, 163, 74, 0.1);
+    }
+}
+
+.btn-success {
+    background-color: #16a34a;
+    border-color: #16a34a;
+
+    &:hover {
+        background-color: #138a3d;
+        border-color: #138a3d;
+    }
+}
+
+.btn-white {
+    background: white;
+
+    &:hover {
+        background: #f8fafc;
+    }
+}
+
+.custom-scrollbar {
+    max-height: 70vh;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 10px;
+    }
+}
+
+.form-check-input:checked {
+    background-color: #16a34a;
+    border-color: #16a34a;
+}

@@ -13,6 +13,8 @@ import { AdminVehiclesComponent } from './features/Administrador/pages/admin-veh
 import { AdminPersonComponent } from './features/Administrador/pages/admin-person.page/admin-person.page';
 import { AdminSalesComponent } from './features/Administrador/pages/admin-sales.page/admin-sales.page';
 import { AdminSettingsComponent } from './features/Administrador/pages/admin-settings.page/admin-settings.page';
+import { AdminAlertsComponent } from './features/Administrador/pages/admin-alerts.page/admin-alerts.page';
+import { AdminSedeComponent } from './features/Administrador/pages/admin-sede.page/admin-sede.page';
 
 
 export const routes: Routes = [
@@ -80,8 +82,16 @@ export const routes: Routes = [
                 component: AdminSettingsComponent
             },
             {
+                path: 'alerts',
+                component: AdminAlertsComponent
+            },
+            {
+                path: 'sede',
+                component: AdminSedeComponent
+            },
+            {
                 path: 'personal',
-                loadComponent: () => import('./features/Administrador/pages/admin-person.page/admin-person.page').then(m => m.AdminPersonComponent)
+                component: AdminPersonComponent
             },
 
         ]

@@ -1,0 +1,124 @@
+<div class="modal fade" [class.show]="isOpen" [style.display]="isOpen ? 'block' : 'none'" tabindex="-1"
+    aria-hidden="true" (click)="onClose()">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-custom" (click)="$event.stopPropagation()">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+            <!-- HEADER -->
+            <div class="modal-header border-bottom p-4 bg-light bg-opacity-50">
+                <div class="flex-grow-1">
+                    <h5 class="modal-title fw-bold text-dark">Editar Detalles de Sede</h5>
+                    <p class="text-xs text-muted text-uppercase fw-semibold mb-0" style="letter-spacing: 1px;">
+                        ID: {{ sede?.id || '#SD-000' }} • Actualizando información administrativa
+                    </p>
+                </div>
+                <button type="button" class="btn-close shadow-none" (click)="onClose()"></button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body p-4 custom-scrollbar">
+                <form class="row g-4">
+
+                    <!-- Nombre y Dirección -->
+                    <div class="col-md-6">
+                        <label class="form-label text-xs fw-bold text-muted text-uppercase mb-2">Nombre de la
+                            Sede</label>
+                        <input type="text" class="form-control rounded-3 py-2 px-3 fw-medium"
+                            [value]="sede?.name || ''">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-xs fw-bold text-muted text-uppercase mb-2">Dirección</label>
+                        <input type="text" class="form-control rounded-3 py-2 px-3 fw-medium"
+                            [value]="sede?.address || ''">
+                    </div>
+
+                    <!-- Ubicación -->
+                    <div class="col-md-4">
+                        <label class="form-label text-xs fw-bold text-muted text-uppercase mb-2">Departamento</label>
+                        <select class="form-select rounded-3 py-2 px-3 fw-medium">
+                            <option selected>Huánuco</option>
+                            <option>Lima</option>
+                            <option>Ucayali</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-xs fw-bold text-muted text-uppercase mb-2">Provincia</label>
+                        <select class="form-select rounded-3 py-2 px-3 fw-medium">
+                            <option selected>Huánuco</option>
+                            <option>Leoncio Prado</option>
+                            <option>Dos de Mayo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-xs fw-bold text-muted text-uppercase mb-2">Distrito</label>
+                        <select class="form-select rounded-3 py-2 px-3 fw-medium">
+                            <option selected>Huánuco</option>
+                            <option>Amarilis</option>
+                            <option>Pillco Marca</option>
+                        </select>
+                    </div>
+
+                    <!-- Contacto -->
+                    <div class="col-md-6">
+                        <label class="form-label text-xs fw-bold text-muted text-uppercase mb-2">Teléfono</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white rounded-start-3 border-end-0">
+                                <i class="bi bi-telephone text-muted"></i>
+                            </span>
+                            <input type="tel" class="form-control py-2 px-3 border-start-0 rounded-end-3 fw-medium"
+                                [value]="sede?.phone || ''">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-xs fw-bold text-muted text-uppercase mb-2">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white rounded-start-3 border-end-0">
+                                <i class="bi bi-envelope text-muted"></i>
+                            </span>
+                            <input type="email" class="form-control py-2 px-3 border-start-0 rounded-end-3 fw-medium"
+                                [value]="sede?.email || ''">
+                        </div>
+                    </div>
+
+                    <!-- Ajuste Sede Principal -->
+                    <div class="col-12 mt-4">
+                        <div class="p-4 bg-light bg-opacity-50 rounded-4 border border-dashed border-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 44px; height: 44px;">
+                                        <i class="bi bi-patch-check-fill fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm fw-bold mb-0 text-dark">Sede Principal</p>
+                                        <p class="text-xs text-muted text-uppercase fw-semibold mb-0"
+                                            style="font-size: 10px;">Marcar como sucursal matriz de la empresa</p>
+                                    </div>
+                                </div>
+                                <div class="form-check form-switch pt-1">
+                                    <input class="form-check-input fs-4" type="checkbox" checked>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer border-top p-4 bg-light bg-opacity-30 gap-3">
+                <button
+                    class="btn btn-success flex-grow-1 fw-bold py-3 shadow-lg rounded-3 d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-save"></i>
+                    Actualizar Sede
+                </button>
+                <button class="btn btn-white border px-4 fw-bold text-muted rounded-3" (click)="onClose()">
+                    Cancelar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Extra layer for backdrop blur -->
+<div class="modal-backdrop fade show" *ngIf="isOpen"
+    style="background-color: rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index: 1040;"></div>
