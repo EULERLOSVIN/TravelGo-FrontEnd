@@ -1,115 +1,90 @@
-<!-- ==================================================
-     SUMMARY / DASHBOARD
-================================================== -->
-<section class="summary">
-
-  <!-- ===============================
-       HEADER
-  ================================ -->
-  <header class="summary-header">
-    <div class="header-text">
-      <h2>Panel de Control General</h2>
-      <p>Visualización de métricas en tiempo real</p>
+<div class="analytics-container">
+  <!-- Header con filtros temporales -->
+  <header class="analytics-header">
+    <div class="title-group">
+      <h1>Resumen Operativo y Financiero</h1>
+      <p>Análisis de rendimiento correspondiente a <strong>{{ currentMonth }}</strong></p>
     </div>
-
-    <div class="header-actions">
-      <input type="text" placeholder="Buscar reporte..." />
-      <i class="bi bi-bell notification"></i>
+    <div class="action-btns">
+      <button class="btn-outline">
+        <i class="bi bi-calendar-range"></i>
+        Filtrar Fecha
+      </button>
+      <button class="btn-primary">
+        <i class="bi bi-file-earmark-pdf"></i>
+        Exportar Reporte
+      </button>
     </div>
   </header>
 
-  <!-- ===============================
-       STATS / KPIs
-  ================================ -->
-  <section class="stats">
-
-    <article class="card stat stat-green">
-      <small>INGRESOS TOTALES (MES)</small>
-      <h3>S/ 42,500</h3>
-      <span class="badge up">+12.4%</span>
-    </article>
-
-    <article class="card stat stat-blue">
-      <small>PASAJEROS TOTALES</small>
-      <h3>1,248</h3>
-      <span class="badge">Meta: 85%</span>
-    </article>
-
-    <article class="card stat stat-yellow">
-      <small>RUTA MÁS RENTABLE</small>
-      <h3>Huánuco – T. María</h3>
-    </article>
-
-    <article class="card stat stat-red">
-      <small>ALERTAS DE FLOTA</small>
-      <h3>3 Críticas</h3>
-    </article>
-
+  <!-- Financial KPI Cards -->
+  <section class="kpi-grid">
+    <div class="kpi-card glass" *ngFor="let stat of financialStats">
+      <div class="kpi-icon" [style.background-color]="stat.color + '20'" [style.color]="stat.color">
+        <i class="bi" [ngClass]="stat.icon"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="label">{{ stat.label }}</span>
+        <h2 class="value">{{ stat.value }}</h2>
+        <span class="trend" [ngClass]="{'positive': stat.trend.includes('+'), 'negative': stat.trend.includes('-')}">
+          {{ stat.trend }} vs pasado
+        </span>
+      </div>
+    </div>
   </section>
 
-  <!-- ===============================
-       MAIN CONTENT
-  ================================ -->
-  <section class="dashboard-content">
-
-    <!-- ===============================
-         CHART
-    ================================ -->
-    <article class="card chart">
-      <header class="chart-header">
-        <h4>Tendencia de Ventas Semanal</h4>
-        <p>Comparativa contra semana anterior</p>
-      </header>
-
-      <div class="bars">
-        <div class="bar"></div>
-        <div class="bar big"></div>
-        <div class="bar small"></div>
-        <div class="bar big"></div>
-        <div class="bar tallest"></div>
-        <div class="bar medium"></div>
-        <div class="bar big"></div>
+  <!-- Detailed Analytics Grid -->
+  <div class="analytics-main-grid">
+    <!-- Left: Expense Breakdown -->
+    <section class="analysis-card glass">
+      <div class="card-header">
+        <h3><i class="bi bi-wallet2"></i> Gestión de Planillas y Pagos</h3>
+        <span class="total-label">Presupuesto Mes: S/ 30,000</span>
       </div>
 
-      <div class="days">
-        <span>LUN</span><span>MAR</span><span>MIE</span>
-        <span>JUE</span><span>VIE</span><span>SAB</span><span>DOM</span>
+      <div class="expense-list">
+        <div class="expense-item" *ngFor="let exp of expenseBreakdown">
+          <div class="item-info">
+            <span>{{ exp.label }}</span>
+            <strong>{{ exp.amount }}</strong>
+          </div>
+          <div class="progress-bar">
+            <div class="progress" [style.width]="exp.percentage + '%'" [style.background-color]="exp.color"></div>
+          </div>
+          <div class="item-meta">
+            <small>{{ exp.percentage }}% de egresos administrativos</small>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <button class="download">
-        <i class="bi bi-download"></i>
-        Descargar Reporte Mensual
-      </button>
-    </article>
-
-    <!-- ===============================
-         SIDE PANEL
-    ================================ -->
-    <aside class="side">
-
-      <article class="card list">
-        <header class="list-header">
-          <span>Fila de Salida</span>
-          <button class="action green">
-            <i class="bi bi-shield-plus"></i>
-            Gestionar
-          </button>
-        </header>
-
-        <div class="list-item">
-          <span>V-402 (Juan P.)</span>
-          <small>Huánuco</small>
+    <!-- Right: Top Routes Analytics -->
+    <div class="side-column">
+      <section class="analysis-card glass routes-performance">
+        <h3><i class="bi bi-map-fill"></i> Rutas con Mayor Tráfico</h3>
+        <div class="route-list">
+          <div class="route-item" *ngFor="let route of topRoutes">
+            <div class="route-info">
+              <strong>{{ route.name }}</strong>
+              <span>{{ route.tickets }} pasajeros hoy</span>
+            </div>
+            <span class="growth-badge"
+              [ngClass]="{'up': !route.growth.includes('-'), 'down': route.growth.includes('-')}">
+              {{ route.growth }}
+            </span>
+          </div>
         </div>
+      </section>
 
-        <div class="list-item">
-          <span>V-515 (Marco S.)</span>
-          <small>Tingo María</small>
+      <section class="analysis-card glass fuel-stat">
+        <div class="card-body">
+          <i class="bi bi-calendar-check"></i>
+          <div class="data">
+            <strong>Próximo Cierre Fiscal</strong>
+            <span>15 de {{ currentMonth }}</span>
+          </div>
         </div>
-
-      </article>
-
-    </aside>
-
-  </section>
-
-</section>
+      </section>
+    </div>
+  </div>
+</div>

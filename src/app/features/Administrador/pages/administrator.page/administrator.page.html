@@ -1,125 +1,91 @@
-<!-- ==================================================
-     ADMINISTRADOR / PERFIL PRINCIPAL
-================================================== -->
-<section class="admin-profile">
+<div class="dashboard-container">
+  <!-- Header / Greeting -->
+  <header class="dashboard-header">
+    <div class="greeting-info">
+      <h1>¡Bienvenido, {{ adminName }}!</h1>
+      <p><i class="bi bi-calendar3"></i> {{ formatDate(currentTime) }} · <span>Sistema en línea</span></p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary-gradient">
+        <i class="bi bi-plus-lg"></i>
+        Nuevo Viaje
+      </button>
+    </div>
+  </header>
 
-  <!-- ===============================
-       HEADER CARD
-  ================================ -->
-  <section class="profile-header card">
+  <!-- KPI Grid -->
+  <section class="kpi-grid">
+    <div class="kpi-card glass" *ngFor="let stat of stats">
+      <div class="kpi-icon" [style.background-color]="stat.color + '20'" [style.color]="stat.color">
+        <i class="bi" [ngClass]="stat.icon"></i>
+      </div>
+      <div class="kpi-data">
+        <span class="label">{{ stat.label }}</span>
+        <h3 class="value">{{ stat.value }}</h3>
+        <span class="trend" [ngClass]="{'positive': stat.trend.includes('+'), 'negative': stat.trend.includes('-')}">
+          {{ stat.trend }} vs ayer
+        </span>
+      </div>
+    </div>
+  </section>
 
-    <div class="profile-info">
-      <div class="avatar-box">
-        <img src="img/van1.png" alt="Admin Avatar" />
-        <button class="edit-avatar">
-          <i class="bi bi-camera"></i>
+  <!-- Main Grid Content -->
+  <div class="dashboard-main-grid">
+    <!-- Left Column: Recent Activity -->
+    <section class="dashboard-card recent-activity glass">
+      <div class="card-header">
+        <h3><i class="bi bi-clock-history"></i> Actividad Reciente</h3>
+        <button class="btn-primary-gradient" type="button">
+          <i class="bi bi-eye"></i>
+          Ver todo
         </button>
       </div>
-
-      <div>
-        <h2>
-          Darwin Chamaya
-          <span class="status active">ACTIVO</span>
-        </h2>
-        <p>Administrador General · ID: 4589201</p>
-      </div>
-    </div>
-
-    <div class="header-actions" *ngIf="editMode">
-      <button class="btn-save" (click)="saveChanges()">
-        Guardar Cambios
-      </button>
-      <button class="btn-cancel" (click)="cancelEdit()">
-        Cancelar
-      </button>
-    </div>
-
-  </section>
-
-  <!-- ===============================
-       DATOS PERSONALES
-  ================================ -->
-  <section class="card">
-
-    <div class="card-header">
-      <h3>Datos Personales</h3>
-      <small>Información básica de la cuenta</small>
-
-      <button class="edit-btn" (click)="toggleEdit()">
-        <i class="bi bi-pencil"></i>
-      </button>
-    </div>
-
-    <div class="form-grid">
-
-      <div class="form-group">
-        <label>Nombre Completo</label>
-        <input
-          type="text"
-          [disabled]="!editMode"
-          [(ngModel)]="admin.name" />
-      </div>
-
-      <div class="form-group">
-        <label>Correo Electrónico</label>
-        <div class="input-lock">
-          <input
-            type="email"
-            [disabled]="true"
-            [(ngModel)]="admin.email" />
-          <i class="bi bi-lock"></i>
+      <div class="activity-timeline">
+        <div class="activity-item" *ngFor="let act of recentActivity">
+          <div class="activity-icon-wrapper">
+            <i class="bi" [ngClass]="act.icon"></i>
+          </div>
+          <div class="activity-content">
+            <strong>{{ act.title }}</strong>
+            <span>{{ act.time }}</span>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="form-group">
-        <label>Teléfono</label>
-        <input
-          type="text"
-          [disabled]="!editMode"
-          [(ngModel)]="admin.phone" />
-      </div>
+    <!-- Right Column: Quick Actions & Alerts -->
+    <div class="dashboard-side-grid">
+      <section class="dashboard-card quick-actions glass">
+        <h3>Acciones Rápidas</h3>
+        <div class="actions-grid">
+          <button class="action-btn" *ngFor="let action of quickActions" [style.background-color]="action.color"
+            [style.color]="action.textColor">
+            <i class="bi" [ngClass]="action.icon"></i>
+            {{ action.label }}
+          </button>
+        </div>
+      </section>
 
-      <div class="form-group">
-        <label>DNI / NIE</label>
-        <input
-          type="text"
-          [disabled]="true"
-          [(ngModel)]="admin.dni" />
-      </div>
-
+      <section class="dashboard-card system-status glass">
+        <div class="status-header">
+          <h3>Estado del Sistema</h3>
+          <span class="dot pulse"></span>
+        </div>
+        <div class="status-list">
+          <div class="status-item">
+            <span>Base de Datos</span>
+            <span class="badge success">OK</span>
+          </div>
+          <div class="status-item">
+            <span>Servidor API</span>
+            <span class="badge success">OK</span>
+          </div>
+          <div class="status-item">
+            <span>Servicio de Tickets</span>
+            <span class="badge warning">Lento</span>
+          </div>
+        </div>
+      </section>
     </div>
-
-  </section>
-
-  <!-- ===============================
-       SEGURIDAD
-  ================================ -->
-  <section class="card">
-
-    <div class="card-header">
-      <h3>Seguridad de la Cuenta</h3>
-      <small>Gestión de accesos y contraseñas</small>
-    </div>
-
-    <div class="form-grid">
-
-      <div class="form-group">
-        <label>Contraseña Actual</label>
-        <input type="password" placeholder="••••••••" />
-      </div>
-
-      <div class="form-group">
-        <label>Nueva Contraseña</label>
-        <input type="password" placeholder="Mínimo 8 caracteres" />
-      </div>
-
-      <div class="form-group">
-        <label>Confirmar Contraseña</label>
-        <input type="password" placeholder="Repetir contraseña" />
-      </div>
-
-    </div>
-
-  </section>
-
-</section>
+  </div>
+</div>
