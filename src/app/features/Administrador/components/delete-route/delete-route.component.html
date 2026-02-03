@@ -1,0 +1,55 @@
+<!-- 
+  ==================================================
+  MODAL OVERLAY
+  ==================================================
+-->
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+
+    <!-- MODAL CONTAINER (Centered, Small) -->
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+        <!-- 
+          ==================================
+          PASO 1: CONFIRMACIÓN
+          ==================================
+        -->
+        <ng-container *ngIf="step === 'confirm'">
+            <div class="icon-circle warning">
+                <i class="bi bi-exclamation-lg"></i>
+            </div>
+
+            <h2 class="title">¿Eliminar esta ruta?</h2>
+            <p class="description">
+                Estás a punto de eliminar <span class="highlight">Huánuco → Tingo María</span>.<br>
+                Esta acción no se puede deshacer.
+            </p>
+
+            <div class="actions-row">
+                <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+                <button class="btn-delete" (click)="confirmDelete()">Sí, Eliminar</button>
+            </div>
+        </ng-container>
+
+        <!-- 
+          ==================================
+          PASO 2: ÉXITO
+          ==================================
+        -->
+        <ng-container *ngIf="step === 'success'">
+            <div class="icon-circle success">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <h2 class="title">¡Eliminado Correctamente!</h2>
+            <p class="description">
+                La ruta ha sido removida del sistema con éxito.
+            </p>
+
+            <button class="btn-confirm" (click)="closeModal()">
+                Entendido
+            </button>
+        </ng-container>
+
+    </div>
+
+</div>

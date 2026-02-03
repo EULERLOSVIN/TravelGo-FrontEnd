@@ -1,0 +1,40 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+        <!-- PASO 1: CONFIRMACIÓN -->
+        <ng-container *ngIf="step === 'confirm'">
+            <div class="icon-circle warning">
+                <i class="bi bi-exclamation-lg"></i>
+            </div>
+
+            <h2 class="title">¿Eliminar Vehículo?</h2>
+            <p class="description">
+                Estás a punto de retirar a <span class="highlight">Unidad U-001 (Toyota Hiace)</span> de la flota.<br>
+                Esta acción es irreversible.
+            </p>
+
+            <div class="actions-row">
+                <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+                <button class="btn-delete" (click)="confirmDelete()">Sí, Retirar</button>
+            </div>
+        </ng-container>
+
+        <!-- PASO 2: ÉXITO -->
+        <ng-container *ngIf="step === 'success'">
+            <div class="icon-circle success">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <h2 class="title">¡Vehículo Retirado!</h2>
+            <p class="description">
+                La unidad ha sido eliminada del sistema correctamente.
+            </p>
+
+            <button class="btn-confirm" (click)="closeModal()">
+                Entendido
+            </button>
+        </ng-container>
+
+    </div>
+</div>

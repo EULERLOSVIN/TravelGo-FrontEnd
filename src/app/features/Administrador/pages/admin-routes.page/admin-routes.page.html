@@ -14,7 +14,7 @@
 
     <div class="header-actions">
       <input type="text" placeholder="Buscar ruta..." />
-      <button class="btn-new">
+      <button class="btn-new" (click)="openModal()">
         <i class="bi bi-plus"></i>
         Nueva Ruta
       </button>
@@ -70,8 +70,18 @@
             <span class="badge active">Activa</span>
           </td>
           <td data-label="Acciones" class="actions">
-            <i class="bi bi-pencil"></i>
-            <i class="bi bi-trash"></i>
+            <button class="btn-icon" type="button" (click)="openEditModal({
+              origin: 'Huánuco', 
+              destination: 'Tingo María', 
+              time: 2.5, 
+              price: 35.00, 
+              status: 'active' 
+            })">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon" type="button" (click)="openDeleteModal()">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
 
@@ -84,8 +94,18 @@
             <span class="badge active">Activa</span>
           </td>
           <td data-label="Acciones" class="actions">
-            <i class="bi bi-pencil"></i>
-            <i class="bi bi-trash"></i>
+            <button class="btn-icon" type="button" (click)="openEditModal({
+              origin: 'Huánuco', 
+              destination: 'Tingo María', 
+              time: 2.5, 
+              price: 35.00, 
+              status: 'active' 
+            })">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon" type="button" (click)="openDeleteModal()">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
 
@@ -98,8 +118,18 @@
             <span class="badge inactive">Inactiva</span>
           </td>
           <td data-label="Acciones" class="actions">
-            <i class="bi bi-pencil"></i>
-            <i class="bi bi-trash"></i>
+            <button class="btn-icon" type="button" (click)="openEditModal({
+              origin: 'Huánuco', 
+              destination: 'Tingo María', 
+              time: 2.5, 
+              price: 35.00, 
+              status: 'active' 
+            })">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon" type="button" (click)="openDeleteModal()">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
 
@@ -112,8 +142,18 @@
             <span class="badge active">Activa</span>
           </td>
           <td data-label="Acciones" class="actions">
-            <i class="bi bi-pencil"></i>
-            <i class="bi bi-trash"></i>
+            <button class="btn-icon" type="button" (click)="openEditModal({
+              origin: 'Huánuco', 
+              destination: 'Tingo María', 
+              time: 2.5, 
+              price: 35.00, 
+              status: 'active' 
+            })">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon" type="button" (click)="openDeleteModal()">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -136,4 +176,13 @@
 
   </section>
 
+
+  <app-register-new-route [isOpen]="isModalOpen" (close)="isModalOpen = false">
+  </app-register-new-route>
+
+  <app-edit-route [isOpen]="isEditModalOpen" [routeToEdit]="selectedRoute" (close)="isEditModalOpen = false">
+  </app-edit-route>
+
+  <app-delete-route [isOpen]="isDeleteModalOpen" (close)="isDeleteModalOpen = false">
+  </app-delete-route>
 </section>

@@ -142,6 +142,19 @@
   gap: 10px;
 }
 
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+}
+
 .actions i {
   cursor: pointer;
   color: #6b7280;

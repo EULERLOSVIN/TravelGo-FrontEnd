@@ -1,0 +1,23 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+        <ng-container *ngIf="step === 'confirm'">
+            <div class="icon-circle warning"><i class="bi bi-exclamation-lg"></i></div>
+            <h2 class="title">¿Desactivar Personal?</h2>
+            <p class="description">El usuario perderá el acceso al sistema inmediatamente. <br> Esta acción se puede
+                revertir luego.</p>
+            <div class="actions-row">
+                <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+                <button class="btn-delete" (click)="confirm()">Sí, Desactivar</button>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="step === 'success'">
+            <div class="icon-circle success"><i class="bi bi-check-circle-fill"></i></div>
+            <h2 class="title">¡Personal Desactivado!</h2>
+            <p class="description">Los cambios han sido guardados correctamente.</p>
+            <button class="btn-confirm" (click)="closeModal()">Entendido</button>
+        </ng-container>
+
+    </div>
+</div>

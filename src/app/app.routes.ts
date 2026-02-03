@@ -78,8 +78,12 @@ export const routes: Routes = [
             {
                 path: 'settings',
                 component: AdminSettingsComponent
-            }
-            
+            },
+            {
+                path: 'personal',
+                loadComponent: () => import('./features/Administrador/pages/admin-person.page/admin-person.page').then(m => m.AdminPersonComponent)
+            },
+
         ]
     }
 
