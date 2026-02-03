@@ -5,12 +5,6 @@
       <h1>¡Bienvenido, {{ adminName }}!</h1>
       <p><i class="bi bi-calendar3"></i> {{ formatDate(currentTime) }} · <span>Sistema en línea</span></p>
     </div>
-    <div class="header-actions">
-      <button class="btn-primary-gradient">
-        <i class="bi bi-plus-lg"></i>
-        Nuevo Viaje
-      </button>
-    </div>
   </header>
 
   <!-- KPI Grid -->
@@ -59,7 +53,7 @@
         <h3>Acciones Rápidas</h3>
         <div class="actions-grid">
           <button class="action-btn" *ngFor="let action of quickActions" [style.background-color]="action.color"
-            [style.color]="action.textColor">
+            [style.color]="action.textColor" (click)="handleAction(action.label)">
             <i class="bi" [ngClass]="action.icon"></i>
             {{ action.label }}
           </button>
@@ -89,3 +83,6 @@
     </div>
   </div>
 </div>
+
+<!-- Modal para registrar nueva ruta -->
+<app-register-new-route [isOpen]="isModalOpen" (close)="isModalOpen = false"></app-register-new-route>
