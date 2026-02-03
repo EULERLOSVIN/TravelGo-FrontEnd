@@ -4,12 +4,15 @@ import { SelectSeatPage } from './features/SelectSeat/pages/select-seat/select-s
 import { FillDataComponent } from './features/FillData/pages/fill-data/fill-data.component';
 import { MainPage } from './layouts/pages/main.page/main.page';
 import { SelectRoutePage } from './features/seleccionderuta/pages/select-route.page/select-route.page';
+import { Conductor } from './features/pageConductor/features/pageConductor/conductor';
+
+
 
 export const routes: Routes = [
-   {
+    {
         path: '',
         component: MainPage,
-        children:[
+        children: [
             {
                 path: '',
                 redirectTo: 'home',
@@ -17,26 +20,29 @@ export const routes: Routes = [
             },
             {
                 path: 'home',
-                component:HomePage
+                component: HomePage
             },
             {
-                path:'select-seat',
+                path: 'select-seat',
                 component: SelectSeatPage,
             },
             {
                 path: 'fill-data',
                 component: FillDataComponent
-                
+
             },
             {
                 path: 'select-route',
-                component:SelectRoutePage
-            }
+                component: SelectRoutePage
+            },
+            { path: 'conductor',
+             component: Conductor 
+            },
 
 
         ]
     }
-                      
-   
+
+
 ];
 
