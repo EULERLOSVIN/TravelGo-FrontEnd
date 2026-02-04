@@ -10,7 +10,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class SidebarComponent {
 
-  hasAlerts = true; // Cambia a false si no tienes alertas 
+  hasAlerts = true;
 
 
   collapsed = false;

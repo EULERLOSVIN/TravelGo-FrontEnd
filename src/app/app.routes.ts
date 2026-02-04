@@ -5,8 +5,6 @@ import { FillDataComponent } from './features/FillData/pages/fill-data/fill-data
 import { MainPage } from './layouts/pages/main.page/main.page';
 import { SelectRoutePage } from './features/seleccionderuta/pages/select-route.page/select-route.page';
 import { AdminComponent } from './layouts/pages/admin.component/admin.component';
-import { Component } from '@angular/core';
-import { AdministratorComponent } from './features/Administrador/pages/administrator.page/administrator.page';
 import { AdminSummaryComponent } from './features/Administrador/pages/admin-summary.page/admin-summary.page';
 import { AdminRoutesComponent } from './features/Administrador/pages/admin-routes.page/admin-routes.page';
 import { AdminVehiclesComponent } from './features/Administrador/pages/admin-vehicles.page/admin-vehicles.page';
@@ -17,6 +15,7 @@ import { AdminAlertsComponent } from './features/Administrador/pages/admin-alert
 import { AdminSedeComponent } from './features/Administrador/pages/admin-sede.page/admin-sede.page';
 import { Conductor } from './features/pageConductor/features/pageConductor/conductor';
 import { AuthenticationPage } from './features/Authentication/pages/authentication/authentication.page';
+import { authGuard } from './core/guards/auth.guard';
 
 
 export const routes: Routes = [
@@ -53,14 +52,15 @@ export const routes: Routes = [
 
         ]
     },
-
     {
-        path: 'app-admin',
+        path: 'administrator',
         component: AdminComponent,
+        canActivate: [authGuard],
         children: [
             {
                 path: '',
-                component: AdministratorComponent
+                redirectTo: 'summary',
+                pathMatch: 'full'
             },
             {
                 path: 'summary',

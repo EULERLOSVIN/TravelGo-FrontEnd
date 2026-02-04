@@ -8,24 +8,26 @@ import { LoginRequestModel } from '../models/LoginRequest.model';
   providedIn: 'root'
 })
 export class AuthService {
-
-  private readonly URL = `${environment.apiUrl}/Auth/login`;
+  private readonly AUTH_URL = `${environment.apiUrl}/Auth`;
 
   constructor(private http: HttpClient) { }
 
-  login(credentials: LoginRequestModel): Observable<number> {
-    return this.http.post<number>(`${this.URL}`, credentials).pipe(
+  login(credentials: LoginRequestModel): Observable<any> {
+    return this.http.post<any>(`${this.AUTH_URL}/login`, credentials).pipe(
       tap(response => {
-        localStorage.setItem('userId', response.toString());
+        localStorage.setItem('userEmail', response.email);
+        
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userRole', response.rol);
       })
     );
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('userId');
+    return !!localStorage.getItem('token');
   }
 
   logout(): void {
-    localStorage.removeItem('userId');
+    localStorage.clear();
   }
 }

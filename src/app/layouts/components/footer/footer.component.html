@@ -10,16 +10,13 @@
         </p>
 
         <strong class="footer-title">ACCESO ADMINISTRATIVO <br></strong>
-        <a routerLink="authentication">link para la pagina de inicio sesión.</a>
-
+        <a routerLink="/authentication" (click)="handleAdminAccess($event)">
+          link para la pagina de inicio sesión.
+        </a>
       </div>
 
       <div class="col-lg-3 col-md-6">
-        <h2
-          class="footer-title"
-          (click)="toggleSection('services')"
-          [class.expanded]="expandedSections['services']"
-        >
+        <h2 class="footer-title" (click)="toggleSection('services')" [class.expanded]="expandedSections['services']">
           SERVICIOS PREMIUM
           <i class="bi bi-chevron-down d-md-none chevron"></i>
         </h2>
@@ -36,11 +33,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6">
-        <h2
-          class="footer-title"
-          (click)="toggleSection('help')"
-          [class.expanded]="expandedSections['help']"
-        >
+        <h2 class="footer-title" (click)="toggleSection('help')" [class.expanded]="expandedSections['help']">
           CENTRAL DE AYUDA
           <i class="bi bi-chevron-down d-md-none chevron"></i>
         </h2>
@@ -69,11 +62,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6">
-        <h2
-          class="footer-title"
-          (click)="toggleSection('agencies')"
-          [class.expanded]="expandedSections['agencies']"
-        >
+        <h2 class="footer-title" (click)="toggleSection('agencies')" [class.expanded]="expandedSections['agencies']">
           NUESTRAS AGENCIAS
           <i class="bi bi-chevron-down d-md-none chevron"></i>
         </h2>

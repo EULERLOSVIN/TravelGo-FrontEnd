@@ -10,7 +10,9 @@ $text-gray: #9e9e9e;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: $bg-dark;
+  background: url('/img/loginPage1.jpeg') no-repeat center center;             
+  background-size: cover;
+  background-attachment: fixed;
   padding: 1.5rem;
 }
 
