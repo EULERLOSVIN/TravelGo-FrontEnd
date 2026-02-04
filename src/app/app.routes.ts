@@ -15,6 +15,7 @@ import { AdminSalesComponent } from './features/Administrador/pages/admin-sales.
 import { AdminSettingsComponent } from './features/Administrador/pages/admin-settings.page/admin-settings.page';
 import { AdminAlertsComponent } from './features/Administrador/pages/admin-alerts.page/admin-alerts.page';
 import { AdminSedeComponent } from './features/Administrador/pages/admin-sede.page/admin-sede.page';
+import { Conductor } from './features/pageConductor/features/pageConductor/conductor';
 
 
 export const routes: Routes = [
@@ -43,6 +44,10 @@ export const routes: Routes = [
             {
                 path: 'select-route',
                 component: SelectRoutePage
+            },
+            {
+                path: 'conductor',
+                component: Conductor
             },
 
         ]
@@ -96,8 +101,6 @@ export const routes: Routes = [
 
         ]
     }
-
-
 
 ];
 
