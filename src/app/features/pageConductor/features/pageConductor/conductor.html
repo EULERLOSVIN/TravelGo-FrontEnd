@@ -1,0 +1,173 @@
+<div class="conductor-page">
+  <!-- Top alert bar -->
+  <div class="top-alert">
+    <div class="top-alert__left">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <span>Atención! Tu SOAT vence en 5 días</span>
+    </div>
+
+    <button class="top-alert__btn" type="button">Renovar</button>
+  </div>
+
+  <!-- Header -->
+  <div class="top-header">
+    <div class="brand">
+      <div class="brand__logo">
+        <i class="bi bi-bus-front-fill"></i>
+      </div>
+      <div class="brand__text">
+        <div class="brand__title">Sole Especial</div>
+        <div class="brand__subtitle">Panel del Conductor</div>
+      </div>
+    </div>
+
+    <div class="userbox">
+      <div class="userbox__meta">
+        <div class="userbox__name">Ricardo Palma</div>
+        <div class="userbox__doc">DNI: 00000000</div>
+      </div>
+      <div class="userbox__avatar">
+        <i class="bi bi-person-fill"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-7 col-xl-6">
+
+        <!-- Queue card -->
+        <div class="card soft-card queue-card">
+          <div class="queue-card__top">
+            <div class="queue-card__city">ESTADO EN HUÁNUCO</div>
+          </div>
+
+          <div class="queue-card__number">#3</div>
+          <div class="queue-card__label">Posición en Cola</div>
+
+          <button class="btn chip-warn mt-3" type="button">
+            <i class="bi bi-bell-fill me-2"></i> ¡PREPÁRATE!
+          </button>
+
+          <button class="btn btn-join mt-3 w-100" type="button">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Incorporarse
+          </button>
+        </div>
+
+        <!-- Recorridos del día -->
+        <div class="section">
+          <div class="section__head">
+            <h3 class="section__title">Recorridos del Día</h3>
+            <span class="pill-success">2 Completados</span>
+          </div>
+
+          <div class="card soft-card list-card">
+            <div class="list-item">
+              <div class="list-item__icon">
+                <i class="bi bi-clock"></i>
+              </div>
+              <div class="list-item__body">
+                <div class="list-item__title">Tingo María → Huánuco</div>
+                <div class="list-item__sub">Salida: 08:30 AM • 4 pasajeros</div>
+              </div>
+              <div class="list-item__status status-done">Finalizado</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="list-item">
+              <div class="list-item__icon">
+                <i class="bi bi-clock"></i>
+              </div>
+              <div class="list-item__body">
+                <div class="list-item__title">Huánuco → Tingo María</div>
+                <div class="list-item__sub">Salida: 12:15 PM • 4 pasajeros</div>
+              </div>
+              <div class="list-item__status status-done">Finalizado</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Encomiendas a cargo -->
+        <div class="section">
+          <div class="section__head">
+            <h3 class="section__title">Encomiendas a Cargo</h3>
+            <button class="icon-btn" type="button" aria-label="Filtrar">
+              <i class="bi bi-filter"></i>
+            </button>
+          </div>
+
+          <div class="card soft-card list-card">
+            <div class="list-item">
+              <div class="list-item__icon icon-green">
+                <i class="bi bi-box-seam"></i>
+              </div>
+              <div class="list-item__body">
+                <div class="list-item__title">ENC-9920</div>
+                <div class="list-item__sub">Destinatario: Ana Morales</div>
+              </div>
+              <span class="pill-warn">En tránsito</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="list-item">
+              <div class="list-item__icon icon-green">
+                <i class="bi bi-box-seam"></i>
+              </div>
+              <div class="list-item__body">
+                <div class="list-item__title">ENC-9925</div>
+                <div class="list-item__sub">Destinatario: Carlos Ruiz</div>
+              </div>
+              <span class="pill-info">Pendiente</span>
+            </div>
+
+            <button class="link-btn mt-3" type="button">
+              VER MANIFIESTO COMPLETO
+            </button>
+          </div>
+        </div>
+
+        <!-- Licencia -->
+        <div class="card soft-card license-card">
+          <div class="license-card__icon">
+            <i class="bi bi-file-earmark-person"></i>
+          </div>
+          <div class="license-card__body">
+            <div class="license-card__title">Licencia de Conducir</div>
+            <div class="license-card__sub">Próxima renovación: 12 Nov 2024</div>
+          </div>
+          <div class="license-card__arrow">
+            <i class="bi bi-chevron-right"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav">
+    <button class="bottom-nav__item is-active" type="button">
+      <i class="bi bi-house-door"></i>
+      <span>MI TURNO</span>
+    </button>
+    <button class="bottom-nav__item" type="button">
+      <i class="bi bi-box-seam"></i>
+      <span>CARGA</span>
+    </button>
+    <button class="bottom-nav__item" type="button">
+      <i class="bi bi-file-earmark-text"></i>
+      <span>DOCS</span>
+    </button>
+    <button class="bottom-nav__item" type="button">
+      <i class="bi bi-clock-history"></i>
+      <span>HISTORIAL</span>
+    </button>
+    <button class="bottom-nav__item is-danger" type="button">
+      <i class="bi bi-box-arrow-right"></i>
+      <span>SALIR</span>
+    </button>
+  </nav>
+</div>

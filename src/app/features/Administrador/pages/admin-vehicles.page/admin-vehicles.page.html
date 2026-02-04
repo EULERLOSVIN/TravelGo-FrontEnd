@@ -1,0 +1,208 @@
+<!-- ===============================
+     HEADER
+================================ -->
+<header class="vehicles-header">
+  <div class="header-group">
+    <div class="brand-logo lg:hidden">
+      <span class="brand-red">SEIS</span>
+      <span class="brand-green">Especial</span>
+    </div>
+
+    <div class="header-text">
+      <h2>Gestión de Flota de Vehículos</h2>
+      <p>Supervisión y actualización de tipos de vehículo y capacidades de la flota.</p>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Buscar unidad o placa..." />
+    </div>
+
+    <button class="btn-notification">
+      <i class="bi bi-bell"></i>
+      <span class="badge-dot"></span>
+    </button>
+
+    <button class="btn-new" (click)="openRegisterModal()">
+      <i class="bi bi-plus-lg"></i>
+      Nuevo Vehículo
+    </button>
+  </div>
+</header>
+
+<!-- ===============================
+     STATS / KPIs
+================================ -->
+<section class="vehicles-stats">
+
+  <article class="stat-card">
+    <small>TOTAL UNIDADES</small>
+    <p class="stat-value">12</p>
+    <div class="progress-bar">
+      <div class="fill total"></div>
+    </div>
+  </article>
+
+  <article class="stat-card">
+    <small>EN RUTA</small>
+    <p class="stat-value text-green">5</p>
+    <div class="progress-bar">
+      <div class="fill green" style="width: 42%"></div>
+    </div>
+  </article>
+
+  <article class="stat-card">
+    <small>EN MANTENIMIENTO</small>
+    <p class="stat-value text-red">1</p>
+    <div class="progress-bar">
+      <div class="fill red" style="width: 8%"></div>
+    </div>
+  </article>
+
+</section>
+
+<!-- ===============================
+     TABLE
+================================ -->
+<section class="table-card">
+  <div class="table-responsive">
+    <table class="vehicles-table">
+      <thead>
+        <tr>
+          <th>Unidad (ID)</th>
+          <th>Foto</th>
+          <th>TIPO</th>
+          <th>Placa</th>
+          <th>Modelo</th>
+          <th>Conductor Asignado</th>
+          <th>Estado</th>
+          <th class="text-center">SOAT/Lic.</th>
+          <th class="text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- ROW 1 -->
+        <tr>
+          <td><span class="unit-id">U-001</span></td>
+          <td>
+            <div class="vehicle-thumb">
+              <img src="/img/van1.png" alt="Vehículo">
+            </div>
+          </td>
+          <td><span class="badge-type">Mini Van 15 pax</span></td>
+          <td class="font-semibold">ABC-123</td>
+          <td class="font-semibold">Toyota Hiace</td>
+          <td>
+            <div class="driver-info">
+              <div class="avatar">RC</div>
+              <span>Ricardo Castillo</span>
+            </div>
+          </td>
+          <!-- Estado: En Fila (Azul) -->
+          <td><span class="badge status-blue">En Fila</span></td>
+          <td class="text-center"><i class="bi bi-patch-check-fill text-green text-xl" title="Vigente"></i></td>
+          <td class="text-right">
+            <div class="actions">
+              <button class="btn-icon"
+                (click)="openEditModal({unitCode:'U-001', plate:'ABC-123', type:'minivan15', model:'Toyota Hiace', driverName:'Ricardo Castillo', status:'active', soatExpiry:'2025-12-31'})">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn-icon hover-red" (click)="openDeleteModal()">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <!-- ROW 2 -->
+        <tr>
+          <td><span class="unit-id">U-005</span></td>
+          <td>
+            <div class="vehicle-thumb placeholder">
+              <i class="bi bi-image"></i>
+            </div>
+          </td>
+          <td><span class="badge-type">Mini Van 15 pax</span></td>
+          <td class="font-semibold">XYZ-987</td>
+          <td class="font-semibold">Toyota Hiace</td>
+          <td>
+            <div class="driver-info">
+              <div class="avatar">MA</div>
+              <span>Marco Arrieta</span>
+            </div>
+          </td>
+          <!-- Estado: En Ruta (Verde) -->
+          <td><span class="badge status-green">En Ruta</span></td>
+          <td class="text-center"><i class="bi bi-patch-check-fill text-green text-xl"></i></td>
+          <td class="text-right">
+            <div class="actions">
+              <button class="btn-icon"
+                (click)="openEditModal({unitCode:'U-005', plate:'XYZ-987', type:'minivan15', model:'Toyota Hiace', driverName:'Marco Arrieta', status:'route', soatExpiry:'2025-11-20'})">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn-icon hover-red" (click)="openDeleteModal()">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <!-- ROW 3 -->
+        <tr>
+          <td><span class="unit-id">U-012</span></td>
+          <td>
+            <div class="vehicle-thumb placeholder">
+              <i class="bi bi-image"></i>
+            </div>
+          </td>
+          <td><span class="badge-type">Auto 5 pax</span></td>
+          <td class="font-semibold">DEF-456</td>
+          <td class="font-semibold">Sedán Ejecutivo</td>
+          <td>
+            <span class="text-muted italic" style="font-size: 0.85rem;">Sin asignar</span>
+          </td>
+          <!-- Estado: Taller (Rojo) -->
+          <td><span class="badge status-red">Taller</span></td>
+          <td class="text-center"><i class="bi bi-exclamation-triangle-fill text-amber text-xl" title="Por vencer"></i>
+          </td>
+          <td class="text-right">
+            <div class="actions">
+              <button class="btn-icon"
+                (click)="openEditModal({unitCode:'U-012', plate:'DEF-456', type:'auto', model:'Sedán Ejecutivo', driverName:'', status:'maintenance', soatExpiry:'2024-05-15'})">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn-icon hover-red" (click)="openDeleteModal()">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="table-footer">
+    <span class="text-muted">Mostrando 3 de 12 unidades</span>
+    <div class="pagination">
+      <button disabled><i class="bi bi-chevron-left"></i></button>
+      <button class="active">1</button>
+      <button>2</button>
+      <button><i class="bi bi-chevron-right"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- MODALS -->
+<app-register-new-vehicle [isOpen]="isRegisterModalOpen" (close)="isRegisterModalOpen = false">
+</app-register-new-vehicle>
+
+<app-edit-vehicle [isOpen]="isEditModalOpen" [vehicleToEdit]="selectedVehicle" (close)="isEditModalOpen = false">
+</app-edit-vehicle>
+
+<app-delete-vehicle [isOpen]="isDeleteModalOpen" (close)="isDeleteModalOpen = false">
+</app-delete-vehicle>

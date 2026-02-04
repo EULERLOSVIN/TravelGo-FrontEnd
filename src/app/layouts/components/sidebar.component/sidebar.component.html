@@ -1,0 +1,75 @@
+<!-- ===============================
+     SIDEBAR
+================================ -->
+<aside class="sidebar">
+
+  <!-- ===============================
+       HEADER
+  ================================ -->
+  <div class="sidebar-header clickable" routerLink="/app-admin">
+    <h2 class="brand">
+      <span class="seis">TRAVEL</span>
+      <span class="especial">GO</span>
+    </h2>
+  </div>
+
+  <!-- ===============================
+       MENU
+  ================================ -->
+  <ul class="menu">
+
+    <li class="menu-item" routerLink="/app-admin/summary" routerLinkActive="active">
+      <i class="bi bi-bar-chart"></i>
+      <span class="label">Resumen</span>
+    </li>
+
+    <li class="menu-item" routerLink="/app-admin/alerts" routerLinkActive="active">
+      <i class="bi bi-bell bell-animation bell-dot" [class.bell-active]="hasAlerts"></i>
+      <span class="label">Alertas</span>
+    </li>
+
+    <li class="menu-item" routerLink="/app-admin/routes" routerLinkActive="active">
+      <i class="bi bi-signpost"></i>
+      <span class="label">Rutas</span>
+    </li>
+
+    <li class="menu-item" routerLink="/app-admin/vehicles" routerLinkActive="active">
+      <i class="bi bi-truck"></i>
+      <span class="label">Vehículos</span>
+    </li>
+
+    <li class="menu-item" routerLink="/app-admin/personal" routerLinkActive="active">
+      <i class="bi bi-people"></i>
+      <span class="label">Personal</span>
+    </li>
+
+    <li class="menu-item" routerLink="/app-admin/sede" routerLinkActive="active">
+      <i class="bi bi-geo-alt"></i>
+      <span class="label">Sede</span>
+    </li>
+
+    <li class="menu-item" routerLink="/app-admin/sales" routerLinkActive="active">
+      <i class="bi bi-cash-coin"></i>
+      <span class="label">Ventas</span>
+    </li>
+
+    <li class="menu-item" routerLink="/app-admin/settings" routerLinkActive="active">
+      <i class="bi bi-gear"></i>
+      <span class="label">Ajustes</span>
+    </li>
+
+  </ul>
+
+  <!-- ===============================
+       USER
+  ================================ -->
+  <div class="sidebar-user">
+    <div class="avatar">JD</div>
+    <div class="user-info">
+      <strong>Darwin Chamaya</strong>
+      <small>Administrador</small>
+    </div>
+    <i class="bi bi-box-arrow-right logout"></i>
+  </div>
+
+</aside>

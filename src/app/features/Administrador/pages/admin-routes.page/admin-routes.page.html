@@ -1,0 +1,188 @@
+<!-- ==================================================
+     ROUTES / GESTIÓN DE RUTAS
+================================================== -->
+<section class="routes">
+
+  <!-- ===============================
+       HEADER
+  ================================ -->
+  <header class="routes-header">
+    <div class="header-text">
+      <h2>Gestión de Rutas de Viaje</h2>
+      <p>Administre los destinos, precios y estados operativos de la flota.</p>
+    </div>
+
+    <div class="header-actions">
+      <input type="text" placeholder="Buscar ruta..." />
+      <button class="btn-new" (click)="openModal()">
+        <i class="bi bi-plus"></i>
+        Nueva Ruta
+      </button>
+    </div>
+  </header>
+
+  <!-- ===============================
+       STATS / KPIs
+  ================================ -->
+  <section class="routes-stats">
+
+    <article class="stat-card">
+      <small>Total de rutas</small>
+      <h3>24</h3>
+    </article>
+
+    <article class="stat-card">
+      <small>Rutas activas</small>
+      <h3 class="text-green">22</h3>
+    </article>
+
+    <article class="stat-card">
+      <small>Demanda alta</small>
+      <h3 class="text-blue">6</h3>
+    </article>
+
+  </section>
+
+  <!-- ===============================
+       TABLE / LISTADO
+  ================================ -->
+  <section class="table-card">
+
+    <table class="routes-table">
+      <thead>
+        <tr>
+          <th>Origen</th>
+          <th>Destino</th>
+          <th>Tiempo (hrs)</th>
+          <th>Precio (S/)</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td data-label="Origen">Huánuco</td>
+          <td data-label="Destino">Tingo María</td>
+          <td data-label="Tiempo">2.5</td>
+          <td data-label="Precio" class="price">S/ 35.00</td>
+          <td data-label="Estado">
+            <span class="badge active">Activa</span>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <button class="btn-icon" type="button" (click)="openEditModal({
+              origin: 'Huánuco', 
+              destination: 'Tingo María', 
+              time: 2.5, 
+              price: 35.00, 
+              status: 'active' 
+            })">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon" type="button" (click)="openDeleteModal()">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+        <tr>
+          <td data-label="Origen">Tingo María</td>
+          <td data-label="Destino">Huánuco</td>
+          <td data-label="Tiempo">2.5</td>
+          <td data-label="Precio" class="price">S/ 35.00</td>
+          <td data-label="Estado">
+            <span class="badge active">Activa</span>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <button class="btn-icon" type="button" (click)="openEditModal({
+              origin: 'Huánuco', 
+              destination: 'Tingo María', 
+              time: 2.5, 
+              price: 35.00, 
+              status: 'active' 
+            })">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon" type="button" (click)="openDeleteModal()">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+        <tr>
+          <td data-label="Origen">Huánuco</td>
+          <td data-label="Destino">Lima</td>
+          <td data-label="Tiempo">9.0</td>
+          <td data-label="Precio" class="price">S/ 80.00</td>
+          <td data-label="Estado">
+            <span class="badge inactive">Inactiva</span>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <button class="btn-icon" type="button" (click)="openEditModal({
+              origin: 'Huánuco', 
+              destination: 'Tingo María', 
+              time: 2.5, 
+              price: 35.00, 
+              status: 'active' 
+            })">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon" type="button" (click)="openDeleteModal()">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+        <tr>
+          <td data-label="Origen">Cerro de Pasco</td>
+          <td data-label="Destino">Huánuco</td>
+          <td data-label="Tiempo">3.5</td>
+          <td data-label="Precio" class="price">S/ 25.00</td>
+          <td data-label="Estado">
+            <span class="badge active">Activa</span>
+          </td>
+          <td data-label="Acciones" class="actions">
+            <button class="btn-icon" type="button" (click)="openEditModal({
+              origin: 'Huánuco', 
+              destination: 'Tingo María', 
+              time: 2.5, 
+              price: 35.00, 
+              status: 'active' 
+            })">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon" type="button" (click)="openDeleteModal()">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ===============================
+         FOOTER / PAGINATION
+    ================================ -->
+    <footer class="table-footer">
+      <span>Mostrando 4 de 24 rutas</span>
+
+      <div class="pagination">
+        <button>&lt;</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>&gt;</button>
+      </div>
+    </footer>
+
+  </section>
+
+
+  <app-register-new-route [isOpen]="isModalOpen" (close)="isModalOpen = false">
+  </app-register-new-route>
+
+  <app-edit-route [isOpen]="isEditModalOpen" [routeToEdit]="selectedRoute" (close)="isEditModalOpen = false">
+  </app-edit-route>
+
+  <app-delete-route [isOpen]="isDeleteModalOpen" (close)="isDeleteModalOpen = false">
+  </app-delete-route>
+</section>

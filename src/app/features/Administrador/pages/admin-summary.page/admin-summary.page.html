@@ -1,0 +1,90 @@
+<div class="analytics-container">
+  <!-- Header con filtros temporales -->
+  <header class="analytics-header">
+    <div class="title-group">
+      <h1>Resumen Operativo y Financiero</h1>
+      <p>Análisis de rendimiento correspondiente a <strong>{{ currentMonth }}</strong></p>
+    </div>
+    <div class="action-btns">
+      <button class="btn-outline">
+        <i class="bi bi-calendar-range"></i>
+        Filtrar Fecha
+      </button>
+      <button class="btn-primary">
+        <i class="bi bi-file-earmark-pdf"></i>
+        Exportar Reporte
+      </button>
+    </div>
+  </header>
+
+  <!-- Financial KPI Cards -->
+  <section class="kpi-grid">
+    <div class="kpi-card glass" *ngFor="let stat of financialStats">
+      <div class="kpi-icon" [style.background-color]="stat.color + '20'" [style.color]="stat.color">
+        <i class="bi" [ngClass]="stat.icon"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="label">{{ stat.label }}</span>
+        <h2 class="value">{{ stat.value }}</h2>
+        <span class="trend" [ngClass]="{'positive': stat.trend.includes('+'), 'negative': stat.trend.includes('-')}">
+          {{ stat.trend }} vs pasado
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Analytics Grid -->
+  <div class="analytics-main-grid">
+    <!-- Left: Expense Breakdown -->
+    <section class="analysis-card glass">
+      <div class="card-header">
+        <h3><i class="bi bi-wallet2"></i> Gestión de Planillas y Pagos</h3>
+        <span class="total-label">Presupuesto Mes: S/ 30,000</span>
+      </div>
+
+      <div class="expense-list">
+        <div class="expense-item" *ngFor="let exp of expenseBreakdown">
+          <div class="item-info">
+            <span>{{ exp.label }}</span>
+            <strong>{{ exp.amount }}</strong>
+          </div>
+          <div class="progress-bar">
+            <div class="progress" [style.width]="exp.percentage + '%'" [style.background-color]="exp.color"></div>
+          </div>
+          <div class="item-meta">
+            <small>{{ exp.percentage }}% de egresos administrativos</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: Top Routes Analytics -->
+    <div class="side-column">
+      <section class="analysis-card glass routes-performance">
+        <h3><i class="bi bi-map-fill"></i> Rutas con Mayor Tráfico</h3>
+        <div class="route-list">
+          <div class="route-item" *ngFor="let route of topRoutes">
+            <div class="route-info">
+              <strong>{{ route.name }}</strong>
+              <span>{{ route.tickets }} pasajeros hoy</span>
+            </div>
+            <span class="growth-badge"
+              [ngClass]="{'up': !route.growth.includes('-'), 'down': route.growth.includes('-')}">
+              {{ route.growth }}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="analysis-card glass fuel-stat">
+        <div class="card-body">
+          <i class="bi bi-calendar-check"></i>
+          <div class="data">
+            <strong>Próximo Cierre Fiscal</strong>
+            <span>15 de {{ currentMonth }}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+table {
+    th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #8a94a6;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.45em 0.7em;
+}
+
+.card {
+    border-radius: 16px;
+}

@@ -1,0 +1,131 @@
+<!-- 
+  ==================================================
+  MODAL OVERLAY
+  ==================================================
+-->
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+        <!-- HEADER -->
+        <header class="modal-header">
+            <div class="header-content">
+                <h2>Nuevo Vehículo</h2>
+                <p>Complete la información para registrar la unidad.</p>
+            </div>
+            <button class="btn-close" (click)="closeModal()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </header>
+
+        <!-- CONTENT (Scrollable) -->
+        <div class="modal-body">
+            <form class="vehicle-form" (ngSubmit)="saveVehicle()">
+
+                <!-- SECTION: PHOTOS -->
+                <div class="section-photos">
+                    <h3 class="section-title">
+                        <i class="bi bi-camera"></i> Imágenes del Vehículo
+                    </h3>
+
+                    <div class="photos-grid">
+                        <!-- Main Photo -->
+                        <label class="photo-upload main">
+                            <div class="upload-content">
+                                <i class="bi bi-cloud-arrow-up icon-large"></i>
+                                <p class="text-bold">Subir Foto Principal</p>
+                                <p class="text-small">Vista frontal o lateral (JPG, PNG)</p>
+                            </div>
+                            <input type="file" hidden>
+                        </label>
+
+                        <!-- Extra Photos -->
+                        <div class="photos-extras">
+                            <label class="photo-upload extra">
+                                <i class="bi bi-image"></i>
+                                <span>Foto Extra 1</span>
+                                <input type="file" hidden>
+                            </label>
+                            <label class="photo-upload extra">
+                                <i class="bi bi-image"></i>
+                                <span>Foto Extra 2</span>
+                                <input type="file" hidden>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION: FIELDS -->
+                <div class="fields-grid">
+
+                    <!-- Unit (Disabled) -->
+                    <div class="form-group">
+                        <label>Unidad (ID Auto-increment)</label>
+                        <input type="text" [(ngModel)]="vehicleData.unitCode" name="unitCode" disabled
+                            class="input-disabled">
+                    </div>
+
+                    <!-- Plate -->
+                    <div class="form-group">
+                        <label>Placa</label>
+                        <input type="text" [(ngModel)]="vehicleData.plate" name="plate" placeholder="ABC-123"
+                            class="input-default">
+                    </div>
+
+                    <!-- Type -->
+                    <div class="form-group">
+                        <label>Tipo de Vehículo</label>
+                        <select [(ngModel)]="vehicleData.type" name="type" class="input-default">
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="auto">Auto de 5 pasajeros</option>
+                            <option value="minivan7">Mini Van 7 pasajeros</option>
+                            <option value="minivan15">Mini Van 15 pasajeros</option>
+                        </select>
+                    </div>
+
+                    <!-- Model -->
+                    <div class="form-group">
+                        <label>Modelo del Vehículo</label>
+                        <input type="text" [(ngModel)]="vehicleData.model" name="model" placeholder="Ej: Toyota Hiace"
+                            class="input-default">
+                    </div>
+
+                    <!-- Driver -->
+                    <div class="form-group">
+                        <label>Conductor Asignado</label>
+                        <select [(ngModel)]="vehicleData.driverName" name="driverName" class="input-default">
+                            <option value="">Sin asignar</option>
+                            <option value="Ricardo Castillo">Ricardo Castillo</option>
+                            <option value="Marco Arrieta">Marco Arrieta</option>
+                        </select>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label>Estado Operativo</label>
+                        <select [(ngModel)]="vehicleData.status" name="status" class="input-default">
+                            <option value="active">En Fila</option>
+                            <option value="route">En Ruta</option>
+                            <option value="maintenance">Taller</option>
+                        </select>
+                    </div>
+
+                    <!-- SOAT -->
+                    <div class="form-group">
+                        <label>Fecha Vencimiento SOAT</label>
+                        <input type="date" [(ngModel)]="vehicleData.soatExpiry" name="soatExpiry" class="input-default">
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="modal-footer">
+            <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+            <button class="btn-save" (click)="saveVehicle()">Guardar Vehículo</button>
+        </footer>
+
+    </div>
+</div>

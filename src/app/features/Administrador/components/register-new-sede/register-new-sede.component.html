@@ -1,0 +1,134 @@
+<div class="modal fade" [class.show]="isOpen" [style.display]="isOpen ? 'block' : 'none'" tabindex="-1"
+    aria-hidden="true" (click)="onClose()">
+    <div class="modal-dialog modal-dialog-centered modal-custom" (click)="$event.stopPropagation()">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+            <!-- HEADER -->
+            <div class="modal-header border-bottom p-4">
+                <button type="button" class="btn-close shadow-none" (click)="onClose()"></button>
+                <h5 class="modal-title fw-bold flex-grow-1 text-center">Registro de Nueva Sede</h5>
+                <button class="btn btn-link text-success p-0">
+                    <i class="bi bi-question-circle fs-5"></i>
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body p-4 custom-scrollbar">
+
+                <!-- Section: Información General -->
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-3">Información General</h6>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Nombre de la Sede</label>
+                        <input type="text" class="form-control rounded-3 py-2 px-3"
+                            placeholder="Ej. Sede Central Norte">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Dirección</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control rounded-3 py-2 px-3 border-end-0"
+                                placeholder="Av. Principal 123, Urb. Los Olivos">
+                            <span class="input-group-text bg-white border-start-0 rounded-end-3">
+                                <i class="bi bi-geo-alt text-muted"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Ubicación Geográfica -->
+                <hr class="my-4 text-muted opacity-25">
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-3">Ubicación Geográfica</h6>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Departamento</label>
+                        <select class="form-select rounded-3 py-2 px-3">
+                            <option value="">Seleccione Departamento</option>
+                            <option value="lima">Lima</option>
+                            <option value="arequipa">Arequipa</option>
+                            <option value="cusco">Cusco</option>
+                        </select>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-semibold">Provincia</label>
+                            <select class="form-select rounded-3 py-2 px-3">
+                                <option value="">Seleccione</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-semibold">Distrito</label>
+                            <select class="form-select rounded-3 py-2 px-3">
+                                <option value="">Seleccione</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Contacto -->
+                <hr class="my-4 text-muted opacity-25">
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-3">Contacto</h6>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Teléfono</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white rounded-start-3">
+                                <i class="bi bi-telephone text-muted"></i>
+                            </span>
+                            <input type="tel" class="form-control py-2 px-3 border-start-0 rounded-end-3"
+                                placeholder="987 654 321">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Correo Electrónico</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white rounded-start-3">
+                                <i class="bi bi-envelope text-muted"></i>
+                            </span>
+                            <input type="email" class="form-control py-2 px-3 border-start-0 rounded-end-3"
+                                placeholder="sede.central@seisespecial.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Ajustes -->
+                <hr class="my-4 text-muted opacity-25">
+                <div class="mb-2">
+                    <h6 class="fw-bold mb-3">Ajustes de Sede</h6>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <div class="fw-semibold">Sede Principal</div>
+                            <small class="text-muted">Marcar como ubicación de referencia principal</small>
+                        </div>
+                        <div class="form-check form-switch pt-1">
+                            <input class="form-check-input fs-4" type="checkbox">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label small fw-semibold mb-2">Estado</label>
+                        <div class="bg-light p-1 rounded-3 d-flex">
+                            <button
+                                class="btn btn-white shadow-sm flex-fill fw-bold text-success rounded-3 py-2">Activa</button>
+                            <button class="btn btn-transparent flex-fill text-muted rounded-3 py-2">Inactiva</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer flex-column border-top p-4 gap-2">
+                <button class="btn btn-success w-100 fw-bold py-3 shadow-lg rounded-3">
+                    Confirmar y Guardar
+                </button>
+                <button class="btn btn-link text-danger w-100 text-decoration-none fw-semibold py-2"
+                    (click)="onClose()">
+                    Cancelar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Extra layer for backdrop blur -->
+<div class="modal-backdrop fade show" *ngIf="isOpen"
+    style="background-color: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 1040;"></div>

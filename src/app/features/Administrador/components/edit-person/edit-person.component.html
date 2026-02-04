@@ -1,0 +1,96 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+        <header class="modal-header">
+            <div class="header-branding">
+                <span class="brand-red">SEIS</span>
+                <span class="brand-green">Especial</span>
+            </div>
+            <h2>Editar Personal</h2>
+            <button class="btn-close" (click)="closeModal()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </header>
+
+        <div class="modal-body">
+            <form class="person-form">
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="bi bi-person text-green"></i> Datos Personales</h3>
+                    <div class="fields-col">
+                        <div class="form-group">
+                            <label>DNI</label>
+                            <input type="text" [(ngModel)]="formData.dni" name="dni" class="input-readonly" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" [(ngModel)]="formData.fullName" name="fullName" class="input-readonly"
+                                readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Celular</label>
+                            <input type="tel" [(ngModel)]="formData.phone" name="phone">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="bi bi-briefcase text-green"></i> Rol</h3>
+                    <div class="form-group">
+                        <label>Cargo</label>
+                        <select [(ngModel)]="formData.role" name="role">
+                            <option value="Secretaria">Secretaria</option>
+                            <option value="Chofer">Chofer</option>
+                            <option value="Administrador">Administrador</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="bi bi-lock text-green"></i> Credenciales</h3>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Usuario</label>
+                            <input type="text" [(ngModel)]="formData.username" name="username" class="input-readonly"
+                                readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Nueva Contraseña</label>
+                            <div class="input-wrapper">
+                                <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="formData.password"
+                                    name="password" placeholder="(Sin cambiar)">
+                                <button type="button" class="btn-eye" (click)="togglePassword()">
+                                    <i class="bi" [class.bi-eye]="!showPassword"
+                                        [class.bi-eye-slash]="showPassword"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="bi bi-shield-check text-green"></i> Estado</h3>
+                    <div class="status-options">
+                        <label class="status-card" [class.selected]="formData.status === 'active'">
+                            <input type="radio" name="status" [(ngModel)]="formData.status" value="active" hidden>
+                            <div class="card-content"><i class="bi bi-check-circle-fill"></i><span>Activo</span></div>
+                        </label>
+                        <label class="status-card" [class.selected-inactive]="formData.status === 'inactive'">
+                            <input type="radio" name="status" [(ngModel)]="formData.status" value="inactive" hidden>
+                            <div class="card-content"><i class="bi bi-x-circle-fill"></i><span>Inactivo</span></div>
+                        </label>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <footer class="modal-footer">
+            <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+            <button class="btn-save" (click)="update()">
+                <i class="bi bi-check2-circle"></i> Actualizar
+            </button>
+        </footer>
+
+    </div>
+</div>
