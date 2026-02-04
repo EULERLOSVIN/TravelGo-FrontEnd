@@ -1,0 +1,139 @@
+
+$bg-dark: #ffffff;
+$card-dark: #0c160e;
+$primary-green: #28a745;
+$input-bg: #142116;
+$text-gray: #9e9e9e;
+
+.auth-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: $bg-dark;
+  padding: 1.5rem;
+}
+
+.auth-container {
+  background-color: $card-dark;
+  width: 100%;
+  max-width: 420px;
+  padding: 3rem 2.5rem;
+  border-radius: 30px;
+  border: 1px solid rgba($primary-green, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .auth-title {
+    color: white;
+    font-weight: 900;
+    font-size: 2rem;
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+    
+    .highlight { color: $primary-green; }
+  }
+
+  .auth-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+
+  .form-label-custom {
+    color: $text-gray;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+}
+
+.input-group-custom {
+  background-color: $input-bg;
+  border: 1px solid #243528;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.2rem;
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    border-color: $primary-green;
+    box-shadow: 0 0 0 4px rgba($primary-green, 0.1);
+  }
+
+  i {
+    color: $primary-green;
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+
+  .form-control {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 14px 10px;
+    width: 100%;
+    outline: none;
+
+    &::placeholder { color: #445046; }
+  }
+}
+
+.auth-actions {
+  text-align: right;
+  margin-bottom: 2rem;
+
+  .forgot-password {
+    color: $text-gray;
+    font-size: 0.85rem;
+    text-decoration: none;
+    &:hover { color: $primary-green; }
+  }
+}
+
+.btn-login-action {
+  width: 100%;
+  background-color: $primary-green;
+  color: white;
+  border: none;
+  padding: 1.1rem;
+  border-radius: 15px;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    // background-color: lighten($primary-green, 5%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba($primary-green, 0.2);
+  }
+}
+
+.auth-footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+
+  .link-register {
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 5px;
+    &:hover { text-decoration: underline; }
+  }
+  
+  .highlight { color: $primary-green; }
+}

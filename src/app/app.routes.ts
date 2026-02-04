@@ -4,6 +4,7 @@ import { SelectSeatPage } from './features/SelectSeat/pages/select-seat/select-s
 import { FillDataComponent } from './features/FillData/pages/fill-data/fill-data.component';
 import { MainPage } from './layouts/pages/main.page/main.page';
 import { SelectRoutePage } from './features/seleccionderuta/pages/select-route.page/select-route.page';
+import { AuthenticationPage } from './features/Authentication/pages/authentication/authentication.page';
 
 export const routes: Routes = [
    {
@@ -35,8 +36,11 @@ export const routes: Routes = [
 
 
         ]
+    },
+    {
+        path: 'authentication',
+        component: AuthenticationPage
     }
                       
-   
 ];
 
