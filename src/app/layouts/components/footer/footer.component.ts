@@ -30,7 +30,7 @@ export class FooterComponent {
   private redirectByUserRole(role: string): void {
     switch (role) {
       case 'Administrador':
-        this.router.navigate(['/app-admin']);
+        this.router.navigate(['/administrator']);
         break;
       case 'Chofer':
         this.router.navigate(['/conductor']);
