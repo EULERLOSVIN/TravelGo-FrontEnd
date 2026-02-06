@@ -63,7 +63,7 @@ export const routes: Routes = [
                 redirectTo: 'summary',
                 pathMatch: 'full'
             },
-            {
+            { 
                 path: 'summary',
                 component: AdminSummaryComponent
             },
