@@ -12,44 +12,4 @@ import { FormsModule } from '@angular/forms';
 })
 export class RegisterNewPersonComponent {
 
-    @Input() isOpen = false;
-    @Output() close = new EventEmitter<void>();
-
-    // Data Model
-    formData = {
-        dni: '',
-        fullName: '',
-        phone: '',
-        role: '',
-        username: '',
-        password: '',
-        status: 'active'
-    };
-
-    // UI State
-    showPassword = false;
-    isValidating = false;
-
-    closeModal() {
-        this.close.emit();
-    }
-
-    togglePassword() {
-        this.showPassword = !this.showPassword;
-    }
-
-    // Simulated validation
-    validateDni() {
-        if (!this.formData.dni) return;
-        this.isValidating = true;
-        setTimeout(() => {
-            this.isValidating = false;
-            this.formData.fullName = 'Ana Lucía (Simulado)';
-        }, 1000);
-    }
-
-    save() {
-        console.log('Saving person:', this.formData);
-        this.closeModal();
-    }
 }

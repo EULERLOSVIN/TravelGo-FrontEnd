@@ -5,8 +5,8 @@ import { RouterOutlet } from "@angular/router";
 @Component({
   selector: 'app-admin',
   imports: [SidebarComponent, RouterOutlet],
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.scss',
+  templateUrl: './admin.page.html',
+  styleUrl: './admin.page.scss',
 })
 export class AdminComponent {
 
