@@ -1,55 +1,16 @@
-<!-- 
-  ==================================================
-  MODAL OVERLAY
-  ==================================================
--->
-<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
-
-    <!-- MODAL CONTAINER (Centered, Small) -->
-    <div class="modal-container" (click)="$event.stopPropagation()">
-
-        <!-- 
-          ==================================
-          PASO 1: CONFIRMACIÓN
-          ==================================
-        -->
-        <ng-container *ngIf="step === 'confirm'">
-            <div class="icon-circle warning">
-                <i class="bi bi-exclamation-lg"></i>
+<div class="modal-overlay" *ngIf="isOpen" (click)="close.emit()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content border-0 shadow-lg p-3 text-center rounded-4">
+            <div class="py-3">
+                <i class="bi bi-exclamation-circle text-warning display-1"></i>
             </div>
-
-            <h2 class="title">¿Eliminar esta ruta?</h2>
-            <p class="description">
-                Estás a punto de eliminar <span class="highlight">Huánuco → Tingo María</span>.<br>
-                Esta acción no se puede deshacer.
-            </p>
-
-            <div class="actions-row">
-                <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
-                <button class="btn-delete" (click)="confirmDelete()">Sí, Eliminar</button>
+            <h2 class="fw-bold mb-2">¿Eliminar Ruta?</h2>
+            <p class="text-muted mb-4">Esta acción no se puede deshacer.</p>
+            <div class="d-flex gap-2 justify-content-center">
+                <button type="button" class="btn btn-light rounded-pill px-4" (click)="close.emit()">No,
+                    cancelar</button>
+                <button type="button" class="btn btn-danger rounded-pill px-4">Sí, eliminar</button>
             </div>
-        </ng-container>
-
-        <!-- 
-          ==================================
-          PASO 2: ÉXITO
-          ==================================
-        -->
-        <ng-container *ngIf="step === 'success'">
-            <div class="icon-circle success">
-                <i class="bi bi-check-circle-fill"></i>
-            </div>
-
-            <h2 class="title">¡Eliminado Correctamente!</h2>
-            <p class="description">
-                La ruta ha sido removida del sistema con éxito.
-            </p>
-
-            <button class="btn-confirm" (click)="closeModal()">
-                Entendido
-            </button>
-        </ng-container>
-
+        </div>
     </div>
-
 </div>

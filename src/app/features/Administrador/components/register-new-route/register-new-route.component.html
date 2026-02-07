@@ -1,131 +1,39 @@
-<!-- 
-  ==================================================
-  MODAL OVERLAY (FONDO OSCURO)
-  ==================================================
-  Cubre toda la pantalla. Al hacer clic fuera (en el overlay), se cierra.
--->
-<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
-
-    <!-- 
-    ==================================================
-    MODAL CONTAINER (TARJETA BLANCA)
-    ==================================================
-    Contiene todo el formulario. stopPropagation evita que
-    al hacer clic dentro se cierre el modal.
-  -->
-    <div class="modal-container" (click)="$event.stopPropagation()">
-
-        <!-- 1. HEADER DEL MODAL -->
-        <header class="modal-header">
-            <div class="title-group">
-                <h2>Registrar Nueva Ruta</h2>
-                <span class="subtitle">CONFIGURACIÓN DE TRAYECTO</span>
+<div class="modal-overlay" *ngIf="isOpen" (click)="close.emit()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-light border-0 py-2">
+                <div>
+                    <h5 class="mb-0 text-danger fw-semibold" style="font-size: 0.9rem;">Travel<span
+                            class="text-success">Go</span></h5>
+                    <h5 class="modal-title fs-4 fw-bold">Nueva Ruta</h5>
+                </div>
+                <button type="button" class="btn-close" (click)="close.emit()"></button>
             </div>
-            <!-- Botón de Cerrar (X) -->
-            <button class="btn-close" (click)="closeModal()">
-                <i class="bi bi-x-lg"></i>
-            </button>
-        </header>
-
-        <!-- 2. FORMULARIO PRINCIPAL -->
-        <form class="modal-form" (ngSubmit)="saveRoute()">
-
-            <!-- SECCIÓN A: ORIGEN Y DESTINO (Dos columnas) -->
-            <div class="form-row">
-
-                <!-- Campo: Origen -->
-                <div class="form-group">
-                    <label>ORIGEN</label>
-                    <div class="input-wrapper">
-                        <select [(ngModel)]="routeData.origin" name="origin">
-                            <option disabled="" selected="" value="">Seleccione ciudad</option>
-                            <option value="huanuco">Huánuco</option>
-                            <option value="tingomaria">Tingo María</option>
-                            <option value="pucallpa">Pucallpa</option>
-                            <option value="aucayacu">Aucayacu</option>
-                        </select>
-                        <i class="bi bi-geo-alt input-icon"></i>
-                        <i class="bi bi-chevron-down select-arrow"></i>
+            <div class="modal-body p-3">
+                <form class="row g-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold mb-0">Origen</label>
+                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Huánuco">
                     </div>
-                </div>
-
-                <!-- Campo: Destino -->
-                <div class="form-group">
-                    <label>DESTINO</label>
-                    <div class="input-wrapper">
-                        <select [(ngModel)]="routeData.destination" name="destination">
-                            <option disabled="" selected="" value="">Seleccione ciudad</option>
-                            <option value="huanuco">Huánuco</option>
-                            <option value="tingomaria">Tingo María</option>
-                            <option value="pucallpa">Pucallpa</option>
-                            <option value="aucayacu">Aucayacu</option>
-                        </select>
-                        <i class="bi bi-geo input-icon"></i>
-                        <i class="bi bi-chevron-down select-arrow"></i>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold mb-0">Destino</label>
+                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Tingo María">
                     </div>
-                </div>
-            </div>
-
-            <!-- SECCIÓN B: DETALLES DE VIAJE (Tiempo y Precio) -->
-            <div class="form-row">
-
-                <!-- Campo: Tiempo -->
-                <div class="form-group">
-                    <label>TIEMPO ESTIMADO (Hrs)</label>
-                    <div class="input-wrapper">
-                        <input type="number" [(ngModel)]="routeData.time" name="time" placeholder="0.0" step="0.5">
-                        <i class="bi bi-clock input-icon"></i>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold mb-0">Tiempo (Hrs)</label>
+                        <input type="number" class="form-control form-control-sm rounded-pill" placeholder="2.5">
                     </div>
-                </div>
-
-                <!-- Campo: Precio -->
-                <div class="form-group">
-                    <label>PRECIO BASE (S/.)</label>
-                    <div class="input-wrapper">
-                        <input type="number" [(ngModel)]="routeData.price" name="price" placeholder="0.00">
-                        <i class="bi bi-currency-dollar input-icon"></i>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold mb-0">Precio (S/)</label>
+                        <input type="number" class="form-control form-control-sm rounded-pill" placeholder="35.00">
                     </div>
-                </div>
+                </form>
             </div>
-
-            <!-- SECCIÓN C: ESTADO (Radio Buttons Personalizados) -->
-            <div class="form-group">
-                <label>ESTADO DE LA RUTA</label>
-                <div class="status-selector">
-
-                    <!-- Opción: Activa -->
-                    <label class="status-option" [class.active]="routeData.status === 'active'">
-                        <input type="radio" [(ngModel)]="routeData.status" name="status" value="active">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>Activa</span>
-                    </label>
-
-                    <!-- Opción: Inactiva -->
-                    <label class="status-option" [class.active]="routeData.status === 'inactive'">
-                        <input type="radio" [(ngModel)]="routeData.status" name="status" value="inactive">
-                        <i class="bi bi-x-circle-fill"></i>
-                        <span>Inactiva</span>
-                    </label>
-
-                </div>
+            <div class="modal-footer border-0 py-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-4"
+                    (click)="close.emit()">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-success rounded-pill px-4">Guardar</button>
             </div>
-
-            <!-- 3. ACTIONS (Botones inferiores) -->
-            <div class="form-actions">
-                <button type="button" class="btn-cancel" (click)="closeModal()">Cancelar</button>
-                <button type="submit" class="btn-save">
-                    <i class="bi bi-save"></i>
-                    Guardar Ruta
-                </button>
-            </div>
-
-        </form>
-
-        <!-- 4. FOOTER BRANDING (Parte inferior decorativa) -->
-        <div class="modal-footer-brand">
-            <span class="brand-red">SEIS</span>
-            <span class="brand-green">ESPECIAL</span>
         </div>
-
     </div>
 </div>
