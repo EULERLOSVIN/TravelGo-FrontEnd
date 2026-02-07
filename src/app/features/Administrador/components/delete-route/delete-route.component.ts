@@ -13,4 +13,3 @@ export class DeleteRouteComponent {
     @Input() isOpen = false;
     @Output() close = new EventEmitter<void>();
 }
-

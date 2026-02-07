@@ -1,38 +1,34 @@
-<div class="modal-overlay" *ngIf="isOpen" (click)="close.emit()">
-    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-light border-0 py-2">
-                <div>
-                    <h5 class="mb-0 text-danger fw-semibold" style="font-size: 0.9rem;">Travel<span
-                            class="text-success">Go</span></h5>
-                    <h5 class="modal-title fs-4 fw-bold">Nueva Ruta</h5>
-                </div>
+<div class="modal d-block bg-dark bg-opacity-50" *ngIf="isOpen" (click)="close.emit()" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Nueva Ruta</h5>
                 <button type="button" class="btn-close" (click)="close.emit()"></button>
             </div>
-            <div class="modal-body p-3">
-                <form class="row g-3">
+            <div class="modal-body py-3">
+                <form class="row g-2">
                     <div class="col-6">
-                        <label class="form-label small fw-bold mb-0">Origen</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Huánuco">
+                        <label class="form-label small fw-semibold mb-1">Origen</label>
+                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Ciudad A">
                     </div>
                     <div class="col-6">
-                        <label class="form-label small fw-bold mb-0">Destino</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Tingo María">
+                        <label class="form-label small fw-semibold mb-1">Destino</label>
+                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Ciudad B">
                     </div>
                     <div class="col-6">
-                        <label class="form-label small fw-bold mb-0">Tiempo (Hrs)</label>
-                        <input type="number" class="form-control form-control-sm rounded-pill" placeholder="2.5">
+                        <label class="form-label small fw-semibold mb-1">Tiempo (Hrs)</label>
+                        <input type="number" class="form-control form-control-sm rounded-pill">
                     </div>
                     <div class="col-6">
-                        <label class="form-label small fw-bold mb-0">Precio (S/)</label>
-                        <input type="number" class="form-control form-control-sm rounded-pill" placeholder="35.00">
+                        <label class="form-label small fw-semibold mb-1">Precio (S/)</label>
+                        <input type="number" class="form-control form-control-sm rounded-pill">
                     </div>
                 </form>
             </div>
-            <div class="modal-footer border-0 py-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-4"
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-sm btn-light rounded-pill px-3"
                     (click)="close.emit()">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-success rounded-pill px-4">Guardar</button>
+                <button type="button" class="btn btn-sm btn-success rounded-pill px-3">Guardar</button>
             </div>
         </div>
     </div>

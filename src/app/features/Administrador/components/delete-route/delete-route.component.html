@@ -1,15 +1,15 @@
-<div class="modal-overlay" *ngIf="isOpen" (click)="close.emit()">
-    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
-        <div class="modal-content border-0 shadow-lg p-3 text-center rounded-4">
-            <div class="py-3">
-                <i class="bi bi-exclamation-circle text-warning display-1"></i>
+<div class="modal d-block bg-dark bg-opacity-50" *ngIf="isOpen" (click)="close.emit()" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content border-0 shadow rounded-4 text-center p-3">
+            <div class="py-2">
+                <i class="bi bi-trash text-danger" style="font-size: 3rem;"></i>
             </div>
-            <h2 class="fw-bold mb-2">¿Eliminar Ruta?</h2>
-            <p class="text-muted mb-4">Esta acción no se puede deshacer.</p>
-            <div class="d-flex gap-2 justify-content-center">
-                <button type="button" class="btn btn-light rounded-pill px-4" (click)="close.emit()">No,
-                    cancelar</button>
-                <button type="button" class="btn btn-danger rounded-pill px-4">Sí, eliminar</button>
+            <h5 class="fw-bold mb-1">¿Eliminar Ruta?</h5>
+            <p class="small text-muted mb-3">Esta acción no se puede deshacer.</p>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-light rounded-pill w-100 fw-bold"
+                    (click)="close.emit()">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-danger rounded-pill w-100 fw-bold">Confirmar</button>
             </div>
         </div>
     </div>

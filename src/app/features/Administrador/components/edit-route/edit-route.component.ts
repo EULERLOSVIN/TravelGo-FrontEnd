@@ -15,4 +15,3 @@ export class EditRouteComponent {
     @Input() routeToEdit: any = null;
     @Output() close = new EventEmitter<void>();
 }
-

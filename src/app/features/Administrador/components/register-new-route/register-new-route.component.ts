@@ -14,4 +14,3 @@ export class RegisterNewRouteComponent {
   @Input() isOpen = false;
   @Output() close = new EventEmitter<void>();
 }
-
