@@ -1,21 +1,36 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../features/Authentication/services/auth.service';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, SlicePipe],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
 
   hasAlerts = true;
-
-
   collapsed = false;
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  userEmail: string | null = '';
+  userRole: string | null = '';
+
+  ngOnInit(): void {
+    this.userEmail = localStorage.getItem('userEmail');
+    this.userRole = localStorage.getItem('userRole');
+  }
 
   toggleSidebar(): void {
     this.collapsed = !this.collapsed;
+  }
+
+  onLogout(): void {
+    this.authService.logout();
+    this.router.navigate(['/authentication']);
   }
 }

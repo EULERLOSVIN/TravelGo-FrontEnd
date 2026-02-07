@@ -13,7 +13,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(credentials: LoginRequestModel): Observable<any> {
-    return this.http.post<any>(`${this.Url}`, credentials).pipe(
+    return this.http.post<any>(this.Url, credentials).pipe(
       tap(response => {
         localStorage.setItem('userEmail', response.email);
         

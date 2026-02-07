@@ -1,0 +1,141 @@
+<div class="container-fluid">
+  <div class="row g-3 mb-3">
+    <div class="col-12 col-lg-8 col-xxl-4 order-lg-1">
+      <div class="header-content">
+        <h2>Gestión de Personal</h2>
+        <p>Administración de cuentas, roles y accesos del sistema.</p>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-12 col-xxl-6 order-lg-3 order-xxl-2 d-flex align-items-center justify-content-end">
+      <div class="input-group search-container">
+        <span class="input-group-text rounded-start-pill bg-danger">
+          <i class="bi bi-search text-white fw-bolder"></i>
+        </span>
+        <input type="text" class="custom-search form-control rounded-end-pill" placeholder="Buscar personal por DNI...">
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4 col-xxl-2 order-lg-2 order-xxl-3 d-flex align-items-center justify-content-end">
+      <button class="btn btn-success btn-register-user" data-bs-toggle="modal" data-bs-target="#registerNewPersonModal">
+        <i class="bi bi-plus-lg"></i>
+        Nuevo Personal
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-12 col-lg-4">
+      <div class="stat-card">
+        <small>TOTAL PERSONAL</small>
+        <p class="value">15</p>
+        <div class="bar">
+          <div class="fill" style="width: 100%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="stat-card">
+        <small>ACTIVOS</small>
+        <p class="value green">12</p>
+        <div class="bar">
+          <div class="fill green" style="width: 80%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="stat-card">
+        <small>CHOFERES</small>
+        <p class="value">8</p>
+        <div class="bar">
+          <div class="fill" style="width: 50%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="table-container rounded-3">
+    <div class="table-header p-3 bg-light border-bottom">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-7 col-xl-9 col-xxl-10 mb-3 d">
+          <h5 class="mb-0">Lista de Personal</h5>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-5 col-xl-3 col-xxl-2">
+          <div class="pagination-header">
+            <div class="pagination">
+              <button disabled><i class="bi bi-chevron-left"></i></button>
+              <button class="active">1</button>
+              <button>2</button>
+              <button><i class="bi bi-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive rounded-3">
+      <table class="table">
+        <thead class="table-dark">
+          <tr>
+            <th>Nombre Completo</th>
+            <th>Rol / Cargo</th>
+            <th>DNI</th>
+            <th>Celular</th>
+            <th>Correo</th>
+            <th>Estado</th>
+            <th class="text-right">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let person of personalList">
+            <td>
+              <div class="user-info"><span class="name">{{ person.name }}</span></div>
+            </td>
+
+            <td>
+              <span class="badge-role">{{ person.role }}</span>
+            </td>
+
+            <td class="font-mono">{{ person.dni }}</td>
+            <td>{{ person.phone }}</td>
+            <td class="text-muted">@{{ person.user }}</td>
+
+            <td>
+              <span class="badge-status" [class.active]="person.status === 'active'"
+                [class.inactive]="person.status === 'inactive'">
+                {{ person.status === 'active' ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+
+            <td class="text-right">
+              <div class="actions">
+                <button class="btn-icon" (click)="openEditModal(person)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn-icon hover-red" (click)="openDeleteModal()">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+</div>
+
+
+
+<app-register-new-person>
+</app-register-new-person>
+
+<app-edit-person [isOpen]="isEditModalOpen" [personToEdit]="selectedPerson" (close)="isEditModalOpen = false">
+</app-edit-person>
+
+<app-delete-person [isOpen]="isDeleteModalOpen" (close)="isDeleteModalOpen = false">
+</app-delete-person>
