@@ -1,23 +1,19 @@
 <div class="container-fluid">
   <div class="row g-3 mb-3">
-    <div class="col-12 col-lg-8 col-xxl-4 order-lg-1">
+    <div class="col-12 col-md-8 col-xl-9 col-xxl-10 order-lg-1">
       <div class="header-content">
         <h2>Gestión de Personal</h2>
         <p>Administración de cuentas, roles y accesos del sistema.</p>
       </div>
     </div>
-
-    <div class="col-12 col-lg-12 col-xxl-6 order-lg-3 order-xxl-2 d-flex align-items-center justify-content-end">
-      <div class="input-group search-container">
-        <span class="input-group-text rounded-start-pill bg-danger">
-          <i class="bi bi-search text-white fw-bolder"></i>
-        </span>
-        <input type="text" class="custom-search form-control rounded-end-pill" placeholder="Buscar personal por DNI...">
-      </div>
-    </div>
-
-    <div class="col-12 col-lg-4 col-xxl-2 order-lg-2 order-xxl-3 d-flex align-items-center justify-content-end">
-      <button class="btn btn-success btn-register-user" data-bs-toggle="modal" data-bs-target="#registerNewPersonModal">
+    <div
+      class="col-12 col-md-4 col-xl-3 col-xxl-2 order-lg-2 order-xxl-3 d-flex align-items-center justify-content-end"
+    >
+      <button
+        class="btn btn-success btn-register-user"
+        data-bs-toggle="modal"
+        data-bs-target="#registerNewPersonModal"
+      >
         <i class="bi bi-plus-lg"></i>
         Nuevo Personal
       </button>
@@ -58,18 +54,44 @@
 
   <section class="table-container rounded-3">
     <div class="table-header p-3 bg-light border-bottom">
-      <div class="row">
-        <div class="col-12 col-sm-6 col-md-7 col-xl-9 col-xxl-10 mb-3 d">
+      <div class="row g-3">
+        <div
+          class="col-12 col-md-6 col-xl-3 col-xxl-3 order-1 order-xl-1 d-flex align-items-center justify-content-start"
+        >
           <h5 class="mb-0">Lista de Personal</h5>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-5 col-xl-3 col-xxl-2">
+        <div
+          class="col-12 col-md-12 col-xl-6 col-xxl-7 order-3 order-xl-2 d-flex align-items-center justify-content-end"
+        >
+          <div class="input-group search-container">
+            <span class="input-group-text rounded-start-pill bg-danger">
+              <i class="bi bi-search text-white fw-bolder"></i>
+            </span>
+            <input
+              #txtSearch
+              type="text"
+              class="custom-search form-control rounded-end-pill"
+              placeholder="Buscar personal por DNI..."
+              (input)="onSearch(txtSearch.value)"
+            />
+          </div>
+        </div>
+
+        <div
+          class="col-12 col-md-6 col-xl-3 col-xxl-2 order-2 order-xl-3 d-flex align-items-center justify-content-start justify-content-md-end"
+        >
           <div class="pagination-header">
             <div class="pagination">
-              <button disabled><i class="bi bi-chevron-left"></i></button>
-              <button class="active">1</button>
-              <button>2</button>
-              <button><i class="bi bi-chevron-right"></i></button>
+              <button [disabled]="pageNumber === 1" (click)="changePage(pageNumber - 1)">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+
+              <button class="active">{{ pageNumber }}</button>
+
+              <button [disabled]="isLastPage" (click)="changePage(pageNumber + 1)">
+                <i class="bi bi-chevron-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -85,56 +107,55 @@
             <th>DNI</th>
             <th>Celular</th>
             <th>Correo</th>
-            <th>Estado</th>
             <th class="text-right">Acciones</th>
           </tr>
         </thead>
-
         <tbody>
-          <tr *ngFor="let person of personalList">
-            <td>
-              <div class="user-info"><span class="name">{{ person.name }}</span></div>
-            </td>
+          @for (personnel of personnelList; track personnel.id) {
+            <tr>
+              <td>
+                <div class="user-info">
+                  <span class="name">{{ personnel.firstName }} {{ personnel.lastName }}</span>
+                </div>
+              </td>
 
-            <td>
-              <span class="badge-role">{{ person.role }}</span>
-            </td>
+              <td>
+                <span class="badge-role">{{ personnel.role }}</span>
+              </td>
 
-            <td class="font-mono">{{ person.dni }}</td>
-            <td>{{ person.phone }}</td>
-            <td class="text-muted">@{{ person.user }}</td>
+              <td class="font-mono">{{ personnel.dni }}</td>
+              <td>{{ personnel.phoneNumber }}</td>
+              <td class="text-muted">@{{ personnel.email }}</td>
 
-            <td>
-              <span class="badge-status" [class.active]="person.status === 'active'"
-                [class.inactive]="person.status === 'inactive'">
-                {{ person.status === 'active' ? 'Activo' : 'Inactivo' }}
-              </span>
-            </td>
-
-            <td class="text-right">
-              <div class="actions">
-                <button class="btn-icon" (click)="openEditModal(person)">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn-icon hover-red" (click)="openDeleteModal()">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+              <td class="text-right">
+                <div class="actions">
+                  <button class="btn-icon">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn-icon hover-red">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">No hay personal registrado</td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>
-
   </section>
 </div>
 
+<app-register-new-person> </app-register-new-person>
 
-
-<app-register-new-person>
-</app-register-new-person>
-
-<app-edit-person [isOpen]="isEditModalOpen" [personToEdit]="selectedPerson" (close)="isEditModalOpen = false">
+<app-edit-person
+  [isOpen]="isEditModalOpen"
+  [personToEdit]="selectedPerson"
+  (close)="isEditModalOpen = false"
+>
 </app-edit-person>
 
 <app-delete-person [isOpen]="isDeleteModalOpen" (close)="isDeleteModalOpen = false">

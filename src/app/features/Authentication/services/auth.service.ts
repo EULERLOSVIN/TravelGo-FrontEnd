@@ -8,12 +8,12 @@ import { LoginRequestModel } from '../models/LoginRequest.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly Url = `${environment.apiUrl}/Auth/login`;
+  apiUrl = `${environment.apiUrl}/Auth/login`;
 
   constructor(private http: HttpClient) { }
 
   login(credentials: LoginRequestModel): Observable<any> {
-    return this.http.post<any>(this.Url, credentials).pipe(
+    return this.http.post<any>(this.apiUrl, credentials).pipe(
       tap(response => {
         localStorage.setItem('userEmail', response.email);
         

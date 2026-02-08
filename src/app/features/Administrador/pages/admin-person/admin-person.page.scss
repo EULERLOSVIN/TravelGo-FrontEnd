@@ -76,9 +76,6 @@ $white: #ffffff;
   background-color: #f8f9fa;
 }
 
-/* ==================================================
-   STATS CARDS
-   ================================================== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -130,9 +127,6 @@ $white: #ffffff;
   }
 }
 
-/* ==================================================
-   TABLE
-   ================================================== */
 .table-container {
   border-radius: 16px;
 }
@@ -177,7 +171,6 @@ $white: #ffffff;
   }
 }
 
-/* Elements */
 .user-info {
   display: flex;
   align-items: center;
