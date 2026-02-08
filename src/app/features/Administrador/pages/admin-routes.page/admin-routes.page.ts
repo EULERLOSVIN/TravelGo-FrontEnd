@@ -6,31 +6,19 @@ import { DeleteRouteComponent } from '../../components/delete-route/delete-route
 
 @Component({
   selector: 'app-admin-routes',
-  standalone: true, // Asegurar standalone
+  standalone: true,
   imports: [CommonModule, RegisterNewRouteComponent, EditRouteComponent, DeleteRouteComponent],
   templateUrl: './admin-routes.page.html',
   styleUrl: './admin-routes.page.scss',
 })
 export class AdminRoutesComponent {
+  isModalOpen = false;
+  isEditModalOpen = false;
+  isDeleteModalOpen = false;
+  selectedRoute: any = null;
 
-  // MODAL STATES
-  isModalOpen = false;       // Nuevo
-  isEditModalOpen = false;   // Editar
-  isDeleteModalOpen = false; // Eliminar (Feedback)
-
-  // DATA STATES
-  selectedRoute: any = null; // Ruta seleccionada para editar
-
-  openModal() {
-    this.isModalOpen = true;
-  }
-
-  openEditModal(routeData: any) {
-    this.selectedRoute = routeData;
+  openEdit(route: any) {
+    this.selectedRoute = route;
     this.isEditModalOpen = true;
-  }
-
-  openDeleteModal() {
-    this.isDeleteModalOpen = true;
   }
 }

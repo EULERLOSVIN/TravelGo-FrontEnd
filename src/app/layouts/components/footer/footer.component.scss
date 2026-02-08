@@ -3,16 +3,16 @@ $dark-bg: #050a06;
 $box-bg: #0c160e;
 $primary-green: #28a745; // Verde brillante para iconos
 $dark-green: #1a5a2a;    // Verde oscuro para los puntos
-$text-gray: #adb5bd;
-$text-muted: #6c757d;
+$text-gray: #adb5bd;    // Gris claro para texto
+$text-muted: #6c757d;    // Gris medio para texto
 
-.footer-custom {
+.footer-custom {      // Estilos generales del footer
   background-color: $dark-bg;
   color: #ffffff;
   font-family: 'Segoe UI', Roboto, sans-serif;
 
   // Estilos de la Marca (Columna 1)
-  .brand-title {
+  .brand-title {              
     font-size: 1.8rem;
     font-weight: 800;
     margin-bottom: 0;
@@ -152,11 +152,11 @@ $text-muted: #6c757d;
   }
 
   @keyframes slideDown {
-    from { 
+    from {                      // Animación de deslizamiento hacia abajo
       opacity: 0;
       transform: translateY(-10px); 
     }
-    to { 
+    to {                        // Animación de deslizamiento hacia abajo
       opacity: 1;
       transform: translateY(0); 
     }

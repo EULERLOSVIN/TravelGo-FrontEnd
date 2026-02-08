@@ -1,0 +1,32 @@
+✅ 1️⃣ CLONAR / DESCARGAR MI PROPIA RAMA
+
+(Estando en feature/Darwin)
+
+git checkout feature/Darwin
+git pull origin feature/Darwin
+
+✅ 2️⃣ TRAER develop A MI RAMA (PARA ADAPTAR)
+➤ Ir a develop
+git checkout develop
+
+➤ Descargar develop de Git
+git pull origin develop
+
+➤ Regresar a mi rama
+git checkout feature/Darwin
+
+➤ Traer develop a mi rama
+git merge develop
+
+✅ 3️⃣ SUBIR MI TRABAJO A develop
+➤ Ir a develop
+git checkout develop
+
+➤ Traer mi rama a develop
+git merge feature/Darwin
+
+➤ Subir develop a GitHub
+git push origin develop
+
+➤ Regresar a mi rama
+git checkout feature/Darwin
