@@ -1,23 +1,70 @@
-<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
-    <div class="modal-container" (click)="$event.stopPropagation()">
-
-        <ng-container *ngIf="step === 'confirm'">
-            <div class="icon-circle warning"><i class="bi bi-exclamation-lg"></i></div>
-            <h2 class="title">¿Desactivar Personal?</h2>
-            <p class="description">El usuario perderá el acceso al sistema inmediatamente. <br> Esta acción se puede
-                revertir luego.</p>
-            <div class="actions-row">
-                <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
-                <button class="btn-delete" (click)="confirm()">Sí, Desactivar</button>
+<div class="modal fade" #deleteModal tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-2">
+            <div class="modal-header position-relative">
+                <div class="d-flex flex-column">
+                    <h5 class="mb-0 text-danger fw-semibold">Travel<span class="text-success">Go</span></h5>
+                    <h5 class="modal-title mb-0">
+                        <strong class="fs-2">¿Está seguro de eliminar este registro?</strong>
+                    </h5>
+                </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    (click)="closeDeleteModal()"></button>
             </div>
-        </ng-container>
 
-        <ng-container *ngIf="step === 'success'">
-            <div class="icon-circle success"><i class="bi bi-check-circle-fill"></i></div>
-            <h2 class="title">¡Personal Desactivado!</h2>
-            <p class="description">Los cambios han sido guardados correctamente.</p>
-            <button class="btn-confirm" (click)="closeModal()">Entendido</button>
-        </ng-container>
+            <div class="modal-body">
+                <form (ngSubmit)="confirmDelete()">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">Nombres:</label>
+                            <input type="text" class="form-control rounded-pill" [value]="personnelToDelete?.firstName"
+                                disabled />
+                        </div>
 
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">Apellidos:</label>
+                            <input type="text" class="form-control rounded-pill" [value]="personnelToDelete?.lastName"
+                                disabled />
+                        </div>
+
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">Número de Documento:</label>
+                            <input type="text" class="form-control rounded-pill" [value]="personnelToDelete?.dni"
+                                disabled />
+                        </div>
+
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">Celular:</label>
+                            <input type="tel" class="form-control rounded-pill" [value]="personnelToDelete?.phoneNumber"
+                                disabled />
+                        </div>
+
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">Cargo:</label>
+                            <input type="text" class="form-control rounded-pill" [value]="personnelToDelete?.role"
+                                disabled />
+                        </div>
+
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">Estado de Cuenta:</label>
+                            <input type="text" class="form-control rounded-pill" [value]="personnelToDelete?.state"
+                                disabled />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-0 px-0 mt-4">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill"
+                            (click)="closeDeleteModal()">
+                            Cancelar
+                        </button>
+
+                        <button type="button" class="btn btn-danger rounded-pill px-4" (click)="confirmDelete()">
+                            Eliminar
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

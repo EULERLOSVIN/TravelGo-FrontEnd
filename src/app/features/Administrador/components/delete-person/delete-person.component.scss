@@ -1,125 +1,30 @@
-@use "sass:color";
-$brand-green: #16a34a;
-$brand-red: #ef4444;
-$text-dark: #0f172a;
-$text-light: #64748b;
-$white: #ffffff;
-$green-light-bg: #f0fdf4;
-$red-light-bg: #fef2f2;
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(4px);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-}
-
-.modal-container {
-    background-color: $white;
-    width: 100%;
-    max-width: 380px;
-    border-radius: 12px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    padding: 2rem;
-    text-align: center;
+.modal-container{
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-.icon-circle {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-
-    i {
-        font-size: 3rem;
-    }
-
-    &.success {
-        background-color: $green-light-bg;
-
-        i {
-            color: $brand-green;
-        }
-    }
-
-    &.warning {
-        background-color: $red-light-bg;
-
-        i {
-            color: $brand-red;
-        }
-    }
-}
-
-.title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $text-dark;
-    margin: 0 0 0.5rem 0;
-}
-
-.description {
-    font-size: 0.875rem;
-    color: $text-light;
-    line-height: 1.6;
-    margin: 0 0 2rem 0;
-}
-
-.actions-row {
-    display: flex;
-    gap: 1rem;
+    background: #fff;
     width: 100%;
 }
 
-button {
-    flex: 1;
-    padding: 0.875rem;
-    border-radius: 0.75rem;
+.section-title-custom {
+    color: #718096;         
+    font-family: 'Arial', sans-serif; 
+    text-transform: uppercase;
+    letter-spacing: 2px;
     font-weight: 700;
-    font-size: 0.875rem;
-    border: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.icon-form{
+    color: #1a9c53;
+    font-size: 1.5rem;
+}
+
+.custom-switch {
+    width: 3.8em !important;
+    height: 1.8em !important;
     cursor: pointer;
-}
+  }
 
-.btn-confirm {
-    width: 100%;
-    background-color: $brand-green;
-    color: $white;
-
-    &:hover {
-        background-color: color.adjust($brand-green, $lightness: -5%);
-    }
-}
-
-.btn-delete {
-    background-color: $brand-red;
-    color: $white;
-
-    &:hover {
-        background-color: color.adjust($brand-red, $lightness: -5%);
-    }
-}
-
-.btn-cancel {
-    background-color: transparent;
-    border: 2px solid #e2e8f0;
-    color: $text-light;
-
-    &:hover {
-        background-color: #f8fafc;
-    }
-}
+  

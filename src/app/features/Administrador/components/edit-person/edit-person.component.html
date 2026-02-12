@@ -1,96 +1,181 @@
-<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
-    <div class="modal-container" (click)="$event.stopPropagation()">
-
-        <header class="modal-header">
-            <div class="header-branding">
-                <span class="brand-red">SEIS</span>
-                <span class="brand-green">Especial</span>
-            </div>
-            <h2>Editar Personal</h2>
-            <button class="btn-close" (click)="closeModal()">
-                <i class="bi bi-x-lg"></i>
-            </button>
-        </header>
-
-        <div class="modal-body">
-            <form class="person-form">
-
-                <div class="form-section">
-                    <h3 class="section-title"><i class="bi bi-person text-green"></i> Datos Personales</h3>
-                    <div class="fields-col">
-                        <div class="form-group">
-                            <label>DNI</label>
-                            <input type="text" [(ngModel)]="formData.dni" name="dni" class="input-readonly" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Nombre Completo</label>
-                            <input type="text" [(ngModel)]="formData.fullName" name="fullName" class="input-readonly"
-                                readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Celular</label>
-                            <input type="tel" [(ngModel)]="formData.phone" name="phone">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h3 class="section-title"><i class="bi bi-briefcase text-green"></i> Rol</h3>
-                    <div class="form-group">
-                        <label>Cargo</label>
-                        <select [(ngModel)]="formData.role" name="role">
-                            <option value="Secretaria">Secretaria</option>
-                            <option value="Chofer">Chofer</option>
-                            <option value="Administrador">Administrador</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h3 class="section-title"><i class="bi bi-lock text-green"></i> Credenciales</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Usuario</label>
-                            <input type="text" [(ngModel)]="formData.username" name="username" class="input-readonly"
-                                readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Nueva Contraseña</label>
-                            <div class="input-wrapper">
-                                <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="formData.password"
-                                    name="password" placeholder="(Sin cambiar)">
-                                <button type="button" class="btn-eye" (click)="togglePassword()">
-                                    <i class="bi" [class.bi-eye]="!showPassword"
-                                        [class.bi-eye-slash]="showPassword"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h3 class="section-title"><i class="bi bi-shield-check text-green"></i> Estado</h3>
-                    <div class="status-options">
-                        <label class="status-card" [class.selected]="formData.status === 'active'">
-                            <input type="radio" name="status" [(ngModel)]="formData.status" value="active" hidden>
-                            <div class="card-content"><i class="bi bi-check-circle-fill"></i><span>Activo</span></div>
-                        </label>
-                        <label class="status-card" [class.selected-inactive]="formData.status === 'inactive'">
-                            <input type="radio" name="status" [(ngModel)]="formData.status" value="inactive" hidden>
-                            <div class="card-content"><i class="bi bi-x-circle-fill"></i><span>Inactivo</span></div>
-                        </label>
-                    </div>
-                </div>
-
-            </form>
+<div class="modal modal-xl fade" #editModal tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content p-2">
+      <div class="modal-header position-relative">
+        <div class="d-flex flex-column">
+          <h5 class="mb-0 text-danger fw-semibold">Travel<span class="text-success">Go</span></h5>
+          <h5 class="modal-title mb-0">
+            <strong class="fs-2">Editar Datos del Personal</strong>
+          </h5>
         </div>
+        <button
+          type="button"
+          class="btn-close position-absolute top-0 end-0 m-3"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="close()"
+        ></button>
+      </div>
 
-        <footer class="modal-footer">
-            <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
-            <button class="btn-save" (click)="update()">
-                <i class="bi bi-check2-circle"></i> Actualizar
+      <div class="modal-body">
+        <form [formGroup]="editForm" (ngSubmit)="saveChanges()">
+          <div class="row">
+            <div class="col-12 col-lg-6 border-end-lg pe-lg-4">
+              <div class="row g-2 mb-3">
+                <div class="col-12">
+                  <h3 class="section-title-custom">
+                    <i class="bi bi-person icon-form"></i> Datos Personales
+                  </h3>
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Nombres:</label>
+                  <input
+                    type="text"
+                    formControlName="firstName"
+                    class="form-control rounded-pill"
+                    placeholder="Ej. Ana Lucía"
+                  />
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Apellidos:</label>
+                  <input
+                    type="text"
+                    formControlName="lastName"
+                    class="form-control rounded-pill"
+                    placeholder="Ej. Vasquez Gómez"
+                  />
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Tipo de Documento:</label>
+                  <select formControlName="idTypeDocument" class="form-select rounded-pill">
+                    <option [value]="null" disabled>Seleccionar...</option>
+                    @for (type of requiredLists.documentTypes; track type.id) {
+                      <option [value]="type.id">{{ type.name }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Número de Documento:</label>
+                  <input
+                    type="text"
+                    formControlName="numberDocument"
+                    class="form-control rounded-pill"
+                    placeholder="Número"
+                  />
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Celular:</label>
+                  <input
+                    type="tel"
+                    formControlName="phoneNumber"
+                    class="form-control rounded-pill"
+                    placeholder="987 654 321"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-6 ps-lg-4">
+              <div class="row g-3">
+                <div class="col-12">
+                  <h3 class="section-title-custom">
+                    <i class="bi bi-person-lock icon-form"></i> Acceso al Sistema
+                  </h3>
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Cargo:</label>
+                  <select formControlName="idRole" class="form-select rounded-pill">
+                    <option disabled>Selecciona un rol</option>
+                    @for (role of requiredLists.roles; track $index) {
+                      <option [value]="role.id">{{ role.name }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Nueva Contraseña:</label>
+                  <input
+                    type="password"
+                    formControlName="newPassword"
+                    class="form-control rounded-pill"
+                    placeholder="••••••••"
+                  />
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Confirmar Contraseña:</label>
+                  <input
+                    type="password"
+                    formControlName="confirmPassword"
+                    class="form-control rounded-pill"
+                    placeholder="••••••••"
+                    [class.is-invalid]="
+                      editForm.hasError('mismatch') && editForm.get('confirmPassword')?.touched
+                    "
+                  />
+                </div>
+
+                <div
+                  class="col-12 d-flex align-items-center justify-content-between gap-3 p-3 bg-light rounded-4 mt-3"
+                >
+                  <div class="d-flex justify-content-center align-items-center gap-3">
+                    <i class="bi bi-shield-check text-success fs-3"></i>
+                    <div>
+                      <h6 class="fw-bold text-dark mb-0">Estado de Cuenta</h6>
+                      <span class="text-secondary text-opacity-75 small"
+                        >Permitir acceso al sistema</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="form-check form-switch d-flex align-items-center gap-2">
+                    <input
+                      class="form-check-input custom-switch shadow-none"
+                      [ngClass]="getStileSwitch()"
+                      type="checkbox"
+                      role="switch"
+                      id="swEstado"
+                      [checked]="editForm.get('idStateOfAccount')?.value === 1"
+                      (change)="
+                        editForm.patchValue({
+                          idStateOfAccount: $any($event.target).checked ? 1 : 2,
+                        })
+                      "
+                    />
+
+                    <label
+                      class="form-check-label fw-bold"
+                      [ngClass]="getLabelStyle()"
+                      for="swEstado"
+                    >
+                      {{ editForm.get('idStateOfAccount')?.value === 1 ? 'ACTIVO' : 'INACTIVO' }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0 px-0 mt-4">
+            <button type="button" class="btn btn-outline-secondary rounded-pill" (click)="close()">
+              Cancelar
             </button>
-        </footer>
-
+            <button
+              type="submit"
+              class="btn btn-success rounded-pill px-4"
+              [disabled]="editForm.invalid"
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

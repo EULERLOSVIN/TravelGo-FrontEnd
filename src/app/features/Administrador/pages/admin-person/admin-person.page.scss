@@ -76,9 +76,6 @@ $white: #ffffff;
   background-color: #f8f9fa;
 }
 
-/* ==================================================
-   STATS CARDS
-   ================================================== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -130,9 +127,6 @@ $white: #ffffff;
   }
 }
 
-/* ==================================================
-   TABLE
-   ================================================== */
 .table-container {
   border-radius: 16px;
 }
@@ -177,7 +171,6 @@ $white: #ffffff;
   }
 }
 
-/* Elements */
 .user-info {
   display: flex;
   align-items: center;
@@ -250,29 +243,6 @@ $white: #ffffff;
   gap: 8px;
 }
 
-.btn-icon {
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  color: $slate-400;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s;
-
-  &:hover {
-    background: #f0fdf4;
-    color: $brand-green;
-  }
-
-  &.hover-red:hover {
-    background: #fef2f2;
-    color: $brand-red;
-  }
-}
 
 /* Footer */
 .table-footer {

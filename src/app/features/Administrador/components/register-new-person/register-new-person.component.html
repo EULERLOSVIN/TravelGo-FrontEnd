@@ -2,92 +2,104 @@
     aria-hidden="true">
 
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content p-2">
             <div class="modal-header">
                 <div class="d-flex flex-column">
                     <h5 class="mb-0 text-danger fw-semibold">Travel<span class="text-success">Go</span></h5>
-                    <h5 class="modal-title mb-0" id="registerNewPersonModal">
+                    <h5 class="modal-title mb-0">
                         <strong class="fs-2">Registrar Nuevo Personal</strong>
                     </h5>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            
             <div class="modal-body">
-                <form>
-                    <!-- datos personales -->
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                    
                     <div class="row g-2 mb-3">
                         <div class="col-12">
-                            <h3 class="section-title-custom"><i class="bi bi-person icon-form"></i> Datos Personales</h3>
+                            <h3 class="section-title-custom">
+                                <i class="bi bi-person icon-form"></i> Datos Personales
+                            </h3>
                         </div>
 
                         <div class="col-6">
                             <label class="form-label fw-semibold">Nombres:</label>
-                            <input type="text" name="fullName" class="form-control rounded-pill" placeholder="Ej. Ana Lucía">
+                            <input type="text" formControlName="firstName" class="form-control rounded-pill"
+                                placeholder="Ej. Ana Lucía"
+                                [class.is-invalid]="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.invalid">
                         </div>
 
                         <div class="col-6">
-
                             <label class="form-label fw-semibold">Apellidos:</label>
-                            <input type="text" name="fullName" class="form-control rounded-pill" placeholder="Ej. Ana Lucía">
-
+                            <input type="text" formControlName="lastName" class="form-control rounded-pill"
+                                placeholder="Ej. Vasquez Gómez"
+                                [class.is-invalid]="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.invalid">
                         </div>
-                        <div class="col-6">
 
+                        <div class="col-6">
                             <label class="form-label fw-semibold">Tipo de Documento:</label>
-                            <select name="" id="" class="form-select rounded-pill" aria-label="Default select example">
+                            <select formControlName="typeDocument" class="form-select rounded-pill"
+                                [class.is-invalid]="registerForm.get('typeDocument')?.touched && registerForm.get('typeDocument')?.invalid">
                                 <option value="" disabled selected>Tipo de Documento</option>
-                                <option value="dni">DNI</option>
-                                <option value="passport">Pasaporte</option>
-                                <option value="other">Otro</option>
+                                @for (doc of requirements.documentTypes; track doc.id) {
+                                    <option [value]="doc.id">{{ doc.name }}</option>
+                                }
                             </select>
-
                         </div>
-                        <div class="col-6">
 
+                        <div class="col-6">
                             <label class="form-label fw-semibold">Número de Documento:</label>
-                            <input class="form-control rounded-pill" type="text" name="dni" placeholder="Número">
-
+                            <input formControlName="numberIdentityDocument" class="form-control rounded-pill" 
+                                type="text" placeholder="Número"
+                                [class.is-invalid]="registerForm.get('numberIdentityDocument')?.touched && registerForm.get('numberIdentityDocument')?.invalid">
                         </div>
 
                         <div class="col-6">
-
                             <label class="form-label fw-semibold">Celular:</label>
-                            <input class="form-control rounded-pill" type="tel" name="phone" placeholder="987 654 321"
-                                autocomplete="tel">
-
+                            <input formControlName="phoneNumber" class="form-control rounded-pill" 
+                                type="tel" placeholder="987 654 321" autocomplete="tel"
+                                [class.is-invalid]="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.invalid">
                         </div>
                     </div>
-                    <!--definicion de roles -->
+
                     <div class="row g-2">
                         <div class="col-12">
-                            <h3 class="section-title-custom"><i class="bi bi-person-lock icon-form"></i> Acceso al Sistema</h3>
+                            <h3 class="section-title-custom">
+                                <i class="bi bi-person-lock icon-form"></i> Acceso al Sistema
+                            </h3>
                         </div>
 
                         <div class="col-6">
                             <label class="form-label fw-semibold">Cargo:</label>
-                            <Select class="form-select rounded-pill" name="role" aria-label="Default select example">
+                            <select formControlName="idRole" class="form-select rounded-pill"
+                                [class.is-invalid]="registerForm.get('idRole')?.touched && registerForm.get('idRole')?.invalid">
                                 <option value="" disabled selected>Selecciona un rol</option>
-                                <option value="admin">Administrador</option>
-                                <option value="teacher">Secretario</option>
-                                <option value="student">Chofer</option>
-                            </Select>
+                                @for (role of requirements.roles; track role.id) {
+                                    <option [value]="role.id">{{ role.name }}</option>
+                                }
+                            </select>
                         </div>
 
                         <div class="col-6">
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Contraseña:</label>
-                                <input class="form-control rounded-pill" type="password" autocomplete="new-password" name="password"
-                                    placeholder="contraseña">
+                                <input formControlName="password" class="form-control rounded-pill" 
+                                    type="password" autocomplete="new-password" placeholder="contraseña"
+                                    [class.is-invalid]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal-footer border-0 px-0">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success rounded-pill" [disabled]="registerForm.invalid">
+                            Guardar Personal
+                        </button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success rounded-pill">Guardar</button>
             </div>
         </div>
     </div>
-
 </div>
