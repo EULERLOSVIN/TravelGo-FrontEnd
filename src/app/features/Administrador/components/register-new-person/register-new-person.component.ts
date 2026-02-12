@@ -16,10 +16,10 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
 })
 export class RegisterNewPersonComponent implements OnInit {
-  requirements: RolesAndDocumentTypes = { roles: [], documentTypes: [] };
+  requirements: RolesAndDocumentTypes = { roles: [], documentTypes: [], stateOfAccount: [] };
   registerForm!: FormGroup;
 
-  constructor(
+  constructor( 
     private fb: FormBuilder,
     private getRoleAndTypeDocumentService: GetRoleAndTypeDocumentService,
     private registerService: RegisterPersonnelService,

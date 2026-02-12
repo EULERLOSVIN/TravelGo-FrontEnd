@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { RegisterNewPersonComponent } from '../../components/register-new-person/register-new-person.component';
@@ -6,6 +6,9 @@ import { EditPersonComponent } from '../../components/edit-person/edit-person.co
 import { DeletePersonComponent } from '../../components/delete-person/delete-person.component';
 import { PersonnelModel } from '../../models/personnel.model';
 import { GetPersonnelService } from '../../services/get-personnel.service';
+import { StatsPersonnelModel } from '../../models/statsPersonnel.model';
+import { GetStatsUsersService } from '../../services/get-stats-users.service';
+
 
 @Component({
   selector: 'app-admin-person',
@@ -15,26 +18,35 @@ import { GetPersonnelService } from '../../services/get-personnel.service';
   styleUrl: './admin-person.page.scss',
 })
 export class AdminPersonComponent implements OnInit {
+  // @ViewChild('editModal') editModal!: ElementRef;
+  // @ViewChild('deleteModal') deleteModal!: ElementRef;
+  // @Input() selectedPerson: PersonnelModel | null = null;
+
+
   // VARIABLES DE MODAL
   isRegisterModalOpen = false;
-  isEditModalOpen = false;
-  isDeleteModalOpen = false;
-  selectedPerson: PersonnelModel | null = null;
+  // isDeleteModalOpen = false;
 
   // VARIABLES DE DATOS
   personnelList: PersonnelModel[] = [];
   searchTerm: string = '';
   pageNumber: number = 1;
-  pageSize: number = 10;
   isLastPage: boolean = false;
   isLoading: boolean = false;
 
+  statsPersonnel: StatsPersonnelModel = {
+    totalUsers: 0,
+    usersActive: 0,
+    usersInactive: 0
+  };
+
   constructor(
     private personnelService: GetPersonnelService,
-    private cdr: ChangeDetectorRef,
-  ) {}
+    private statsService: GetStatsUsersService,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.loadStatsPersonnel();
     this.loadPersonnel();
   }
 
@@ -63,6 +75,29 @@ export class AdminPersonComponent implements OnInit {
     });
   }
 
+  loadStatsPersonnel() {
+    this.statsService.getStatsUsers().subscribe({
+      next: (data) => {
+        this.statsPersonnel = data;
+        console.log('Estadísticas de personal:', this.statsPersonnel);
+      },
+      error: (err) => {
+        console.error('Error al cargar estadísticas de personal:', err);
+      },
+    });
+  }
+
+  getBadgeColor(state: string): string {
+    switch (state.toLowerCase()) {
+      case 'activo':
+        return 'bg-success';
+      case 'inactivo':
+        return 'bg-danger';
+      default:
+        return 'bg-secondary';
+    }
+  }
+
   onSearch(value: string): void {
     this.searchTerm = value;
     this.pageNumber = 1;
@@ -79,25 +114,8 @@ export class AdminPersonComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // MÉTODOS DE MODAL
+  //MÉTODOS DE MODAL
   openRegisterModal(): void {
     this.isRegisterModalOpen = true;
-  }
-
-  openEditModal(person: PersonnelModel): void {
-    this.selectedPerson = person;
-    this.isEditModalOpen = true;
-  }
-
-  openDeleteModal(person: PersonnelModel): void {
-    this.selectedPerson = person;
-    this.isDeleteModalOpen = true;
-  }
-
-  closeModals(): void {
-    this.isRegisterModalOpen = false;
-    this.isEditModalOpen = false;
-    this.isDeleteModalOpen = false;
-    this.selectedPerson = null;
   }
 }

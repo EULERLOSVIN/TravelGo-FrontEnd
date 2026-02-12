@@ -5,5 +5,7 @@ export interface PersonnelModel {
   role: string;
   dni: string;
   phoneNumber: string;
-  email: string;  
+  email: string;
+  state: string;
+  typeDocument: string;
 }

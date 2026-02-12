@@ -24,7 +24,7 @@
     <div class="col-12 col-lg-4">
       <div class="stat-card">
         <small>TOTAL PERSONAL</small>
-        <p class="value">15</p>
+        <p class="value">{{ statsPersonnel.totalUsers }}</p>
         <div class="bar">
           <div class="fill" style="width: 100%"></div>
         </div>
@@ -34,7 +34,7 @@
     <div class="col-12 col-lg-4">
       <div class="stat-card">
         <small>ACTIVOS</small>
-        <p class="value green">12</p>
+        <p class="value green">{{ statsPersonnel.usersActive }}</p>
         <div class="bar">
           <div class="fill green" style="width: 80%"></div>
         </div>
@@ -43,10 +43,10 @@
 
     <div class="col-12 col-lg-4">
       <div class="stat-card">
-        <small>CHOFERES</small>
-        <p class="value">8</p>
+        <small>INACTIVOS</small>
+        <p class="value text-danger">{{ statsPersonnel.usersInactive }}</p>
         <div class="bar">
-          <div class="fill" style="width: 50%"></div>
+          <div class="fill bg-danger" style="width: 50%"></div>
         </div>
       </div>
     </div>
@@ -70,10 +70,11 @@
             </span>
             <input
               #txtSearch
-              type="text"
+              type="search"
               class="custom-search form-control rounded-end-pill"
               placeholder="Buscar personal por DNI..."
               (input)="onSearch(txtSearch.value)"
+              autocomplete="off"
             />
           </div>
         </div>
@@ -107,6 +108,7 @@
             <th>DNI</th>
             <th>Celular</th>
             <th>Correo</th>
+            <th>Estado</th>
             <th class="text-right">Acciones</th>
           </tr>
         </thead>
@@ -125,14 +127,22 @@
 
               <td class="font-mono">{{ personnel.dni }}</td>
               <td>{{ personnel.phoneNumber }}</td>
-              <td class="text-muted">@{{ personnel.email }}</td>
+              <td class="text-muted">{{ personnel.email }}</td>
+              <td>
+                <span class="badge bg-success" [ngClass]="getBadgeColor(personnel.state)">{{
+                  personnel.state
+                }}</span>
+              </td>
 
               <td class="text-right">
                 <div class="actions">
-                  <button class="btn-icon">
+                  <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" (click)="editModalChild.open(personnel)">
                     <i class="bi bi-pencil"></i>
                   </button>
-                  <button class="btn-icon hover-red">
+                  <button
+                    class="btn btn-outline-danger btn-sm rounded-circle shadow-sm"
+                    (click)="deleteModalChild.openDeleteModal(personnel)"
+                  >
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
@@ -151,12 +161,8 @@
 
 <app-register-new-person> </app-register-new-person>
 
-<app-edit-person
-  [isOpen]="isEditModalOpen"
-  [personToEdit]="selectedPerson"
-  (close)="isEditModalOpen = false"
->
+<app-edit-person #editModalChild (onUpdateSuccess)="loadPersonnel(); loadStatsPersonnel()">
 </app-edit-person>
 
-<app-delete-person [isOpen]="isDeleteModalOpen" (close)="isDeleteModalOpen = false">
+<app-delete-person #deleteModalChild (onDeleteSuccess)="loadPersonnel(); loadStatsPersonnel()">
 </app-delete-person>
