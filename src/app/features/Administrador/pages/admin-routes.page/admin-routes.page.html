@@ -7,14 +7,33 @@
 
   <!-- Stats Grid -->
   <div class="row g-3 mb-4">
-    <div class="col-md-4"
-      *ngFor="let stat of [{l:'Total', v:'24', c:'text-dark'}, {l:'Activas', v:'22', c:'text-success'}, {l:'Demanda', v:'6', c:'text-primary'}]">
-      <div class="bg-white p-3 rounded-4 shadow-sm border-0">
-        <small class="text-muted fw-bold d-block mb-1">{{stat.l}}</small>
-        <h3 [class]="'fw-bold mb-0 ' + stat.c">{{stat.v}}</h3>
+
+    <div class="col-md-4">
+      <div class="bg-white p-3 rounded-4 shadow-sm border-0 text-center">
+        <small class="text-muted fw-bold d-block mb-1">TOTAL DE RUTAS</small>
+        <h3 class="fw-bold">{{ statsRoute.total }}</h3>
       </div>
     </div>
+
+    <div class="col-md-4">
+      <div class="bg-white p-3 rounded-4 shadow-sm border-0 text-center">
+        <small class="text-muted fw-bold d-block mb-1">ACTIVAS</small>
+        <h3 class="fw-bold">{{ statsRoute.activas }}</h3>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="bg-white p-3 rounded-4 shadow-sm border-0 text-center">
+        <small class="text-muted fw-bold">INACTIVAS</small>
+        <h3 class="fw-bold">{{ statsRoute.inactivas }}</h3>
+      </div>
+    </div>
+
   </div>
+
+
+
+
 
   <!-- Control Bar & Table -->
   <div class="bg-white rounded-4 shadow-sm border-0 p-3">

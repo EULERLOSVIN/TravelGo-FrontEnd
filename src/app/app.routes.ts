@@ -17,6 +17,7 @@ import { Conductor } from './features/pageConductor/features/pageConductor/condu
 import { AuthenticationPage } from './features/Authentication/pages/authentication/authentication.page';
 import { authGuard } from './core/guards/auth.guard';
 import { AdministratorComponent } from './features/Administrador/pages/administrator.page/administrator.page';
+import { AdminPlacesPage } from './features/Administrador/pages/admin-places.page/admin-places.page';
 
 
 export const routes: Routes = [
@@ -102,6 +103,10 @@ export const routes: Routes = [
             {
                 path: 'app-administrator',
                 component: AdministratorComponent
+            },
+            {
+                path:'places',
+                component:AdminPlacesPage
             }
 
         ]

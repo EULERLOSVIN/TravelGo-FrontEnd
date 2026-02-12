@@ -1,0 +1,58 @@
+<div class="container-fluid p-4 bg-light min-vh-100">
+  <!-- Header -->
+  <div class="mb-4">
+    <h2 class="fw-bold mb-1">Gestión de Lugares</h2>
+    <p class="text-muted small">Administre las sedes y ubicaciones disponibles.</p>
+  </div>
+
+  <!-- Control Bar & Table -->
+  <div class="bg-white rounded-4 shadow-sm border-0 p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="position-relative" style="width: 300px;">
+        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+        <input type="text" class="form-control form-control-sm rounded-pill ps-5 bg-light border-0"
+          placeholder="Buscar lugar..." [(ngModel)]="searchTerm">
+      </div>
+
+      <button class="btn btn-sm btn-success rounded-pill px-4 fw-bold" (click)="openNew()">
+        <i class="bi bi-plus-lg me-1"></i> Nuevo Lugar
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light text-muted small">
+          <tr>
+            <th class="border-0 px-3">NOMBRE</th>
+            <th class="border-0">DESCRIPCIÓN</th>
+            <th class="border-0 text-end px-3">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody class="small fw-semibold">
+          <tr *ngFor="let s of filteredSedes">
+            <td class="px-3 text-dark fw-bold">{{s.nombre}}</td>
+            <td class="text-muted">{{s.descripcion}}</td>
+            <td class="text-end px-3">
+              <button class="btn btn-sm btn-light border rounded-circle me-1" (click)="openEdit(s)">
+                <i class="bi bi-pencil text-primary"></i>
+              </button>
+              <button class="btn btn-sm btn-light border rounded-circle" (click)="openDelete(s)">
+                <i class="bi bi-trash text-danger"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="filteredSedes.length === 0" class="text-center py-4 text-muted">
+        No se encontraron lugares.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<app-new-places [isOpen]="isNewModalOpen" (close)="isNewModalOpen = false"></app-new-places>
+<app-edit-places [isOpen]="isEditModalOpen" [placeToEdit]="selectedPlace"
+  (close)="isEditModalOpen = false"></app-edit-places>
+<app-delete-places [isOpen]="isDeleteModalOpen" [place]="selectedPlace"
+  (close)="isDeleteModalOpen = false"></app-delete-places>

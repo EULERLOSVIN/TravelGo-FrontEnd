@@ -1,4 +1,5 @@
 // rutas=darwin
+
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -55,5 +56,11 @@ export class AdminRoutesComponent implements OnInit {
   openDelete(route: any) {
     this.selectedRoute = route;
     this.isDeleteModalOpen = true;
+  }
+
+  statsRoute  = {
+    total:25,
+    activas:24,
+    inactivas:1
   }
 }
