@@ -22,8 +22,9 @@
       <div class="position-relative" style="width: 300px;">
         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
         <input type="text" class="form-control form-control-sm rounded-pill ps-5 bg-light border-0"
-          placeholder="Buscar ruta...">
+          placeholder="Buscar ruta..." [(ngModel)]="searchTerm">
       </div>
+      <!-- implemtar con grid  row y col  con el serch -->
       <button class="btn btn-sm btn-success rounded-pill px-4 fw-bold" (click)="isModalOpen = true">
         <i class="bi bi-plus-lg me-1"></i> Nueva Ruta
       </button>
@@ -33,48 +34,39 @@
       <table class="table table-hover align-middle mb-0">
         <thead class="bg-light text-muted small">
           <tr>
-            <th class="border-0 px-3">ORIGEN</th>
-            <th class="border-0">DESTINO</th>
-            <th class="border-0 text-center">TIEMPO (H)</th>
+            <th class="border-0 px-3">RUTA (ORIGEN - DESTINO)</th>
             <th class="border-0 text-center">PRECIO</th>
-            <th class="border-0">ESTADO</th>
+            <th class="border-0 text-center">ID</th>
             <th class="border-0 text-end px-3">ACCIONES</th>
           </tr>
         </thead>
         <tbody class="small fw-semibold">
-          <tr *ngFor="let r of [
-            {o:'Huánuco', d:'Tingo María', t:'2.5', p:'35.00', s:'Activa'},
-            {o:'Lima', d:'Huánuco', t:'9.0', p:'80.00', s:'Inactiva'}
-          ]">
-            <td class="px-3 text-dark">{{r.o}}</td>
-            <td class="text-dark">{{r.d}}</td>
-            <td class="text-center">{{r.t}}</td>
-            <td class="text-center text-primary">S/ {{r.p}}</td>
-            <td>
-              <span
-                [class]="'badge rounded-pill ' + (r.s === 'Activa' ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary')">
-                {{r.s}}
-              </span>
-            </td>
+          <tr *ngFor="let r of filteredRoutes">
+            <td class="px-3 text-dark">{{r.nameRoute}}</td>
+            <td class="text-center text-primary">S/ {{r.price}}</td>
+            <td class="text-center">{{r.idTravelRoute}}</td>
             <td class="text-end px-3">
-              <button class="btn btn-sm btn-light border rounded-circle me-1" (click)="openEdit({origin: r.o})">
+              <button class="btn btn-sm btn-light border rounded-circle me-1" (click)="openEdit(r)">
                 <i class="bi bi-pencil text-primary"></i>
               </button>
-              <button class="btn btn-sm btn-light border rounded-circle" (click)="isDeleteModalOpen = true">
+              <button class="btn btn-sm btn-light border rounded-circle" (click)="openDelete(r)">
                 <i class="bi bi-trash text-danger"></i>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+      <div *ngIf="filteredRoutes.length === 0" class="text-center py-4 text-muted">
+        No se encontraron rutas.
+      </div>
     </div>
   </div>
-
-  <!-- Modals -->
-  <app-register-new-route *ngIf="isModalOpen" [isOpen]="isModalOpen"
-    (close)="isModalOpen = false"></app-register-new-route>
-  <app-edit-route *ngIf="isEditModalOpen" [isOpen]="isEditModalOpen" [routeToEdit]="selectedRoute"
-    (close)="isEditModalOpen = false"></app-edit-route>
-  <app-delete-route *ngIf="isDeleteModalOpen" [isOpen]="isDeleteModalOpen"
-    (close)="isDeleteModalOpen = false"></app-delete-route>
 </div>
+
+<!-- Modals -->
+<app-register-new-route *ngIf="isModalOpen" [isOpen]="isModalOpen"
+  (close)="isModalOpen = false"></app-register-new-route>
+<app-edit-route *ngIf="isEditModalOpen" [isOpen]="isEditModalOpen" [routeToEdit]="selectedRoute"
+  (close)="isEditModalOpen = false"></app-edit-route>
+<app-delete-route *ngIf="isDeleteModalOpen" [isOpen]="isDeleteModalOpen" [route]="selectedRoute"
+  (close)="isDeleteModalOpen = false"></app-delete-route>

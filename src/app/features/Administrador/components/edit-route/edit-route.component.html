@@ -6,29 +6,34 @@
                 <button type="button" class="btn-close" (click)="close.emit()"></button>
             </div>
             <div class="modal-body py-3">
-                <form class="row g-2">
+                <form class="row g-2" *ngIf="routeToEdit">
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Origen</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" value="Huánuco">
+                        <input type="text" class="form-control form-control-sm rounded-pill" [(ngModel)]="origin"
+                            name="origin">
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Destino</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" value="Tingo María">
+                        <input type="text" class="form-control form-control-sm rounded-pill" [(ngModel)]="destination"
+                            name="destination">
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Tiempo (Hrs)</label>
-                        <input type="number" class="form-control form-control-sm rounded-pill" value="2.5">
+                        <input type="number" class="form-control form-control-sm rounded-pill" disabled
+                            placeholder="Calculado">
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Precio (S/)</label>
-                        <input type="number" class="form-control form-control-sm rounded-pill" value="35.00">
+                        <input type="number" class="form-control form-control-sm rounded-pill"
+                            [(ngModel)]="routeToEdit.price" name="price">
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-0 pt-0">
                 <button type="button" class="btn btn-sm btn-light rounded-pill px-3"
                     (click)="close.emit()">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-success rounded-pill px-3">Actualizar</button>
+                <button type="button" class="btn btn-sm btn-success rounded-pill px-3"
+                    (click)="save()">Actualizar</button>
             </div>
         </div>
     </div>

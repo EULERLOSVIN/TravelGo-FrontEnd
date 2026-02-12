@@ -9,26 +9,33 @@
                 <form class="row g-2">
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Origen</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Ciudad A">
+                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Ciudad A"
+                            [(ngModel)]="origin" name="origin">
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Destino</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Ciudad B">
+                        <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Ciudad B"
+                            [(ngModel)]="destination" name="destination">
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Tiempo (Hrs)</label>
-                        <input type="number" class="form-control form-control-sm rounded-pill">
+                        <input type="number" class="form-control form-control-sm rounded-pill" disabled
+                            placeholder="Calculado">
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Precio (S/)</label>
-                        <input type="number" class="form-control form-control-sm rounded-pill">
+                        <input type="number" class="form-control form-control-sm rounded-pill"
+                            [(ngModel)]="formData.price" name="price">
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-0 pt-0">
-                <button type="button" class="btn btn-sm btn-light rounded-pill px-3"
-                    (click)="close.emit()">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-success rounded-pill px-3">Guardar</button>
+                <button type="button" class="btn btn-sm btn-light rounded-pill px-3" (click)="close.emit()"
+                    [disabled]="isLoading">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-success rounded-pill px-3" (click)="save()"
+                    [disabled]="isLoading">
+                    {{ isLoading ? 'Guardando...' : 'Guardar' }}
+                </button>
             </div>
         </div>
     </div>
