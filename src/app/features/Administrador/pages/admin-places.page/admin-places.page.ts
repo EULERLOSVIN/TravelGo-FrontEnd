@@ -1,40 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NewPlacesComponent } from '../../components/new-places/new-places.component';
 import { EditPlacesComponent } from '../../components/edit-places/edit-places.component';
 import { DeletePlacesComponent } from '../../components/delete-places/delete-places.component';
+import { PlacesService, Place } from '../../services/places.service';
 
 @Component({
   selector: 'places',
+  standalone: true,
   imports: [CommonModule, FormsModule, NewPlacesComponent, EditPlacesComponent, DeletePlacesComponent],
   templateUrl: './admin-places.page.html',
   styleUrl: './admin-places.page.scss',
 })
-export class AdminPlacesPage {
+export class AdminPlacesPage implements OnInit {
+  places: Place[] = [];
   searchTerm: string = '';
+
   isNewModalOpen = false;
   isEditModalOpen = false;
   isDeleteModalOpen = false;
 
   selectedPlace: any = null;
 
-  sedes = [
-    {
-      nombre: 'Sede Central',
-      descripcion: 'Oficina principal'
-    },
-    {
-      nombre: 'Sede Norte',
-      descripcion: 'Área operativa'
-    }
-  ];
+  constructor(private placesService: PlacesService, private cdr: ChangeDetectorRef) { }
 
-  // Getter para filtrar las sedes
+  ngOnInit() {
+    this.loadPlaces();
+  }
+
+  loadPlaces() {
+    this.placesService.getAll().subscribe({
+      next: (data) => {
+        this.places = data;
+        this.cdr.detectChanges();
+      },
+      error: (e) => console.error('Error cargando lugares', e)
+    });
+  }
+
   get filteredSedes() {
-    return this.sedes.filter(s =>
-      s.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      s.descripcion.toLowerCase().includes(this.searchTerm.toLowerCase())
+    return this.places.filter(s =>
+      s.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      (s.description || '').toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
@@ -43,7 +51,7 @@ export class AdminPlacesPage {
   }
 
   openEdit(place: any) {
-    this.selectedPlace = place;
+    this.selectedPlace = { ...place };
     this.isEditModalOpen = true;
   }
 

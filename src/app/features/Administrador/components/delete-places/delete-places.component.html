@@ -6,15 +6,15 @@
                 <button type="button" class="btn-close" (click)="close.emit()"></button>
             </div>
             <div class="modal-body py-3 text-center">
-                <p class="mb-0">¿Estás seguro de que deseas eliminar el lugar <strong class="text-dark">{{ place?.nombre
+                <p class="mb-0">¿Estás seguro de que deseas eliminar el lugar <strong class="text-dark">{{ place?.name
                         }}</strong>?</p>
                 <small class="text-muted d-block mt-2">Esta acción no se puede deshacer.</small>
             </div>
             <div class="modal-footer border-0 pt-0 justify-content-center">
-                <button type="button" class="btn btn-sm btn-light rounded-pill px-4"
-                    (click)="close.emit()">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-danger rounded-pill px-4"
-                    (click)="confirmDelete()">Eliminar</button>
+                <button type="button" class="btn btn-sm btn-light rounded-pill px-4" (click)="close.emit()"
+                    [disabled]="isLoading">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-danger rounded-pill px-4" (click)="confirmDelete()"
+                    [disabled]="isLoading">Eliminar</button>
             </div>
         </div>
     </div>

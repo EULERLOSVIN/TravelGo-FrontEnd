@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PlacesService } from '../../services/places.service';
 
 @Component({
     selector: 'app-edit-places',
@@ -15,9 +16,14 @@ export class EditPlacesComponent implements OnChanges {
     @Output() close = new EventEmitter<void>();
 
     place = {
-        nombre: '',
-        descripcion: ''
+        idPlace: 0,
+        name: '',
+        description: ''
     };
+
+    isLoading = false;
+
+    constructor(private placesService: PlacesService) { }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['placeToEdit'] && this.placeToEdit) {
@@ -26,7 +32,20 @@ export class EditPlacesComponent implements OnChanges {
     }
 
     save() {
-        console.log('Editando lugar:', this.place);
-        this.close.emit();
+        if (this.isLoading) return;
+        this.isLoading = true;
+
+        this.placesService.update(this.place).subscribe({
+            next: () => {
+                this.close.emit();
+                window.location.reload();
+            },
+            error: (e) => {
+                console.error('Error editando lugar', e);
+                alert('Error al editar lugar: ' + (e.error?.message || e.message));
+                this.isLoading = false;
+            },
+            complete: () => this.isLoading = false
+        });
     }
 }

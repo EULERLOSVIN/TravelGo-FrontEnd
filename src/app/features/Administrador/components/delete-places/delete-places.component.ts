@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PlacesService } from '../../services/places.service';
 
 @Component({
     selector: 'app-delete-places',
@@ -13,8 +14,25 @@ export class DeletePlacesComponent {
     @Input() place: any;
     @Output() close = new EventEmitter<void>();
 
+    isLoading = false;
+
+    constructor(private placesService: PlacesService) { }
+
     confirmDelete() {
-        console.log('Eliminando lugar:', this.place);
-        this.close.emit();
+        if (!this.place || this.isLoading) return;
+        this.isLoading = true;
+
+        this.placesService.delete(this.place.idPlace).subscribe({
+            next: () => {
+                this.close.emit();
+                window.location.reload();
+            },
+            error: (e) => {
+                console.error('Error eliminando lugar', e);
+                alert('No se pudo eliminar lugar. Probablemente tenga rutas asociadas.');
+                this.isLoading = false;
+            },
+            complete: () => this.isLoading = false
+        });
     }
 }

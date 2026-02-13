@@ -9,21 +9,23 @@
                 <form>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold mb-1">Nombre</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" [(ngModel)]="place.nombre"
-                            name="nombre" placeholder="Nombre del lugar">
+                        <input type="text" class="form-control form-control-sm rounded-pill" [(ngModel)]="place.name"
+                            name="name" placeholder="Nombre del lugar">
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold mb-1">Descripción</label>
-                        <textarea class="form-control form-control-sm rounded-3" [(ngModel)]="place.descripcion"
-                            name="descripcion" rows="3" placeholder="Descripción del lugar"></textarea>
+                        <textarea class="form-control form-control-sm rounded-3" [(ngModel)]="place.description"
+                            name="description" rows="3" placeholder="Descripción del lugar"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-0 pt-0">
-                <button type="button" class="btn btn-sm btn-light rounded-pill px-3"
-                    (click)="close.emit()">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-primary rounded-pill px-3" (click)="save()">Guardar
-                    Cambios</button>
+                <button type="button" class="btn btn-sm btn-light rounded-pill px-3" (click)="close.emit()"
+                    [disabled]="isLoading">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary rounded-pill px-3" (click)="save()"
+                    [disabled]="isLoading">
+                    {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+                </button>
             </div>
         </div>
     </div>

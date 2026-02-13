@@ -9,13 +9,23 @@
                 <form class="row g-2" *ngIf="routeToEdit">
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Origen</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" [(ngModel)]="origin"
-                            name="origin">
+                        <select class="form-select form-select-sm rounded-pill" [(ngModel)]="routeToEdit.idPlaceA"
+                            name="idPlaceA">
+                            <option *ngFor="let p of places" [value]="p.idPlace"
+                                [disabled]="p.idPlace == routeToEdit.idPlaceB">
+                                {{p.name}} {{ p.idPlace == routeToEdit.idPlaceB ? '(Destino)' : '' }}
+                            </option>
+                        </select>
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Destino</label>
-                        <input type="text" class="form-control form-control-sm rounded-pill" [(ngModel)]="destination"
-                            name="destination">
+                        <select class="form-select form-select-sm rounded-pill" [(ngModel)]="routeToEdit.idPlaceB"
+                            name="idPlaceB">
+                            <option *ngFor="let p of places" [value]="p.idPlace"
+                                [disabled]="p.idPlace == routeToEdit.idPlaceA">
+                                {{p.name}} {{ p.idPlace == routeToEdit.idPlaceA ? '(Origen)' : '' }}
+                            </option>
+                        </select>
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-semibold mb-1">Tiempo (Hrs)</label>
