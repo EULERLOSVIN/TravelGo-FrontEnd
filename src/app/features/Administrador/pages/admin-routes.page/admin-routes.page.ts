@@ -34,6 +34,12 @@ export class AdminRoutesComponent implements OnInit {
     this.routesService.getAll().subscribe({
       next: (data) => {
         this.routes = data;
+
+        // Calcular contadores reales
+        this.statsRoute.total = data.length;
+        this.statsRoute.activas = data.filter(r => r.isActive !== false).length; // Default true
+        this.statsRoute.inactivas = data.filter(r => r.isActive === false).length;
+
         console.log('Rutas cargadas:', data);
         this.cdr.detectChanges(); // Forzar actualización de vista
       },
@@ -58,9 +64,9 @@ export class AdminRoutesComponent implements OnInit {
     this.isDeleteModalOpen = true;
   }
 
-  statsRoute  = {
-    total:25,
-    activas:24,
-    inactivas:1
+  statsRoute = {
+    total: 0,
+    activas: 0,
+    inactivas: 0
   }
 }

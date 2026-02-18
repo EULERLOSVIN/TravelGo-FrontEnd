@@ -11,7 +11,7 @@
                         <label class="form-label small fw-semibold mb-1">Origen</label>
                         <select class="form-select form-select-sm rounded-pill" [(ngModel)]="routeToEdit.idPlaceA"
                             name="idPlaceA">
-                            <option *ngFor="let p of places" [value]="p.idPlace"
+                            <option *ngFor="let p of places" [ngValue]="p.idPlace"
                                 [disabled]="p.idPlace == routeToEdit.idPlaceB">
                                 {{p.name}} {{ p.idPlace == routeToEdit.idPlaceB ? '(Destino)' : '' }}
                             </option>
@@ -21,7 +21,7 @@
                         <label class="form-label small fw-semibold mb-1">Destino</label>
                         <select class="form-select form-select-sm rounded-pill" [(ngModel)]="routeToEdit.idPlaceB"
                             name="idPlaceB">
-                            <option *ngFor="let p of places" [value]="p.idPlace"
+                            <option *ngFor="let p of places" [ngValue]="p.idPlace"
                                 [disabled]="p.idPlace == routeToEdit.idPlaceA">
                                 {{p.name}} {{ p.idPlace == routeToEdit.idPlaceA ? '(Origen)' : '' }}
                             </option>
@@ -37,13 +37,27 @@
                         <input type="number" class="form-control form-control-sm rounded-pill"
                             [(ngModel)]="routeToEdit.price" name="price">
                     </div>
+                    <div class="col-12 mt-3">
+                        <div
+                            class="form-check form-switch bg-light rounded-4 p-2 ps-5 border d-flex align-items-center">
+                            <input class="form-check-input ms-0 me-2" type="checkbox" role="switch"
+                                id="statusSwitchEdit" [(ngModel)]="routeToEdit.isActive" name="isActive">
+                            <label class="form-check-label fw-bold small mb-0" for="statusSwitchEdit"
+                                [ngClass]="routeToEdit.isActive ? 'text-success' : 'text-secondary'">
+                                {{ routeToEdit.isActive ? 'ACTIVO' : 'INACTIVO' }}
+                            </label>
+                            <small class="text-muted ms-auto pe-2" style="font-size: 0.75rem;">
+                                {{ routeToEdit.isActive ? 'Ruta operativa' : 'Ruta suspendida' }}
+                            </small>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer border-0 pt-0">
                 <button type="button" class="btn btn-sm btn-light rounded-pill px-3"
                     (click)="close.emit()">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-success rounded-pill px-3"
-                    (click)="save()">Actualizar</button>
+                <button type="button" class="btn btn-sm btn-success rounded-pill px-3" (click)="save()"
+                    [disabled]="isLoading || !hasChanges()">Actualizar</button>
             </div>
         </div>
     </div>

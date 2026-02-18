@@ -31,10 +31,6 @@
 
   </div>
 
-
-
-
-
   <!-- Control Bar & Table -->
   <div class="bg-white rounded-4 shadow-sm border-0 p-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -55,7 +51,7 @@
           <tr>
             <th class="border-0 px-3">RUTA (ORIGEN - DESTINO)</th>
             <th class="border-0 text-center">PRECIO</th>
-            <th class="border-0 text-center">ID</th>
+            <th class="border-0 text-center">ESTADO</th>
             <th class="border-0 text-end px-3">ACCIONES</th>
           </tr>
         </thead>
@@ -63,7 +59,12 @@
           <tr *ngFor="let r of filteredRoutes">
             <td class="px-3 text-dark">{{r.nameRoute}}</td>
             <td class="text-center text-primary">S/ {{r.price}}</td>
-            <td class="text-center">{{r.idTravelRoute}}</td>
+            <td class="text-center">
+              <span class="badge rounded-pill fw-normal px-3 py-2"
+                [ngClass]="r.isActive !== false ? 'bg-success text-white' : 'bg-danger text-white'">
+                {{ r.isActive !== false ? 'Activa' : 'Inactiva' }}
+              </span>
+            </td>
             <td class="text-end px-3">
               <button class="btn btn-sm btn-light border rounded-circle me-1" (click)="openEdit(r)">
                 <i class="bi bi-pencil text-primary"></i>
