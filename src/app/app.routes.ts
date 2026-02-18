@@ -19,6 +19,7 @@ import { DriverPage } from './layouts/pages/driver/driver.page';
 import { DriverMainPage } from './features/Driver/pages/driver-main/driver-main.page';
 import { DriverHistoryPage } from './features/Driver/pages/driver-history/driver-history.page';
 import { RouteSelectionPage } from './features/Home/pages/route-selection/route-selection.page';
+import { AdminPlacesPage } from './features/Administrador/pages/admin-places.page/admin-places.page';
 
 
 export const routes: Routes = [
@@ -100,6 +101,10 @@ export const routes: Routes = [
             {
                 path: 'app-administrator',
                 component: AdministratorComponent
+            },
+            {
+                path:'places',
+                component:AdminPlacesPage
             }
 
         ]

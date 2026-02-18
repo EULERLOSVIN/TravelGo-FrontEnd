@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges, S
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RoutesService, TravelRoute } from '../../services/routes.service';
+import { PlacesService } from '../../services/places.service';
 
 @Component({
     selector: 'app-edit-route',
@@ -20,25 +21,26 @@ export class EditRouteComponent implements OnChanges {
     origin: string = '';
     destination: string = '';
 
+    places: any[] = [];
     isLoading = false;
 
-    constructor(private routesService: RoutesService) { }
+    constructor(private routesService: RoutesService, private placesService: PlacesService) {
+        this.loadPlaces();
+    }
+
+    loadPlaces() {
+        this.placesService.getAll().subscribe(data => this.places = data);
+    }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes['routeToEdit'] && this.routeToEdit) {
-            // Separar nombre "Origen - Destino"
-            const parts = this.routeToEdit.nameRoute.split('-');
-            this.origin = parts[0]?.trim() || '';
-            this.destination = parts[1]?.trim() || '';
-        }
+        // No necesitamos hacer nada especial aquí ahora, el objeto se pasa por referencia
     }
 
     save() {
         if (!this.routeToEdit || this.isLoading) return;
         this.isLoading = true;
 
-        this.routeToEdit.nameRoute = `${this.origin} - ${this.destination}`;
-
+        // nameRoute se regenera en backend
         this.routesService.update(this.routeToEdit).subscribe({
             next: () => {
                 this.close.emit();
@@ -46,7 +48,7 @@ export class EditRouteComponent implements OnChanges {
             },
             error: (e) => {
                 console.error('Error al editar', e);
-                alert('Error al editar: ' + (e.error?.message || e.message || 'Revise la consola'));
+                alert('Error al editar: ' + (e.error?.message || e.message));
                 this.isLoading = false;
             },
             complete: () => this.isLoading = false

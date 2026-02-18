@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angu
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RoutesService, TravelRoute } from '../../services/routes.service';
+import { PlacesService } from '../../services/places.service';
 
 @Component({
   selector: 'app-register-new-route',
@@ -27,16 +28,23 @@ export class RegisterNewRouteComponent {
     idPlaceB: 2  // Valor por defecto
   };
 
+  places: any[] = [];
   isLoading = false;
 
-  constructor(private routesService: RoutesService) { }
+  constructor(private routesService: RoutesService, private placesService: PlacesService) {
+    this.loadPlaces();
+  }
+
+  loadPlaces() {
+    this.placesService.getAll().subscribe(data => this.places = data);
+  }
 
   save() {
     if (this.isLoading) return;
     this.isLoading = true;
 
-    // Concatenamos Origen y Destino para crear el nombre de la ruta
-    this.formData.nameRoute = `${this.origin} - ${this.destination}`;
+    // nameRoute se genera en backend
+    this.formData.nameRoute = 'GENERANDO...';
 
     this.routesService.create(this.formData).subscribe({
       next: () => {

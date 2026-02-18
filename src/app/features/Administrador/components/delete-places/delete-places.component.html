@@ -1,0 +1,21 @@
+<div class="modal d-block bg-dark bg-opacity-50" *ngIf="isOpen" (click)="close.emit()" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-danger">Eliminar Lugar</h5>
+                <button type="button" class="btn-close" (click)="close.emit()"></button>
+            </div>
+            <div class="modal-body py-3 text-center">
+                <p class="mb-0">¿Estás seguro de que deseas eliminar el lugar <strong class="text-dark">{{ place?.name
+                        }}</strong>?</p>
+                <small class="text-muted d-block mt-2">Esta acción no se puede deshacer.</small>
+            </div>
+            <div class="modal-footer border-0 pt-0 justify-content-center">
+                <button type="button" class="btn btn-sm btn-light rounded-pill px-4" (click)="close.emit()"
+                    [disabled]="isLoading">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-danger rounded-pill px-4" (click)="confirmDelete()"
+                    [disabled]="isLoading">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
