@@ -33,10 +33,10 @@ export class FooterComponent {
         this.router.navigate(['/administrator']);
         break;
       case 'Chofer':
-        this.router.navigate(['/conductor']);
+        this.router.navigate(['/driver']);
         break;
       case 'Secretario':
-        this.router.navigate(['/home']);
+        this.router.navigate(['/administrator']);
         break;
       default:
         this.router.navigate(['/home']);

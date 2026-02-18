@@ -12,10 +12,19 @@
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
+
             <div class="modal-body">
+                @if (errorMessage) {
+                <div class="alert alert-danger d-flex align-items-center rounded-4 py-2 mb-3 shadow-sm border-start border-4 border-danger"
+                    role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                    <div class="small fw-medium">
+                        {{ errorMessage }}
+                    </div>
+                </div>
+                }
                 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-12">
                             <h3 class="section-title-custom">
@@ -43,22 +52,22 @@
                                 [class.is-invalid]="registerForm.get('typeDocument')?.touched && registerForm.get('typeDocument')?.invalid">
                                 <option value="" disabled selected>Tipo de Documento</option>
                                 @for (doc of requirements.documentTypes; track doc.id) {
-                                    <option [value]="doc.id">{{ doc.name }}</option>
+                                <option [value]="doc.id">{{ doc.name }}</option>
                                 }
                             </select>
                         </div>
 
                         <div class="col-6">
                             <label class="form-label fw-semibold">Número de Documento:</label>
-                            <input formControlName="numberIdentityDocument" class="form-control rounded-pill" 
-                                type="text" placeholder="Número"
+                            <input formControlName="numberIdentityDocument" class="form-control rounded-pill"
+                                type="text" placeholder="Número" maxlength="20" (keypress)="onlyNumbers($event)"
                                 [class.is-invalid]="registerForm.get('numberIdentityDocument')?.touched && registerForm.get('numberIdentityDocument')?.invalid">
                         </div>
 
                         <div class="col-6">
                             <label class="form-label fw-semibold">Celular:</label>
-                            <input formControlName="phoneNumber" class="form-control rounded-pill" 
-                                type="tel" placeholder="987 654 321" autocomplete="tel"
+                            <input formControlName="phoneNumber" class="form-control rounded-pill" type="tel"
+                                placeholder="987 654 321" autocomplete="tel" maxlength="9" (keypress)="onlyNumbers($event)"
                                 [class.is-invalid]="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.invalid">
                         </div>
                     </div>
@@ -76,7 +85,7 @@
                                 [class.is-invalid]="registerForm.get('idRole')?.touched && registerForm.get('idRole')?.invalid">
                                 <option value="" disabled selected>Selecciona un rol</option>
                                 @for (role of requirements.roles; track role.id) {
-                                    <option [value]="role.id">{{ role.name }}</option>
+                                <option [value]="role.id">{{ role.name }}</option>
                                 }
                             </select>
                         </div>
@@ -84,15 +93,16 @@
                         <div class="col-6">
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Contraseña:</label>
-                                <input formControlName="password" class="form-control rounded-pill" 
-                                    type="password" autocomplete="new-password" placeholder="contraseña"
+                                <input formControlName="password" class="form-control rounded-pill" type="password"
+                                    autocomplete="new-password" placeholder="contraseña"
                                     [class.is-invalid]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
                             </div>
                         </div>
                     </div>
 
+
                     <div class="modal-footer border-0 px-0">
-                        <button type="button" class="btn btn-outline-secondary rounded-pill"
+                        <button #btnCancelar type="button" class="btn btn-outline-secondary rounded-pill"
                             data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-success rounded-pill" [disabled]="registerForm.invalid">
                             Guardar Personal

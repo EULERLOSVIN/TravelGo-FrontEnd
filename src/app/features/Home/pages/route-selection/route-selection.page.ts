@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-select-route.page',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './select-route.page.html',
-  styleUrl: './select-route.page.scss',
+  selector: 'app-route-selection',
+  imports: [RouterLink],
+  templateUrl: './route-selection.page.html',
+  styleUrl: './route-selection.page.scss',
 })
-
-export class SelectRoutePage {
-
+export class RouteSelectionPage {
   origen = '';
   destino = '';
   fecha = '';

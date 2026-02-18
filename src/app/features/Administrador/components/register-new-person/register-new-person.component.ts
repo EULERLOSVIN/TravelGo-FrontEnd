@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RolesAndDocumentTypes } from '../../models/RolesAndDocumentTypes.model';
@@ -6,6 +6,7 @@ import { RegisterPersonnelModel } from '../../models/register-personnel.model';
 import { GetRoleAndTypeDocumentService } from '../../services/get-role-and-type-document.service';
 import { RegisterPersonnelService } from '../../services/register-personnel.service';
 import { Router } from '@angular/router';
+import { Result } from '../../../../shared/models/result.model';
 
 @Component({
   selector: 'app-register-new-person',
@@ -18,8 +19,9 @@ import { Router } from '@angular/router';
 export class RegisterNewPersonComponent implements OnInit {
   requirements: RolesAndDocumentTypes = { roles: [], documentTypes: [], stateOfAccount: [] };
   registerForm!: FormGroup;
+  errorMessage: string = '';
 
-  constructor( 
+  constructor(
     private fb: FormBuilder,
     private getRoleAndTypeDocumentService: GetRoleAndTypeDocumentService,
     private registerService: RegisterPersonnelService,
@@ -38,11 +40,19 @@ export class RegisterNewPersonComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       typeDocument: ['', [Validators.required]],
-      numberIdentityDocument: ['', [Validators.required, Validators.minLength(8)]],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      numberIdentityDocument: ['', [Validators.required, Validators.pattern('^[0-9]{8,20}$')]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
       idRole: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  onlyNumbers(event: KeyboardEvent) {
+    const pattern = /[0-9]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault(); // Bloquea la tecla si no es número
+    }
   }
 
   loadRolesAndTypesDocuments() {
@@ -57,29 +67,42 @@ export class RegisterNewPersonComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      this.errorMessage = '';
       const payload: RegisterPersonnelModel = this.registerForm.value;
 
       this.registerService.registerPersonnel(payload).subscribe({
-        next: (response) => {
-          const modalElement = document.getElementById('registerNewPersonModal');
-          if (modalElement) {
-            const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modalElement);
-            if (bootstrapModal) {
-              bootstrapModal.hide();
-            } else {
-              const closeButton = modalElement.querySelector('.btn-close') as HTMLElement;
-              closeButton?.click();
-            }
+        next: (response: Result<boolean>) => {
+          console.log('Objeto recibido:', response);
+          if (response.isSuccess) {
+            console.log('¡Éxito detectado! Cerrando modal...');
+            this.closeModalAndRedirect();
+          } else {
+            this.errorMessage = response.errorMessage || 'Datos inválidos.';
           }
-
-          this.router.navigate(['/administrator/personal']).then(() => {
-            window.location.reload();
-          });
         },
         error: (err) => {
-          console.error('Error al registrar', err);
+          this.errorMessage = err.error?.errorMessage || 'Error inesperado al registrar.';
+          console.error('Error capturado del backend:', this.errorMessage);
+          this.cdr.detectChanges();
         }
       });
     }
   }
+
+  private closeModalAndRedirect() {
+    const modalElement = document.getElementById('registerNewPersonModal');
+    if (modalElement) {
+      const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modalElement);
+      if (bootstrapModal) {
+        bootstrapModal.hide();
+      } else {
+        const closeButton = modalElement.querySelector('.btn-close') as HTMLElement;
+        closeButton?.click();
+      }
+    }
+    this.router.navigate(['/administrator/personal']).then(() => window.location.reload());
+  }
+
 }
+
+

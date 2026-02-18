@@ -1,0 +1,398 @@
+.container {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+//CARD OF SELECT TRIP
+.img-container {
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+.img-vehicle {
+    display: flex;
+    width: 100%;
+    border-radius: 8px;
+}
+
+//datos de informacion de proximo viaje
+.salida-info {
+    padding: 14px 0px;
+}
+
+.salida-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a {
+        color: #0d47a1;
+        text-decoration: none;
+        font-weight: 600;
+    }
+}
+
+.live {
+    background: red;
+    color: white;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin-left: 8px;
+}
+
+.card-select-trip {
+    border: 1px solid rgb(218, 218, 218);
+    padding: 24px 10px;
+    border-radius: 12px;
+    background-color: #f0f0f070;
+}
+
+.time {
+    color: rgba(10, 98, 10, 0.866);
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.details {
+    display: flex;
+    gap: 15px;
+}
+
+
+.selection-box {
+    background-color: #e4e4e47d; // Un gris azulado muy suave
+    border-radius: 15px;
+}
+
+.price {
+    padding: 10px 0;
+}
+
+.old {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 10px;
+}
+
+.new {
+    font-size: 40px;
+    font-weight: bold;
+    color: rgba(10, 98, 10, 0.866);
+}
+
+.btn-main {
+    width: 100%;
+    padding: 10px 0px;
+}
+
+.turnos {
+    margin-top: 50px;
+
+    h2 {
+        margin-bottom: 18px;
+    }
+}
+
+.turnos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.turno-card,
+.promo-card {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+
+    h3 {
+        margin: 10px 0;
+    }
+
+    p {
+        margin: 4px 0;
+        color: #555;
+    }
+
+    strong {
+        display: block;
+        margin-top: 10px;
+        font-size: 18px;
+    }
+}
+
+.status {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.pending {
+    background: #d4f5ff;
+    color: #0277bd;
+}
+
+.ok {
+    background: #d4f8e8;
+    color: #2e7d32;
+}
+
+.btn-secondary {
+    margin-top: 12px;
+    background: #0d47a1;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.promo-card {
+    background: #16a34a;
+    color: white;
+
+    p {
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
+
+.btn-promo {
+    margin-top: 15px;
+    background: white;
+    color: #16a34a;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* =========================
+   SELECCIÓN DE HORARIO
+========================= */
+
+.horarios-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 10px 0;
+    margin-top: 8px;
+}
+
+.horarios-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.horarios-scroll::-webkit-scrollbar-thumb {
+    background: #cfd8dc;
+    border-radius: 10px;
+}
+
+.custom-travel-accordion {
+    // Estilo del botón del acordeón (el encabezado)
+    .custom-trigger {
+        border: 1px solid #e0e0e0;
+        padding: 1.2rem;
+        
+        // Quitamos la flecha por defecto de Bootstrap si quieres que sea igual a la foto
+        &::after {
+            background-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        &:focus {
+            box-shadow: none;
+            border-color: #28a745;
+        }
+
+        &:not(.collapsed) {
+            background-color: white;
+            color: inherit;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    }
+
+    // Grid de los horarios
+
+
+    // Los "Chips" o botones de hora
+    .horario-chip {
+        flex: 1; // Para que crezcan igual
+        min-width: 100px;
+        padding: 12px 20px;
+        border: 1px solid #e0e0e0;
+        background-color: white;
+        border-radius: 12px;
+        font-weight: 600;
+        color: #1a1a1a;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: #28a745;
+            background-color: #f8fff9;
+        }
+
+        &.active {
+            background-color: #1e4c6b; // Verde oscuro de la imagen
+            color: white;
+            border-color: #1e6b24;
+            box-shadow: 0 4px 10px rgba(30, 107, 36, 0.3);
+        }
+    }
+}
+
+.horario-chip:hover {
+    background: #e3f2fd;
+    border-color: #0d47a1;
+}
+
+.horario-chip.active {
+    background: #0d47a1;
+    color: white;
+    border-color: #0d47a1;
+}
+
+.horario-elegido {
+    margin: 12px 0 5px 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+.aviso-horario {
+    margin-top: 12px;
+    color: #e53935;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+
+.btn-main.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.resumen-busqueda {
+    margin: 12px 0 6px 0;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: #333;
+}
+
+.resumen-busqueda strong {
+    color: #0d47a1;
+}
+
+//CARD PROMOCION  DE VIAJE EN GRUPO
+/* Contenedor Principal con fondo grisáceo muy suave */
+.promo-card {
+    background-color: #f1f4f6; 
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Encabezado con el icono de personas */
+.promo-header {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.icon-main {
+    background-color: #d7e4d9; /* Verde muy pálido */
+    color: #1e6b24;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.promo-titles h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 5px 0;
+    color: #001219;
+}
+
+.promo-titles p {
+    font-size: 0.85rem;
+    color: #5c6770;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Recuadro de Descuento Blanco */
+.discount-box {
+    background-color: #ffffff;
+    border: 1px solid #d35d47; /* Borde terracota */
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    gap: 15px;
+    width: fit-content;
+}
+
+.icon-flash {
+    background-color: #fcece9; /* Fondo rojo suave */
+    color: #d35d47;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.discount-text h3 {
+    color: #d35d47;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.discount-text span {
+    color: #888;
+    font-size: 0.75rem;
+    display: block;
+}
+
+/* Botón Verde con Sombra (Igual a la imagen 3 y 4) */
+.btn-green-action {
+    background-color: #1e6b24;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-weight: 700;
+    width: 100%;
+    max-width: 300px;
+    font-size: 1rem;
+    box-shadow: 0 8px 20px rgba(30, 107, 36, 0.25); /* Sombra pesada como en la imagen */
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.btn-green-action:hover {
+    transform: translateY(-2px);
+    background-color: #154d1a;
+}
+
+/* Texto pequeño debajo del botón */
+.helper-text {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 10px;
+}

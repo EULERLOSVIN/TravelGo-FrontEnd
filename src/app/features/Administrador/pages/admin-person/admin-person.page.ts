@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component,OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { RegisterNewPersonComponent } from '../../components/register-new-person/register-new-person.component';
@@ -18,16 +18,9 @@ import { GetStatsUsersService } from '../../services/get-stats-users.service';
   styleUrl: './admin-person.page.scss',
 })
 export class AdminPersonComponent implements OnInit {
-  // @ViewChild('editModal') editModal!: ElementRef;
-  // @ViewChild('deleteModal') deleteModal!: ElementRef;
-  // @Input() selectedPerson: PersonnelModel | null = null;
 
-
-  // VARIABLES DE MODAL
   isRegisterModalOpen = false;
-  // isDeleteModalOpen = false;
-
-  // VARIABLES DE DATOS
+  
   personnelList: PersonnelModel[] = [];
   searchTerm: string = '';
   pageNumber: number = 1;
@@ -43,7 +36,8 @@ export class AdminPersonComponent implements OnInit {
   constructor(
     private personnelService: GetPersonnelService,
     private statsService: GetStatsUsersService,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.loadStatsPersonnel();
@@ -62,9 +56,7 @@ export class AdminPersonComponent implements OnInit {
         this.isLastPage = this.personnelList.length === 0;
 
         this.isLoading = false;
-
         this.cdr.detectChanges();
-
         console.log('Datos renderizados:', this.personnelList);
       },
       error: (err) => {
@@ -80,6 +72,7 @@ export class AdminPersonComponent implements OnInit {
       next: (data) => {
         this.statsPersonnel = data;
         console.log('Estadísticas de personal:', this.statsPersonnel);
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar estadísticas de personal:', err);
@@ -110,11 +103,9 @@ export class AdminPersonComponent implements OnInit {
 
     this.pageNumber = newPage;
     this.loadPersonnel();
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  //MÉTODOS DE MODAL
   openRegisterModal(): void {
     this.isRegisterModalOpen = true;
   }

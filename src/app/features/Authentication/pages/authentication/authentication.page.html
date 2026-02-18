@@ -1,16 +1,25 @@
 <div class="auth-wrapper">
   <div class="auth-container">
     <div class="auth-header">
-      <h1 class="auth-title">HOLA <span class="highlight">DE NUEVO</span></h1>
-      <p class="auth-subtitle">Ingresa a tu cuenta para gestionar tus viajes</p>
+      <h1 class="auth-title mb-0">HOLA <span class="highlight">DE NUEVO</span></h1>
     </div>
-
+    @if (errorMessage) {
+    <div
+      class="alert alert-danger d-flex align-items-center rounded-4 py-2 mb-3 shadow-sm border-start border-4 border-danger"
+      role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+      <div class="small fw-medium">
+        {{ errorMessage }}
+      </div>
+    </div>
+    }
     <form class="auth-form" (ngSubmit)="onLogin()">
       <div class="form-group">
         <label class="form-label-custom">Correo Electrónico</label>
         <div class="input-group-custom">
           <i class="bi bi-envelope"></i>
-          <input type="email" class="form-control" name="email" [(ngModel)]="loginData.email" placeholder="ejemplo@correo.com" required>
+          <input type="email" class="form-control" name="email" [(ngModel)]="loginData.email"
+            placeholder="ejemplo@correo.com" required>
         </div>
       </div>
 
@@ -18,7 +27,8 @@
         <label class="form-label-custom">Contraseña</label>
         <div class="input-group-custom">
           <i class="bi bi-lock"></i>
-          <input type="password" class="form-control" name="password" [(ngModel)]="loginData.password" placeholder="••••••••" required>
+          <input type="password" class="form-control" name="password" [(ngModel)]="loginData.password"
+            placeholder="••••••••" required>
         </div>
       </div>
 
@@ -27,7 +37,7 @@
       </div>
 
       <button type="submit" class="btn-login-action">
-        INICIAR SESIÓN
+        <span>INICIAR SESIÓN</span>
       </button>
 
       <div class="auth-footer">

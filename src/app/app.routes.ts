@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './features/Home/pages/home/home.page';
-import { SelectSeatPage } from './features/SelectSeat/pages/select-seat/select-seat.page';
-import { FillDataComponent } from './features/FillData/pages/fill-data/fill-data.component';
+import { SelectSeatPage } from './features/Home/pages/select-seat/select-seat.page';
+import { FillDataComponent } from './features/Home/pages/fill-data/fill-data.component';
 import { MainPage } from './layouts/pages/main/main.page';
-import { SelectRoutePage } from './features/seleccionderuta/pages/select-route.page/select-route.page';
 import { AdminComponent } from './layouts/pages/admin/admin.page';
 import { AdminSummaryComponent } from './features/Administrador/pages/admin-summary.page/admin-summary.page';
 import { AdminRoutesComponent } from './features/Administrador/pages/admin-routes.page/admin-routes.page';
@@ -13,10 +12,13 @@ import { AdminSalesComponent } from './features/Administrador/pages/admin-sales.
 import { AdminSettingsComponent } from './features/Administrador/pages/admin-settings.page/admin-settings.page';
 import { AdminAlertsComponent } from './features/Administrador/pages/admin-alerts.page/admin-alerts.page';
 import { AdminSedeComponent } from './features/Administrador/pages/admin-sede.page/admin-sede.page';
-import { Conductor } from './features/pageConductor/features/pageConductor/conductor';
 import { AuthenticationPage } from './features/Authentication/pages/authentication/authentication.page';
 import { authGuard } from './core/guards/auth.guard';
 import { AdministratorComponent } from './features/Administrador/pages/administrator.page/administrator.page';
+import { DriverPage } from './layouts/pages/driver/driver.page';
+import { DriverMainPage } from './features/Driver/pages/driver-main/driver-main.page';
+import { DriverHistoryPage } from './features/Driver/pages/driver-history/driver-history.page';
+import { RouteSelectionPage } from './features/Home/pages/route-selection/route-selection.page';
 
 
 export const routes: Routes = [
@@ -44,12 +46,8 @@ export const routes: Routes = [
             },
             {
                 path: 'select-route',
-                component: SelectRoutePage
-            },
-            {
-                path: 'conductor',
-                component: Conductor
-            },
+                component: RouteSelectionPage
+            }
 
         ]
     },
@@ -109,6 +107,26 @@ export const routes: Routes = [
     {
         path: 'authentication',
         component: AuthenticationPage
+    },
+    {
+        path:'driver',
+        component:DriverPage,
+        canActivate: [authGuard],
+        children:[
+            {
+                path:'',
+                redirectTo:'driver-main',
+                pathMatch:'full'
+            },
+            {
+                path:'driver-main',
+                component: DriverMainPage
+            },
+            {
+                path:'driver-history',
+                component:DriverHistoryPage
+            }
+        ]
     }
 ];
 

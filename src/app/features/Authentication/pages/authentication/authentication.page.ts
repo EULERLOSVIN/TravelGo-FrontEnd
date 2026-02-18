@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LoginRequestModel } from '../../models/LoginRequest.model';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { LoginResponse } from '../../models/login-response.model';
+import { Result } from '../../../../shared/models/result.model';
 
 @Component({
   selector: 'app-authentication',
@@ -18,12 +20,12 @@ export class AuthenticationPage implements OnInit {
     email: '',
     password: ''
   };
-
-  loading: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -36,27 +38,26 @@ export class AuthenticationPage implements OnInit {
   }
 
   onLogin(): void {
-    this.loading = true;
+    this.errorMessage = '';
     this.authService.login(this.loginData).subscribe({
-      next: (response: any) => {
-        localStorage.setItem('token', response.token);
+      next: (response: Result<LoginResponse>) => {
 
-        const roleName = response.rol;
+        if (response.isSuccess) {
+          const { token, rol } = response.value;
+          localStorage.setItem('token', token);
+          localStorage.setItem('userRole', rol);
 
-        if (roleName) {
-          localStorage.setItem('userRole', roleName);
-          this.redirectByUserRole(roleName);
+          this.redirectByUserRole(rol);
         } else {
-          console.error('El campo rol no viene en la respuesta:', response);
-          alert('Error: No se pudo identificar el rol del usuario.');
+          this.errorMessage = response.errorMessage;
         }
       },
       error: (err) => {
-        this.loading = false;
-        console.error('Error de autenticación:', err);
-        alert('Credenciales incorrectas');
-      },
-      complete: () => this.loading = false
+        console.log('Error del servidor:', err.error);
+
+        this.errorMessage = err.error?.errorMessage || 'Correo o contraseña incorrectos';
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -66,10 +67,10 @@ export class AuthenticationPage implements OnInit {
         this.router.navigate(['/administrator']);
         break;
       case 'Chofer':
-        this.router.navigate(['/conductor']);
+        this.router.navigate(['/driver']);
         break;
       case 'Secretario':
-        this.router.navigate(['/home']);
+        this.router.navigate(['/administrator']);
         break;
       default:
         this.router.navigate(['/home']);

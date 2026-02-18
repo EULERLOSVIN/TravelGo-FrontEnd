@@ -1,0 +1,35 @@
+<nav class="navbar navbar-dark bg-success shadow-sm py-2">
+    <div class="container-fluid px-3">
+        <div class="d-flex align-items-center justify-content-between w-100">
+            
+            <a class="navbar-brand fw-bold d-none d-sm-block" routerLink="driver-main">
+                <span class="text-white">TRAVEL</span><span class="text-warning">GO</span>
+            </a>
+
+            <div class="d-flex align-items-center gap-4 mx-auto mx-lg-0">
+                <a class="nav-link-icon" routerLink="driver-main" routerLinkActive="active" title="Home">
+                    <i class="bi bi-house-door-fill fs-3"></i>
+                    <span class="d-none d-lg-inline ms-2">Home</span>
+                </a>
+
+                <a class="nav-link-icon" routerLink="driver-history" routerLinkActive="active" title="Historial">
+                    <i class="bi bi-clock-history fs-3"></i>
+                    <span class="d-none d-lg-inline ms-2">Historial</span>
+                </a>
+
+                <div class="dropdown">
+                    <button class="btn-avatar-icon" id="sesionMobile" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle fs-3"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="sesionMobile">
+                        <li><a class="dropdown-item clickable" routerLink="profile">Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger clickable" (click)="onLogout()">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="d-none d-lg-block" style="width: 50px;"></div>
+        </div>
+    </div>
+</nav>

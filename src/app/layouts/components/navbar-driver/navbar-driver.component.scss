@@ -1,0 +1,48 @@
+
+.nav-link-icon {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    padding: 8px;
+}
+
+.nav-link-icon:hover, .nav-link-icon.active {
+    color: #ffc107;
+    transform: translateY(-2px);
+}
+.clickable{
+    cursor: pointer;
+}
+.clickable:hover{
+    background-color: rgba(224, 224, 224, 0.778);
+}
+
+.nav-link-icon.active i {
+    color: #ffc107;
+}
+
+.btn-avatar-icon {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.btn-avatar-icon:hover {
+    color: #ffc107;
+}
+
+.navbar-toggler {
+    display: none !important;
+}
+
+@media (max-width: 576px) {
+    .gap-4 {
+        gap: 2.5rem !important;
+    }
+}
