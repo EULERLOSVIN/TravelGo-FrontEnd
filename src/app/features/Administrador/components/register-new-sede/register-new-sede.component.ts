@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ChangeDetectorRef, NgZone } fro
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { HeadquartersService } from '../../services/headquarters.service';
+import { UbigeoService } from '../../../../core/services/ubigeo.service';
 
 @Component({
     selector: 'app-register-new-sede',
@@ -18,9 +19,15 @@ export class RegisterNewSedeComponent {
     isLoading = false;
     isSuccess = false;
 
+    // Listas para los selectores
+    departments: any[] = [];
+    provinces: any[] = [];
+    districts: any[] = [];
+
     constructor(
         private fb: FormBuilder,
         private service: HeadquartersService,
+        private ubigeoService: UbigeoService,
         private cdr: ChangeDetectorRef,
         private ngZone: NgZone
     ) {
@@ -36,6 +43,48 @@ export class RegisterNewSedeComponent {
             Email: ['', [Validators.email]],
             IsMain: [false]
         });
+
+        // Cargar departamentos al iniciar
+        this.loadDepartments();
+        console.log('RegisterNewSedeComponent: Loaded with Ubigeo Selectors');
+    }
+
+    // --- Lógica de Ubigeo ---
+
+    loadDepartments() {
+        this.ubigeoService.getDepartments().subscribe(data => {
+            this.departments = data;
+        });
+    }
+
+    onDepartmentChange(event: any) {
+        const selectedDep = event.target.value;
+
+        // Reset province and district
+        this.provinces = [];
+        this.districts = [];
+        this.form.patchValue({ Province: '', District: '' });
+
+        if (selectedDep) {
+            this.ubigeoService.getProvinces(selectedDep).subscribe(data => {
+                this.provinces = data;
+            });
+        }
+    }
+
+    onProvinceChange(event: any) {
+        const selectedProv = event.target.value;
+        const currentDep = this.form.get('Department')?.value;
+
+        // Reset district
+        this.districts = [];
+        this.form.patchValue({ District: '' });
+
+        if (selectedProv && currentDep) {
+            this.ubigeoService.getDistricts(selectedProv, currentDep).subscribe(data => {
+                this.districts = data;
+            });
+        }
     }
 
     // Validador personalizado: No permitir solo números
@@ -54,6 +103,8 @@ export class RegisterNewSedeComponent {
     resetForm() {
         this.isSuccess = false;
         this.form.reset({ IdCompany: 1, IdStateHeadquarter: 1, IsMain: false });
+        this.provinces = [];
+        this.districts = [];
     }
 
     onSubmit() {
@@ -117,3 +168,4 @@ export class RegisterNewSedeComponent {
         this.resetForm();
     }
 }
+

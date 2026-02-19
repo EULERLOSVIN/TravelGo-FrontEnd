@@ -1,0 +1,25 @@
+// Table Header Refinement (cleans up inline HTML styles)
+table th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+}
+
+// Custom White Button (Bootstrap lacks a true 'btn-white')
+.btn-white {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    color: #212529;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        background-color: #f8f9fa;
+        border-color: #cdd4da;
+    }
+}
+
+// Subtle row hover (optional, if table-hover isn't enough)
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}

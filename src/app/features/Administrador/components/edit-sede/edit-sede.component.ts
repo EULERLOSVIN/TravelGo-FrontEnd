@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeadquartersService } from '../../services/headquarters.service';
 import { Headquarter } from '../../models/headquarter.model';
+import { UbigeoService } from '../../../../core/services/ubigeo.service';
 
 @Component({
     selector: 'app-edit-sede',
@@ -19,9 +20,14 @@ export class EditSedeComponent implements OnChanges {
     form: FormGroup;
     isLoading = false;
 
+    departments: any[] = [];
+    provinces: any[] = [];
+    districts: any[] = [];
+
     constructor(
         private fb: FormBuilder,
-        private service: HeadquartersService
+        private service: HeadquartersService,
+        private ubigeoService: UbigeoService
     ) {
         this.form = this.fb.group({
             IdHeadquarter: [0],
@@ -38,22 +44,19 @@ export class EditSedeComponent implements OnChanges {
         });
     }
 
+    ngOnInit() {
+        // Load departments initially
+        this.loadDepartments();
+        console.log('EditSedeComponent: Loaded with Ubigeo Selectors');
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['sede'] && this.sede) {
-            // Mapear valores del objeto sede al formulario
-            // Nota: El backend devuelve 'stateHeadquarter' como string ('Activo'), 
-            // pero el DTO de update espera 'IdStateHeadquarter' como int.
-            // Para editar, asumiremos 1=Activo si el string es 'Activo', sino 2.
-            // O mejor, si el objeto sede ya trae IdStateHeadquarter (que el modelo dice NO, solo string).
-            // Si el modelo solo trae el string, tenemos un problema.
-            // Solución: El backend debería devolver el ID también o mapeamos el string.
-            // Asumiremos: 'Activo' -> 1, otro -> 2.
-
             const stateId = this.sede.stateHeadquarter === 'Activo' ? 1 : 2;
 
             this.form.patchValue({
                 IdHeadquarter: this.sede.idHeadquarter,
-                IdCompany: 1, // Default
+                IdCompany: 1,
                 IdStateHeadquarter: stateId,
                 Name: this.sede.name,
                 Address: this.sede.address,
@@ -64,6 +67,51 @@ export class EditSedeComponent implements OnChanges {
                 Email: this.sede.email,
                 IsMain: this.sede.isMain
             });
+
+            // Pre-load cascading dropdowns based on existing values
+            if (this.sede.department) {
+                this.loadProvinces(this.sede.department);
+            }
+            if (this.sede.province && this.sede.department) {
+                this.loadDistricts(this.sede.province, this.sede.department);
+            }
+        }
+    }
+
+    // --- Ubigeo Logic ---
+
+    loadDepartments() {
+        this.ubigeoService.getDepartments().subscribe(data => this.departments = data);
+    }
+
+    loadProvinces(depName: string) {
+        this.ubigeoService.getProvinces(depName).subscribe(data => this.provinces = data);
+    }
+
+    loadDistricts(provName: string, depName: string) {
+        this.ubigeoService.getDistricts(provName, depName).subscribe(data => this.districts = data);
+    }
+
+    onDepartmentChange(event: any) {
+        const selectedDep = event.target.value;
+        this.provinces = [];
+        this.districts = [];
+        this.form.patchValue({ Province: '', District: '' });
+
+        if (selectedDep) {
+            this.loadProvinces(selectedDep);
+        }
+    }
+
+    onProvinceChange(event: any) {
+        const selectedProv = event.target.value;
+        const currentDep = this.form.get('Department')?.value;
+
+        this.districts = [];
+        this.form.patchValue({ District: '' });
+
+        if (selectedProv && currentDep) {
+            this.loadDistricts(selectedProv, currentDep);
         }
     }
 

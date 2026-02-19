@@ -93,12 +93,10 @@
                     <div class="col-md-4">
                         <label class="form-label small fw-bold">Departamento <span class="text-danger">*</span></label>
                         <select class="form-select rounded-3" formControlName="Department"
+                            (change)="onDepartmentChange($event)"
                             [class.is-invalid]="form.get('Department')?.invalid && form.get('Department')?.touched">
                             <option value="">Seleccione</option>
-                            <option value="Lima">Lima</option>
-                            <option value="Arequipa">Arequipa</option>
-                            <option value="Cusco">Cusco</option>
-                            <option value="Huanuco">Huánuco</option>
+                            <option *ngFor="let d of departments" [value]="d.departamento">{{ d.departamento }}</option>
                         </select>
                         <div *ngIf="form.get('Department')?.touched && form.get('Department')?.invalid"
                             class="invalid-feedback small">
@@ -108,9 +106,12 @@
 
                     <div class="col-md-4">
                         <label class="form-label small fw-bold">Provincia <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control rounded-3" placeholder="Ej. Lima"
-                            formControlName="Province"
+                        <select class="form-select rounded-3" formControlName="Province"
+                            (change)="onProvinceChange($event)"
                             [class.is-invalid]="form.get('Province')?.invalid && form.get('Province')?.touched">
+                            <option value="">Seleccione</option>
+                            <option *ngFor="let p of provinces" [value]="p.provincia">{{ p.provincia }}</option>
+                        </select>
                         <div *ngIf="form.get('Province')?.touched && form.get('Province')?.invalid"
                             class="invalid-feedback small">
                             <span *ngIf="form.get('Province')?.hasError('required')">Requerido.</span>
@@ -119,9 +120,11 @@
 
                     <div class="col-md-4">
                         <label class="form-label small fw-bold">Distrito <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control rounded-3" placeholder="Ej. Miraflores"
-                            formControlName="District"
+                        <select class="form-select rounded-3" formControlName="District"
                             [class.is-invalid]="form.get('District')?.invalid && form.get('District')?.touched">
+                            <option value="">Seleccione</option>
+                            <option *ngFor="let d of districts" [value]="d.distrito">{{ d.distrito }}</option>
+                        </select>
                         <div *ngIf="form.get('District')?.touched && form.get('District')?.invalid"
                             class="invalid-feedback small">
                             <span *ngIf="form.get('District')?.hasError('required')">Requerido.</span>
