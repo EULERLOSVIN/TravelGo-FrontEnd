@@ -10,7 +10,9 @@ export interface TravelRoute {
     nameRoute: string; // "Origen - Destino"
     price: number;
     idPlaceA: number;
+
     idPlaceB: number;
+    isActive?: boolean;
 }
 
 @Injectable({

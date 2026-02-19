@@ -6,11 +6,18 @@
                 <button type="button" class="btn-close" (click)="close.emit()"></button>
             </div>
             <div class="modal-body py-3">
-                <form>
+                <form #form="ngForm">
                     <div class="mb-3">
-                        <label class="form-label small fw-semibold mb-1">Nombre</label>
+                        <label class="form-label small fw-semibold mb-1">Nombre <span
+                                class="text-danger">*</span></label>
                         <input type="text" class="form-control form-control-sm rounded-pill" [(ngModel)]="place.name"
-                            name="name" placeholder="Nombre del lugar">
+                            name="name" required maxlength="50" pattern=".*[a-zA-ZñÑáéíóúÁÉÍÓÚ].*" #nameInput="ngModel"
+                            placeholder="Nombre del lugar">
+                        <div *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)"
+                            class="text-danger small mt-1">
+                            <div *ngIf="nameInput.errors?.['required']">El nombre es obligatorio.</div>
+                            <div *ngIf="nameInput.errors?.['pattern']">El nombre debe contener al menos una letra.</div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold mb-1">Descripción</label>
@@ -23,7 +30,7 @@
                 <button type="button" class="btn btn-sm btn-light rounded-pill px-3" (click)="close.emit()"
                     [disabled]="isLoading">Cancelar</button>
                 <button type="button" class="btn btn-sm btn-primary rounded-pill px-3" (click)="save()"
-                    [disabled]="isLoading">
+                    [disabled]="isLoading || nameInput.invalid">
                     {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
                 </button>
             </div>

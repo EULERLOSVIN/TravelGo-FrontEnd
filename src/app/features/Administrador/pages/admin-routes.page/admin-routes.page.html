@@ -1,83 +1,201 @@
-<div class="container-fluid p-4 bg-light min-vh-100">
-  <!-- Header -->
-  <div class="mb-4">
-    <h2 class="fw-bold mb-1">Gestión de Rutas</h2>
-    <p class="text-muted small">Administre destinos, precios y estados operativos.</p>
+<div class="container-fluid py-4">
+
+  <!-- HEADER -->
+  <div class="row align-items-center mb-4">
+    <div class="col-12 col-md-8">
+      <h1 class="display-6 fw-bold text-dark mb-1" style="letter-spacing: -1px;">Gestión de Rutas</h1>
+      <p class="text-secondary small text-uppercase fw-semibold mb-0" style="letter-spacing: 1px;">
+        Administre destinos, precios y estados operativos
+      </p>
+    </div>
+
+    <div class="col-12 col-md-4 mt-3 mt-md-0">
+      <div class="d-flex align-items-center justify-content-md-end gap-3">
+        <button
+          class="btn btn-success text-white px-4 py-2 rounded-pill shadow-sm fw-bold d-flex align-items-center gap-2"
+          (click)="isModalOpen = true">
+          <i class="bi bi-plus-lg"></i>
+          Nueva Ruta
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Stats Grid -->
+  <!-- STATS CARDS -->
   <div class="row g-3 mb-4">
-
+    <!-- TOTAL -->
     <div class="col-md-4">
-      <div class="bg-white p-3 rounded-4 shadow-sm border-0 text-center">
-        <small class="text-muted fw-bold d-block mb-1">TOTAL DE RUTAS</small>
-        <h3 class="fw-bold">{{ statsRoute.total }}</h3>
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+            Total Rutas</h6>
+          <h2 class="fw-bold mb-3">{{ statsRoute.total }}</h2>
+          <div class="progress" style="height: 4px;">
+            <div class="progress-bar bg-dark" role="progressbar" style="width: 100%" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- ACTIVAS -->
     <div class="col-md-4">
-      <div class="bg-white p-3 rounded-4 shadow-sm border-0 text-center">
-        <small class="text-muted fw-bold d-block mb-1">ACTIVAS</small>
-        <h3 class="fw-bold">{{ statsRoute.activas }}</h3>
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+            Activas</h6>
+          <h2 class="fw-bold text-success mb-3">{{ statsRoute.activas }}</h2>
+          <div class="progress" style="height: 4px;">
+            <div class="progress-bar bg-success" role="progressbar"
+              [style.width.%]="(statsRoute.activas / statsRoute.total) * 100 || 0"></div>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- INACTIVAS -->
     <div class="col-md-4">
-      <div class="bg-white p-3 rounded-4 shadow-sm border-0 text-center">
-        <small class="text-muted fw-bold">INACTIVAS</small>
-        <h3 class="fw-bold">{{ statsRoute.inactivas }}</h3>
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+            Inactivas</h6>
+          <h2 class="fw-bold text-danger mb-3">{{ statsRoute.inactivas }}</h2>
+          <div class="progress" style="height: 4px;">
+            <div class="progress-bar bg-danger" role="progressbar"
+              [style.width.%]="(statsRoute.inactivas / statsRoute.total) * 100 || 0"></div>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 
-
-
-
-
-  <!-- Control Bar & Table -->
-  <div class="bg-white rounded-4 shadow-sm border-0 p-3">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div class="position-relative" style="width: 300px;">
-        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-        <input type="text" class="form-control form-control-sm rounded-pill ps-5 bg-light border-0"
-          placeholder="Buscar ruta..." [(ngModel)]="searchTerm">
+  <!-- BUSCADOR Y ACCIONES -->
+  <div class="row align-items-center mb-4 g-3">
+    <!-- Search Bar -->
+    <div class="col-12 col-md-6">
+      <div class="input-group">
+        <span class="input-group-text bg-white border-end-0 rounded-start-pill ps-3">
+          <i class="bi bi-search text-muted"></i>
+        </span>
+        <input type="text" class="form-control border-start-0 rounded-end-pill ps-0 shadow-sm"
+          placeholder="Buscar ruta..." [(ngModel)]="searchTerm" (input)="applyFilters()">
       </div>
-      <!-- implemtar con grid  row y col  con el serch -->
-      <button class="btn btn-sm btn-success rounded-pill px-4 fw-bold" (click)="isModalOpen = true">
-        <i class="bi bi-plus-lg me-1"></i> Nueva Ruta
-      </button>
     </div>
 
+    <!-- Action Buttons -->
+    <div class="col-12 col-md-6">
+      <div class="d-flex gap-2 justify-content-md-end justify-content-start">
+
+        <!-- Filter Dropdown -->
+        <div class="dropdown">
+          <button
+            class="btn btn-white shadow-sm rounded-pill px-3 fw-bold d-flex align-items-center gap-2 dropdown-toggle"
+            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-funnel"></i>
+            {{ filterState === 'all' ? 'Todos' : (filterState === 'active' ? 'Activas' : 'Inactivas') }}
+          </button>
+          <ul class="dropdown-menu shadow-lg border-0 rounded-3 mt-2">
+            <li><button class="dropdown-item fw-medium" type="button" (click)="setFilterState('all')">Todos</button>
+            </li>
+            <li><button class="dropdown-item fw-medium" type="button"
+                (click)="setFilterState('active')">Activas</button> </li>
+            <li><button class="dropdown-item fw-medium" type="button"
+                (click)="setFilterState('inactive')">Inactivas</button> </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <div class="card border-0 shadow-sm overflow-hidden rounded-4">
     <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
-        <thead class="bg-light text-muted small">
+      <table class="table align-middle mb-0 table-hover">
+        <thead class="table-dark">
           <tr>
-            <th class="border-0 px-3">RUTA (ORIGEN - DESTINO)</th>
-            <th class="border-0 text-center">PRECIO</th>
-            <th class="border-0 text-center">ID</th>
-            <th class="border-0 text-end px-3">ACCIONES</th>
+            <th class="ps-4 py-3 fw-bold border-0 rounded-start-2">#</th>
+            <th class="py-3 fw-bold border-0">Ruta (Origen - Destino)</th>
+            <th class="py-3 fw-bold border-0 text-center">Precio</th>
+            <th class="py-3 fw-bold border-0 text-center">Estado</th>
+            <th class="text-end pe-4 py-3 fw-bold border-0 rounded-end-2">Acciones</th>
           </tr>
         </thead>
-        <tbody class="small fw-semibold">
-          <tr *ngFor="let r of filteredRoutes">
-            <td class="px-3 text-dark">{{r.nameRoute}}</td>
-            <td class="text-center text-primary">S/ {{r.price}}</td>
-            <td class="text-center">{{r.idTravelRoute}}</td>
-            <td class="text-end px-3">
-              <button class="btn btn-sm btn-light border rounded-circle me-1" (click)="openEdit(r)">
-                <i class="bi bi-pencil text-primary"></i>
-              </button>
-              <button class="btn btn-sm btn-light border rounded-circle" (click)="openDelete(r)">
-                <i class="bi bi-trash text-danger"></i>
-              </button>
+        <tbody>
+          <tr *ngFor="let r of paginatedRoutes; let i = index">
+            <td class="ps-4 fw-semibold text-muted">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+            <td class="text-dark fw-bold">{{r.nameRoute}}</td>
+            <td class="text-center text-primary fw-bold">S/ {{r.price}}</td>
+            <td class="text-center">
+              <span class="badge rounded-pill border" [class.bg-success-subtle]="r.isActive !== false"
+                [class.text-success]="r.isActive !== false" [class.border-success-subtle]="r.isActive !== false"
+                [class.bg-danger-subtle]="r.isActive === false" [class.text-danger]="r.isActive === false"
+                [class.border-danger-subtle]="r.isActive === false">
+                {{ r.isActive !== false ? 'Activa' : 'Inactiva' }}
+              </span>
+            </td>
+            <td class="text-end pe-4">
+              <div class="d-flex justify-content-end gap-2">
+                <button
+                  class="btn btn-white btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center text-primary"
+                  style="width: 32px; height: 32px;" title="Editar" (click)="openEdit(r)">
+                  <i class="bi bi-pencil-fill" style="font-size: 0.8rem;"></i>
+                </button>
+                <button
+                  class="btn btn-white btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center text-danger"
+                  style="width: 32px; height: 32px;" title="Eliminar" (click)="openDelete(r)">
+                  <i class="bi bi-trash3-fill" style="font-size: 0.8rem;"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="paginatedRoutes.length === 0">
+            <td colspan="5" class="text-center py-5 text-muted">
+              <div class="d-flex flex-column align-items-center">
+                <i class="bi bi-inbox fs-1 mb-2 opacity-50"></i>
+                <span>No se encontraron rutas.</span>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
-      <div *ngIf="filteredRoutes.length === 0" class="text-center py-4 text-muted">
-        No se encontraron rutas.
-      </div>
+    </div>
+
+    <!-- FOOTER (Paginación) -->
+    <div class="d-flex justify-content-between align-items-center p-3 bg-white border-top">
+      <small class="text-muted fw-medium">
+        Mostrando {{ (currentPage - 1) * pageSize + 1 }} - {{ Math.min(currentPage * pageSize, routes.length) }}
+        de {{ routes.length }} registros
+      </small>
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-sm mb-0 gap-1">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link border-0 rounded-circle d-flex align-items-center justify-content-center"
+              (click)="changePage(currentPage - 1)" style="width: 32px; height: 32px;" [disabled]="currentPage === 1">
+              <i class="bi bi-chevron-left small"></i>
+            </button>
+          </li>
+
+          <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
+            <button
+              class="page-link border-0 rounded-circle d-flex align-items-center justify-content-center shadow-sm fw-bold"
+              (click)="changePage(page)" [class.bg-dark]="page === currentPage"
+              [class.text-white]="page === currentPage" [class.text-secondary]="page !== currentPage"
+              style="width: 32px; height: 32px;">
+              {{ page }}
+            </button>
+          </li>
+
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link border-0 rounded-circle d-flex align-items-center justify-content-center"
+              (click)="changePage(currentPage + 1)" style="width: 32px; height: 32px;"
+              [disabled]="currentPage === totalPages">
+              <i class="bi bi-chevron-right small"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>

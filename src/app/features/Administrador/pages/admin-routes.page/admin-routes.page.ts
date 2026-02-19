@@ -16,8 +16,26 @@ import { RoutesService, TravelRoute } from '../../services/routes.service';
   styleUrl: './admin-routes.page.scss',
 })
 export class AdminRoutesComponent implements OnInit {
-  routes: TravelRoute[] = [];
-  searchTerm: string = ''; // Para la búsqueda
+  allRoutes: TravelRoute[] = []; // Ruta Maestra
+  routes: TravelRoute[] = []; // Vista Filtrada
+
+  // Stats
+  statsRoute = {
+    total: 0,
+    activas: 0,
+    inactivas: 0
+  }
+
+  // Filters
+  searchTerm: string = '';
+  filterState = 'all'; // 'all', 'active', 'inactive'
+
+  // Pagination
+  paginatedRoutes: TravelRoute[] = [];
+  currentPage = 1;
+  pageSize = 15;
+  totalPages = 1;
+  Math = Math; // Expose Math to template
 
   isModalOpen = false;
   isEditModalOpen = false;
@@ -33,34 +51,82 @@ export class AdminRoutesComponent implements OnInit {
   loadRoutes() {
     this.routesService.getAll().subscribe({
       next: (data) => {
-        this.routes = data;
-        console.log('Rutas cargadas:', data);
-        this.cdr.detectChanges(); // Forzar actualización de vista
+        this.allRoutes = data || [];
+
+        // Calcular contadores reales
+        this.statsRoute.total = this.allRoutes.length;
+        this.statsRoute.activas = this.allRoutes.filter(r => r.isActive !== false).length;
+        this.statsRoute.inactivas = this.allRoutes.filter(r => r.isActive === false).length;
+
+        // Inicializar lista filtrada
+        this.applyFilters();
+        this.cdr.detectChanges();
       },
       error: (e) => console.error('Error al cargar rutas', e)
     });
   }
 
-  // Filtro simple en frontend
-  get filteredRoutes() {
-    return this.routes.filter(r =>
-      r.nameRoute.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+  applyFilters() {
+    let temp = [...this.allRoutes];
+
+    // 1. Filtrar por Estado
+    if (this.filterState === 'active') {
+      temp = temp.filter(r => r.isActive !== false);
+    } else if (this.filterState === 'inactive') {
+      temp = temp.filter(r => r.isActive === false);
+    }
+
+    // 2. Filtrar por Texto Buscado
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.toLowerCase();
+      temp = temp.filter(r =>
+        r.nameRoute.toLowerCase().includes(term)
+      );
+    }
+
+    this.routes = temp;
+    this.currentPage = 1; // Reset to first page on filter
+    this.updatePagination();
+  }
+
+  updatePagination() {
+    this.totalPages = Math.ceil(this.routes.length / this.pageSize) || 1;
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedRoutes = this.routes.slice(start, end);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  getPages(): number[] {
+    // Simple pagination logic to show max 5 buttons
+    let start = Math.max(1, this.currentPage - 2);
+    let end = Math.min(this.totalPages, start + 4);
+
+    if (end - start < 4) {
+      start = Math.max(1, end - 4);
+    }
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+
+  setFilterState(state: string) {
+    this.filterState = state;
+    this.applyFilters();
   }
 
   openEdit(route: any) {
-    this.selectedRoute = { ...route }; // Copia para no modificar directo
+    this.selectedRoute = { ...route };
     this.isEditModalOpen = true;
   }
 
   openDelete(route: any) {
     this.selectedRoute = route;
     this.isDeleteModalOpen = true;
-  }
-
-  statsRoute  = {
-    total:25,
-    activas:24,
-    inactivas:1
   }
 }

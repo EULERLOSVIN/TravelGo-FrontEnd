@@ -23,9 +23,10 @@ export class RegisterNewRouteComponent {
 
   formData: TravelRoute = {
     nameRoute: '',
-    price: 0,
-    idPlaceA: 1, // Valor por defecto
-    idPlaceB: 2  // Valor por defecto
+    price: null as any,
+    idPlaceA: null as any,
+    idPlaceB: null as any,
+    isActive: true
   };
 
   places: any[] = [];

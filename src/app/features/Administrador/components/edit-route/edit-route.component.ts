@@ -1,5 +1,5 @@
 // rutas=darwin
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RoutesService, TravelRoute } from '../../services/routes.service';
@@ -24,16 +24,36 @@ export class EditRouteComponent implements OnChanges {
     places: any[] = [];
     isLoading = false;
 
-    constructor(private routesService: RoutesService, private placesService: PlacesService) {
+    constructor(private routesService: RoutesService, private placesService: PlacesService, private cdr: ChangeDetectorRef) {
         this.loadPlaces();
     }
 
     loadPlaces() {
-        this.placesService.getAll().subscribe(data => this.places = data);
+        this.placesService.getAll().subscribe(data => {
+            this.places = data;
+            this.cdr.detectChanges(); // Forzar actualización al cargar lugares
+        });
     }
 
+    originalRoute: TravelRoute | null = null;
+
     ngOnChanges(changes: SimpleChanges) {
-        // No necesitamos hacer nada especial aquí ahora, el objeto se pasa por referencia
+        if (changes['routeToEdit'] && this.routeToEdit) {
+            // Crear copia profunda para comparación
+            this.originalRoute = JSON.parse(JSON.stringify(this.routeToEdit));
+            // Forzar actualización con timeout para asegurar que el DOM esté listo
+            setTimeout(() => {
+                this.cdr.detectChanges();
+            }, 0);
+        }
+    }
+
+    hasChanges(): boolean {
+        if (!this.routeToEdit || !this.originalRoute) return false;
+        return this.routeToEdit.idPlaceA != this.originalRoute.idPlaceA ||
+            this.routeToEdit.idPlaceB != this.originalRoute.idPlaceB ||
+            this.routeToEdit.price != this.originalRoute.price ||
+            this.routeToEdit.isActive != this.originalRoute.isActive;
     }
 
     save() {
