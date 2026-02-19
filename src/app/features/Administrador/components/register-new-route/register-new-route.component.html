@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body py-3">
                 <form class="row g-2" #routeForm="ngForm">
-                    <div class="col-6">
+                    <div class="col-12">
                         <label class="form-label small fw-semibold mb-1">Origen <span
                                 class="text-danger">*</span></label>
                         <select class="form-select form-select-sm rounded-pill" [(ngModel)]="formData.idPlaceA"
@@ -23,7 +23,7 @@
                             Seleccione el origen.
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12">
                         <label class="form-label small fw-semibold mb-1">Destino <span
                                 class="text-danger">*</span></label>
                         <select class="form-select form-select-sm rounded-pill" [(ngModel)]="formData.idPlaceB"
@@ -39,12 +39,8 @@
                             Seleccione el destino.
                         </div>
                     </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-semibold mb-1">Tiempo (Hrs)</label>
-                        <input type="number" class="form-control form-control-sm rounded-pill" disabled
-                            placeholder="Calculado">
-                    </div>
-                    <div class="col-6">
+                   
+                    <div class="col-12">
                         <label class="form-label small fw-semibold mb-1">Precio (S/) <span
                                 class="text-danger">*</span></label>
                         <input type="number" class="form-control form-control-sm rounded-pill"
