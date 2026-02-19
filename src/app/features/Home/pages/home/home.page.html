@@ -2,10 +2,8 @@
   <div class="row">
     <div class="col-12 col-lg-7 d-flex flex-column justify-content-center">
 
-      <!-- Badge y Títulos -->
       <div class="text-center text-lg-start">
         <div class="badge">VIAJA SEGURO CON LOS MEJORES</div>
-
         <div class="d-flex flex-column mb-4 mb-lg-5">
           <div class="cover-title">
             <h1 class="title mb-0">Viaja con</h1>
@@ -13,88 +11,80 @@
               <span class="text-danger">TravelGo</span> Especial
             </h1>
           </div>
-
           <p class="description px-3 px-lg-0">
-            Experiencia Premium en transporte interprovincial.<br class="d-none d-md-block" />
-            Unidades modernas, puntualidad y el respaldo de
-            <strong class="highlight">El Original.</strong>
+            Experiencia Premium en transporte interprovincial.
           </p>
         </div>
       </div>
 
-      <!-- FILTROS DE BUSQUEDA-->
       <div class="select-section mt-3 mt-lg-5">
         <div class="container-filters p-2">
           <div class="row g-0 align-items-center w-100">
 
-            <!-- Origen -->
             <div class="col-12 col-md-5 col-xl filter-item filter-origin">
               <label class="filter-label">ORIGEN</label>
               <div class="d-flex align-items-center">
                 <i class="bi bi-geo-alt icon-green me-2"></i>
-                <select class="form-select border-0 shadow-none">
-                  <option selected disabled>Origen</option>
-                  @for (place of listPlaces; track place.id) {
-                  <option [value]="place.id">{{ place.name }}</option>
+                <select class="form-select border-0 shadow-none" 
+                        [ngModel]="originId()" 
+                        (ngModelChange)="originId.set($event)">
+                  <option [ngValue]="null" disabled selected>Origen</option>
+                  @for (place of listPlaces(); track place.id) {
+                    <option [value]="place.id">{{ place.name }}</option>
                   }
                 </select>
               </div>
             </div>
 
-            <!-- Swap -->
-            <!-- <div class="col-12 col-md-2 col-xl-auto px-2 d-flex justify-content-center">
-              <div class="swap-circle">
-                <i class="bi bi-arrow-left-right"></i>
-              </div>
-            </div> -->
-
-            <!-- Destino -->
             <div class="col-12 col-md-5 col-xl filter-item filter-dest">
               <label class="filter-label">DESTINO</label>
               <div class="d-flex align-items-center">
                 <i class="bi bi-flag icon-red me-2"></i>
-                <select class="form-select border-0 shadow-none">
-                  <option selected disabled>Destino</option>
-                  @for (place of listPlaces; track place.id) {
-                  <option [value]="place.id">{{ place.name }}</option>
+                <select class="form-select border-0 shadow-none" 
+                        [ngModel]="destinationId()" 
+                        (ngModelChange)="destinationId.set($event)">
+                  <option [ngValue]="null" disabled selected>Destino</option>
+                  @for (place of listPlaces(); track place.id) {
+                    <option [value]="place.id">{{ place.name }}</option>
                   }
                 </select>
               </div>
             </div>
 
-            <!-- Fecha -->
             <div class="col-12 col-md-6 col-xl filter-item filter-date px-3">
               <label class="filter-label mb-1">FECHA DE VIAJE</label>
-              
               <div class="d-flex align-items-center">    
                 <i class="bi bi-calendar3 text-success me-2"></i>            
                 <select class="form-select border-0 shadow-none">
-                  <option selected>dia</option>
-                  <option value="">hoy</option>
-                  <option value="">Mañana</option>
+                  <option selected disabled>Día</option>
+                  <option value="hoy">Hoy</option>
+                  <option value="manana">Mañana</option>
                 </select>
               </div>
-
             </div>
 
-            <!-- Botones -->
             <div class="col-12 col-xl-auto ps-xxl-3 pe-xxl-2 mt-3 mt-md-3 mt-xl-0">
               <button
                 class="btn btn-buscar d-flex align-items-center justify-content-center gap-2 px-4 py-2 w-100 w-xl-auto"
-                routerLink="/select-route">
-                <i class="bi bi-search"></i> BUSCAR</button>
+                [disabled]="!originId() || !destinationId() || originId() === destinationId()"
+                [routerLink]="['/select-route']"
+                [queryParams]="{ from: originId(), to: destinationId() }">
+                <i class="bi bi-search"></i> BUSCAR
+              </button>
             </div>
 
           </div>
         </div>
+        @if (originId() && destinationId() && originId() === destinationId()) {
+          <small class="text-danger mt-2 d-block text-center">El origen y destino no pueden ser iguales.</small>
+        }
       </div>
     </div>
 
     <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center mt-5 mt-lg-0">
-      <div class="cover-image d-flex justify-content-center justify-content-lg-end align-items-center">
+      <div class="cover-image">
         <img class="image" src="/img/van1.png" alt="Imagen de viaje" />
       </div>
     </div>
-
   </div>
 </div>
