@@ -46,7 +46,7 @@
   </article>
 
   <article class="stat-card">
-    <small>EN RUTA</small>
+    <small>ACTIVO</small>
     <p class="stat-value text-green">5</p>
     <div class="progress-bar">
       <div class="fill green" style="width: 42%"></div>
@@ -54,7 +54,7 @@
   </article>
 
   <article class="stat-card">
-    <small>EN MANTENIMIENTO</small>
+    <small>INACTIVO</small>
     <p class="stat-value text-red">1</p>
     <div class="progress-bar">
       <div class="fill red" style="width: 8%"></div>
@@ -101,8 +101,8 @@
               <span>Ricardo Castillo</span>
             </div>
           </td>
-          <!-- Estado: En Fila (Azul) -->
-          <td><span class="badge status-blue">En Fila</span></td>
+          <!-- Estado: ACTIVO (Azul) -->
+          <td><span class="badge status-blue">ACTIVO</span></td>
           <td class="text-center"><i class="bi bi-patch-check-fill text-green text-xl" title="Vigente"></i></td>
           <td class="text-right">
             <div class="actions">
@@ -134,38 +134,9 @@
               <span>Marco Arrieta</span>
             </div>
           </td>
-          <!-- Estado: En Ruta (Verde) -->
-          <td><span class="badge status-green">En Ruta</span></td>
-          <td class="text-center"><i class="bi bi-patch-check-fill text-green text-xl"></i></td>
-          <td class="text-right">
-            <div class="actions">
-              <button class="btn-icon"
-                (click)="openEditModal({unitCode:'U-005', plate:'XYZ-987', type:'minivan15', model:'Toyota Hiace', driverName:'Marco Arrieta', status:'route', soatExpiry:'2025-11-20'})">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn-icon hover-red" (click)="openDeleteModal()">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-
-        <!-- ROW 3 -->
-        <tr>
-          <td><span class="unit-id">U-012</span></td>
-          <td>
-            <div class="vehicle-thumb placeholder">
-              <i class="bi bi-image"></i>
-            </div>
-          </td>
-          <td><span class="badge-type">Auto 5 pax</span></td>
-          <td class="font-semibold">DEF-456</td>
-          <td class="font-semibold">Sedán Ejecutivo</td>
-          <td>
-            <span class="text-muted italic" style="font-size: 0.85rem;">Sin asignar</span>
-          </td>
-          <!-- Estado: Taller (Rojo) -->
-          <td><span class="badge status-red">Taller</span></td>
+ 
+          <!-- Estado: INACTIVO (Rojo) -->
+          <td><span class="badge status-red">INACTIVO</span></td>
           <td class="text-center"><i class="bi bi-exclamation-triangle-fill text-amber text-xl" title="Por vencer"></i>
           </td>
           <td class="text-right">
