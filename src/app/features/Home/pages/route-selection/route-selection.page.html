@@ -15,20 +15,30 @@
                     <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                         <div class="accordion-body px-0 py-3">
                             <div class="row g-3 row-cols-2 row-cols-lg-4 justify-content-center">
-                                @for(h of horarios; track h){
+                                @for(item of routeData()?.departureHour; track item.id){
                                 <div class="col">
                                     <div class="d-flex justify-content-center">
-                                        <button type="button" class="horario-chip shadow-sm" (click)="selectHorario(h)"
-                                            [class.active]="h === horarioSeleccionado">
-                                            {{ h }}
+                                        <button type="button" class="horario-chip shadow-sm position-relative"
+                                            (click)="selectHorario(item)"
+                                            [class.active]="item.id === horarioSeleccionado()?.id"
+                                            [class.opacity-50]="!item.vehicle">
+
+                                            {{ item.departureHour | date:'shortTime' }}
+
+                                            @if(!item.vehicle) {
+                                            <span
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary"
+                                                style="font-size: 0.5rem;">
+                                                Pnd
+                                            </span>
+                                            }
                                         </button>
                                     </div>
                                 </div>
-
                                 }
                             </div>
 
-                            @if(reservaIntentada && !horarioSeleccionado){
+                            @if(reservaIntentada && !horarioSeleccionado()){
                             <div class="aviso-horario mt-2 text-danger small fw-bold">
                                 <i class="bi bi-exclamation-circle me-1"></i> Por favor, selecciona un horario
                             </div>
@@ -45,45 +55,75 @@
             <div class="row card-select-trip shadow">
                 <div class="col-12 col-lg-5">
                     <div class="img-container">
-                        <img class="img-vehicle" src="/img/van3.png" alt="Vehículo de transporte">
+                        <img class="img-vehicle"
+                            [src]="horarioSeleccionado()?.vehicle?.photo ? ('data:image/png;base64,' + horarioSeleccionado()?.vehicle?.photo) : '/img/van3.png'"
+                            alt="Vehículo de transporte">
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-7">
                     <div class="salida-info">
-                        <h1 class="fw-bold text-dark">TINGO MARIA - TOCACHE</h1>
+                        <h1 class="fw-bold text-dark">{{ routeData()?.nameRoute || 'Cargando Ruta...' }}</h1>
+
                         <div class="details mb-3">
-                            <span class="text-dark fw-medium"><i class="bi bi-people fs-5 text-success"></i> 3 Asientos
-                                disponibles</span>
-                            <span class="text-dark fw-medium"><i class="bi bi-bus-front fs-5 text-success"></i> Toyota
-                                Hiace</span>
+                            @if(horarioSeleccionado()?.vehicle) {
+                            <span class="text-dark fw-medium">
+                                <i class="bi bi-people fs-5 text-success"></i>
+                                {{ horarioSeleccionado()?.vehicle?.availableSeats }} Asientos disponibles
+                            </span>
+                            <span class="text-dark fw-medium">
+                                <i class="bi bi-bus-front fs-5 text-success"></i>
+                                Unidad TravelGo Premium
+                            </span>
+                            } @else {
+                            <div
+                                class="alert alert-warning border-0 shadow-sm d-flex align-items-center py-2 px-3 mb-0">
+                                <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                                <div>
+                                    <span class="fw-bold d-block">Salida sin confirmar</span>
+                                    <small>Aún no se ha asignado una unidad para este horario.</small>
+                                </div>
+                            </div>
+                            }
                         </div>
 
                         <div class="selection-box p-3 rounded-3 mb-0">
                             <div class="resumen-busqueda mb-1">
-                                <span class="text-muted small">Fecha: hoy</span>
+                                <span class="text-muted small">
+                                    Fecha: {{ (horarioSeleccionado()?.departureHour | date:'dd/MM/yyyy') || 'Hoy' }}
+                                </span>
                             </div>
                             <div class="horario-elegido">
                                 <i class="bi bi-clock text-success"></i>
                                 <span class="ms-1 fw-bold text-dark">Horario seleccionado:</span>
-                                <h2 class="display-6 time mt-2 mb-0">{{ horarioSeleccionado }}</h2>
+                                <h2 class="display-6 time mt-2 mb-0">
+                                    {{ (horarioSeleccionado()?.departureHour | date:'shortTime') || '--:--' }}
+                                </h2>
                             </div>
                         </div>
-                        <!-- falta -->
+
                         <div class="price">
-                            <span class="old">S/ 80.00</span>
-                            <span class="new">S/ 45.00</span>
+                            <span class="new">S/ {{ routeData()?.price | number:'1.2-2' }}</span>
                         </div>
 
-                        <button class="btn-main btn btn-danger" routerLink="/select-seat" (click)="onReservar($event)"
-                            [class.disabled]="!horarioSeleccionado" [attr.aria-disabled]="!horarioSeleccionado">
-                            Reservar ahora
-                        </button>
+                        <div class="d-grid gap-2">
+                            <button class="btn-main btn btn-danger w-100" [routerLink]="['/select-seat']"
+                                [queryParams]="{ vehicleId: horarioSeleccionado()?.vehicle?.id, routeId: routeData()?.idRoute, price:routeData()?.price, departureHour:horarioSeleccionado()?.departureHour, nameRoute:routeData()?.nameRoute}"
+                                (click)="onReservar($event)"
+                                [disabled]="!horarioSeleccionado() || !horarioSeleccionado()?.vehicle">
+                                {{ horarioSeleccionado()?.vehicle ? 'Reservar ahora' : 'No disponible para reserva' }}
+                            </button>
+
+                            @if(horarioSeleccionado() && !horarioSeleccionado()?.vehicle) {
+                            <p class="text-muted text-center small mt-1">
+                                <i class="bi bi-info-circle"></i> Intente con otro horario disponible.
+                            </p>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="row">
@@ -92,32 +132,18 @@
                 <div class="row align-items-center">
                     <div class="col-md-7">
                         <div class="promo-header">
-                            <div class="icon-main">
-                                <i class="bi bi-people"></i>
-                            </div>
+                            <div class="icon-main"><i class="bi bi-people"></i></div>
                             <div class="promo-titles">
                                 <h2>¿Viajas en grupo o familia?</h2>
-                                <p>Reserva una unidad completa para tu grupo u familia y obtén beneficios exclusivos.
-                                    Viaja con tus personas especiales de forma cómoda y privada.</p>
-                            </div>
-                        </div>
-
-                        <div class="discount-box">
-                            <div class="icon-flash">
-                                <i class="bi bi-lightning-charge"></i>
-                            </div>
-                            <div class="discount-text">
-                                <h3>Hasta 15% de descuento</h3>
-                                <span>En reservas de grupo</span>
+                                <p>Reserva una unidad completa y obtén beneficios exclusivos en la Municipalidad de
+                                    Leoncio Prado.</p>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-5 text-center mt-4 mt-md-0">
-                        <a class="btn-green-action"  [href]="whatsappUrl">
+                        <a class="btn-green-action" [href]="whatsappUrl" target="_blank">
                             Cotizar viaje privado
                         </a>
-                        <p class="helper-text">Obtén una cotización personalizada sin compromisos</p>
                     </div>
                 </div>
             </div>

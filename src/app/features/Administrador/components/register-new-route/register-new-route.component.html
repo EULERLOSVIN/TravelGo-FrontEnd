@@ -5,68 +5,62 @@
                 <h5 class="modal-title fw-bold">Nueva Ruta</h5>
                 <button type="button" class="btn-close" (click)="close.emit()"></button>
             </div>
-            <div class="modal-body py-3">
-                <form class="row g-2" #routeForm="ngForm">
-                    <div class="col-6">
-                        <label class="form-label small fw-semibold mb-1">Origen <span
-                                class="text-danger">*</span></label>
-                        <select class="form-select form-select-sm rounded-pill" [(ngModel)]="formData.idPlaceA"
-                            name="idPlaceA" required #origin="ngModel">
+            <div class="modal-body py-4">
+                <form class="row g-3" #routeForm="ngForm">
+                    <!-- Origen y Destino en la misma fila -->
+                    <div class="col-12 col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase mb-1"
+                            style="font-size: 0.7rem; letter-spacing: 0.5px;">Origen</label>
+                        <select class="form-select border-0 bg-light rounded-3 shadow-sm py-2"
+                            [(ngModel)]="formData.idPlaceA" name="idPlaceA" required #origin="ngModel">
                             <option [ngValue]="null" disabled selected>Seleccione...</option>
                             <option *ngFor="let p of places" [value]="p.idPlace"
                                 [disabled]="p.idPlace == formData.idPlaceB">
-                                {{p.name}} {{ p.idPlace == formData.idPlaceB ? '(Destino)' : '' }}
+                                {{p.name}}
                             </option>
                         </select>
-                        <div *ngIf="origin.invalid && (origin.dirty || origin.touched)" class="text-danger small mt-1"
-                            style="font-size: 0.75rem;">
-                            Seleccione el origen.
+                        <div *ngIf="origin.invalid && (origin.dirty || origin.touched)" class="text-danger small mt-1">
+                            Requerido.
                         </div>
                     </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-semibold mb-1">Destino <span
-                                class="text-danger">*</span></label>
-                        <select class="form-select form-select-sm rounded-pill" [(ngModel)]="formData.idPlaceB"
-                            name="idPlaceB" required #destination="ngModel">
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase mb-1"
+                            style="font-size: 0.7rem; letter-spacing: 0.5px;">Destino</label>
+                        <select class="form-select border-0 bg-light rounded-3 shadow-sm py-2"
+                            [(ngModel)]="formData.idPlaceB" name="idPlaceB" required #destination="ngModel">
                             <option [ngValue]="null" disabled selected>Seleccione...</option>
                             <option *ngFor="let p of places" [value]="p.idPlace"
                                 [disabled]="p.idPlace == formData.idPlaceA">
-                                {{p.name}} {{ p.idPlace == formData.idPlaceA ? '(Origen)' : '' }}
+                                {{p.name}}
                             </option>
                         </select>
                         <div *ngIf="destination.invalid && (destination.dirty || destination.touched)"
-                            class="text-danger small mt-1" style="font-size: 0.75rem;">
-                            Seleccione el destino.
+                            class="text-danger small mt-1">
+                            Requerido.
                         </div>
                     </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-semibold mb-1">Tiempo (Hrs)</label>
-                        <input type="number" class="form-control form-control-sm rounded-pill" disabled
-                            placeholder="Calculado">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-semibold mb-1">Precio (S/) <span
-                                class="text-danger">*</span></label>
-                        <input type="number" class="form-control form-control-sm rounded-pill"
-                            [(ngModel)]="formData.price" name="price" required min="1" #price="ngModel"
-                            placeholder="0.00">
-                        <div *ngIf="price.invalid && (price.dirty || price.touched)" class="text-danger small mt-1"
-                            style="font-size: 0.75rem;">
-                            Ingrese un precio válido.
+
+                    <!-- Precio y Estado -->
+                    <div class="col-12 col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase mb-1"
+                            style="font-size: 0.7rem; letter-spacing: 0.5px;">Precio (S/)</label>
+                        <div class="input-group shadow-sm rounded-3 overflow-hidden border-0">
+                            <span class="input-group-text bg-white border-0 text-muted ps-3">S/</span>
+                            <input type="number" class="form-control border-0 bg-white" [(ngModel)]="formData.price"
+                                name="price" required min="1" placeholder="0.00">
                         </div>
                     </div>
-                    <div class="col-12 mt-3">
-                        <div
-                            class="form-check form-switch bg-light rounded-4 p-2 ps-5 border d-flex align-items-center">
+
+                    <div class="col-12 col-md-6 d-flex align-items-end">
+                        <div class="form-check form-switch bg-light rounded-3 p-2 ps-5 border border-0 w-100 d-flex align-items-center"
+                            style="height: 42px;"> <!-- Altura para igualar al input -->
                             <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="statusSwitchNew"
                                 [(ngModel)]="formData.isActive" name="isActive">
                             <label class="form-check-label fw-bold small mb-0" for="statusSwitchNew"
                                 [ngClass]="formData.isActive ? 'text-success' : 'text-secondary'">
                                 {{ formData.isActive ? 'ACTIVO' : 'INACTIVO' }}
                             </label>
-                            <small class="text-muted ms-auto pe-2" style="font-size: 0.75rem;">
-                                {{ formData.isActive ? 'Ruta operativa' : 'Ruta suspendida' }}
-                            </small>
                         </div>
                     </div>
                 </form>

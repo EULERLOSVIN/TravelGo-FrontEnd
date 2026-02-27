@@ -1,14 +1,24 @@
 <div class="container py-4">
   <div class="row g-4">
-
-    <!-- Izquierda -->
     <div class="col-12 col-lg-8">
-      <app-card-select-seat></app-card-select-seat>
+      @if (selectionData()) {
+        <app-card-select-seat 
+          [data]="selectionData()!"
+          (seatsChanged)="onSeatsChanged($event)"> </app-card-select-seat>
+      } @else {
+        }
     </div>
 
-    <!-- Derecha -->
     <div class="col-12 col-lg-4">
-      <app-card-purchase-detail></app-card-purchase-detail>
+      <app-card-purchase-detail 
+        [selectedSeats]="seatsSelectedInView"
+        [priceSeat]="selectionData()?.price || 0.00" 
+        [idRoute]="selectionData()?.idRoute"
+        [idVehicle]="selectionData()?.idVehicle"
+        [departureHour]="selectionData()?.departureHour"
+        [nameRoute]="selectionData()?.nameRoute"
+        >       
+      </app-card-purchase-detail>
     </div>
   </div>
 </div>

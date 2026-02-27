@@ -1,24 +1,25 @@
-.table {
-  thead th {
+// Table Header Refinement (cleans up inline HTML styles)
+table th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
-    font-weight: 700;
-  }
+    vertical-align: middle;
 }
 
-.badge {
-  font-size: 11px;
-  padding: 6px 12px;
+// Custom White Button (Bootstrap lacks a true 'btn-white')
+.btn-white {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    color: #212529;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        background-color: #f8f9fa;
+        border-color: #cdd4da;
+    }
 }
 
-.btn-light {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background: #eef2f7;
-  }
+// Subtle row hover (optional, if table-hover isn't enough)
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
 }
