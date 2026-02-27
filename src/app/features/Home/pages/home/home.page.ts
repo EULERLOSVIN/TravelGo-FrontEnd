@@ -16,6 +16,7 @@ import { Result } from '../../../../shared/models/result.model';
 export class HomePage implements OnInit {
   listPlaces = signal<PlaceModel[]>([]);
   originId = signal<number | null>(null);
+  dayOption = signal<number>(0);
   destinationId = signal<number | null>(null);
 
   constructor(private getPlaceService: GetPlaceService) {}

@@ -52,22 +52,6 @@
     font-size: 18px;
 }
 
-.tg-seat-available {
-    border: 2px solid #16a34a !important;
-    background: #fff !important;
-}
-
-.tg-seat-selected {
-    border: 2px solid #16a34a !important;
-    background: #16a34a !important;
-    color: #fff !important;
-}
-
-.tg-seat-occupied {
-    border: 2px solid #e5e7eb !important;
-    background: #e5e7eb !important;
-    color: #94a3b8 !important;
-}
 
 .tg-seat-text {
     font-size: 10px;
@@ -109,4 +93,28 @@
         0 30px 60px rgba(0, 0, 0, 0.20);
 
     transform: translateY(-2px);
+}
+
+//ASIENTOS 
+/* Disponible: Verde */
+.tg-seat-available {
+  background-color: #05092b;
+  color: white;
+}
+
+/* Ocupado: Gris */
+.tg-seat-occupied {
+  background-color: #d0d3d5;
+  color: #adb5bd;
+  cursor: not-allowed !important;
+}
+
+/* Seleccionado: Azul (esta tiene prioridad) */
+/* Este es el que hace que se "quede" resaltado */
+.tg-seat-selected {
+  background-color: #ffc107 !important; /* Amarillo brillante */
+  color: #000 !important;
+  border: 3px solid #e0a800 !important;
+  transform: scale(1.1); /* Un pequeño efecto de aumento */
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
 }

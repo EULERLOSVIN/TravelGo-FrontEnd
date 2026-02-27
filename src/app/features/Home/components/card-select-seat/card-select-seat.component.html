@@ -1,24 +1,20 @@
 <div class="card border-0 shadow-sm rounded-4 p-4">
 
-  <!-- Título -->
-  <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+  <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
     <div>
       <h2 class="fw-bold mb-1">Selección de Asientos</h2>
       <p class="text-muted mb-0">Toyota Hiace - Servicio Premium</p>
     </div>
 
-    <!-- Leyenda -->
     <div class="d-flex gap-3 flex-wrap align-items-center">
       <div class="d-flex align-items-center gap-2">
         <span class="tg-dot tg-dot-available"></span>
         <small class="text-muted">Disponible</small>
       </div>
-
       <div class="d-flex align-items-center gap-2">
         <span class="tg-dot tg-dot-occupied"></span>
         <small class="text-muted">Ocupado</small>
       </div>
-
       <div class="d-flex align-items-center gap-2">
         <span class="tg-dot tg-dot-selected"></span>
         <small class="text-muted">Seleccionado</small>
@@ -26,84 +22,97 @@
     </div>
   </div>
 
-  <!-- Área de asientos -->
-  <div class="tg-seat-map rounded-4 p-4">
+  <div class="tg-seat-map rounded-4 p-4 bg-light">
 
-    <!-- Cabina -->
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div class="d-flex align-items-center gap-3">
-        <div class="tg-icon-box">
-          <i class="bi bi-steering-wheel fs-5"></i>
+        <div class="tg-icon-box bg-white shadow-sm rounded-circle p-2">
+          <i class="bi bi-steering-wheel fs-5 text-primary"></i>
         </div>
-
         <div>
-          <small class="text-uppercase text-muted fw-semibold d-block" style="font-size: 11px;">
-            Frente
-          </small>
+          <small class="text-uppercase text-muted fw-semibold d-block" style="font-size: 11px;">Frente</small>
           <span class="fw-bold">Cabina</span>
         </div>
       </div>
 
-      <div class="tg-driver-box text-center">
-        <small class="text-uppercase text-muted fw-semibold d-block" style="font-size: 10px;">
-          Conductor
+      <div class="tg-driver-box text-center border rounded-3 p-2 bg-white shadow-sm">
+        <small class="text-uppercase text-muted fw-semibold d-block" style="font-size: 10px;">Conductor</small>
+        <i class="bi bi-person-circle fs-5 text-secondary"></i>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="container px-2">
+      <div class="row g-3 justify-content-center text-center">
+        @for (s of listSeat; track s.id) {
+          <div class="col-4 col-md-3">
+            <button 
+              type="button" 
+              class="btn tg-seat-btn w-100 py-3 shadow-sm" 
+              [ngClass]="{
+                'tg-seat-available': s.isAvailable,
+                'tg-seat-occupied': !s.isAvailable,
+                'tg-seat-selected': isSeatSelected(s.id)
+              }" 
+              [disabled]="!s.isAvailable"
+              (click)="selectSeat(s)">
+              <span class="fw-bold">{{ s.number }}</span>
+            </button>
+            <div class="tg-seat-label mt-1" style="font-size: 10px;">
+              <span [ngClass]="isSeatSelected(s.id) ? 'text-primary fw-bold' : 'text-muted'">
+                {{ isSeatSelected(s.id) ? 'TU ASIENTO' : (s.isAvailable ? 'LIBRE' : 'VENDIDO') }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (selectedSeats.length > 0) {
+        <div class="mt-4 p-3 bg-white border border-primary border-opacity-25 rounded-4 shadow-sm animate__animated animate__fadeIn">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <p class="mb-0 text-muted small">Asientos seleccionados</p>
+              <h5 class="mb-0 fw-bold text-primary">
+                {{ selectedSeats.length }} pasajes elegidos
+              </h5>
+            </div>
+            <div class="text-end">
+              <span class="badge bg-primary rounded-pill px-3 py-2">
+                Nos: {{ getSelectedSeatNumbers() }}
+              </span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="text-center mt-5">
+      <div class="py-2 px-3 bg-secondary bg-opacity-10 rounded-pill d-inline-block">
+        <small class="text-muted text-uppercase fw-bold" style="letter-spacing: 2px; font-size: 10px;">
+          <i class="bi bi-box-seam me-2"></i>Espacio de carga / Encomiendas
         </small>
-        <i class="bi bi-person-circle fs-5"></i> 
       </div>
-    </div>
-
-    <hr class="my-3">
-
-    <!-- 4 Botones de asientos (simple por ahora) -->
-    <div class="row g-3 justify-content-center text-center">
-      <div class="col-6 col-md-4">
-        <button type="button" class="btn tg-seat-btn tg-seat-selected">1</button>
-        <div class="tg-seat-text">PASAJERO</div>
-      </div>
-
-      <div class="col-6 col-md-4">
-        <button type="button" class="btn tg-seat-btn tg-seat-occupied" disabled>2</button>
-        <div class="tg-seat-text text-muted">OCUPADO</div>
-      </div>
-
-      <div class="col-6 col-md-4">
-        <button type="button" class="btn tg-seat-btn tg-seat-available">3</button>
-        <div class="tg-seat-text">PASAJERO</div>
-      </div>
-
-      <div class="col-6 col-md-4">
-        <button type="button" class="btn tg-seat-btn tg-seat-available">4</button>
-        <div class="tg-seat-text">PASAJERO</div>
-      </div>
-    </div>
-
-    <div class="text-center mt-4">
-      <small class="text-muted text-uppercase" style="letter-spacing: 2px; font-size: 11px;">
-        Espacio de carga / Encomiendas
-      </small>
     </div>
   </div>
 
-  <!-- Beneficios -->
-  <div class="row g-3 mt-4">
+  <div class="row g-3 mt-4 pt-3 border-top">
     <div class="col-12 col-md-4">
-      <div class="tg-benefit d-flex align-items-center gap-2">
-        <i class="bi bi-shield-check fs-5 tg-benefit-i"></i>
-        <small class="fw-semibold">Seguro SOAT incluido</small>
+      <div class="tg-benefit p-2 rounded-3 d-flex align-items-center gap-2">
+        <i class="bi bi-shield-check text-success fs-5"></i>
+        <small class="fw-semibold text-dark">Seguro SOAT incluido</small>
       </div>
     </div>
-
     <div class="col-12 col-md-4">
-      <div class="tg-benefit d-flex align-items-center gap-2">
-        <i class="bi bi-snow2 fs-5 tg-benefit-i"></i>
-        <small class="fw-semibold">Aire Acondicionado</small>
+      <div class="tg-benefit p-2 rounded-3 d-flex align-items-center gap-2">
+        <i class="bi bi-snow2 text-info fs-5"></i>
+        <small class="fw-semibold text-dark">Aire Acondicionado</small>
       </div>
     </div>
-
     <div class="col-12 col-md-4">
-      <div class="tg-benefit d-flex align-items-center gap-2">
-        <i class="bi bi-usb-plug fs-5 tg-benefit-i"></i>
-        <small class="fw-semibold">Cargador USB</small>
+      <div class="tg-benefit p-2 rounded-3 d-flex align-items-center gap-2">
+        <i class="bi bi-usb-plug text-warning fs-5"></i>
+        <small class="fw-semibold text-dark">Cargador USB</small>
       </div>
     </div>
   </div>
