@@ -39,7 +39,7 @@
 
   <article class="stat-card">
     <small>TOTAL UNIDADES</small>
-    <p class="stat-value">12</p>
+    <p class="stat-value">{{ totalUnits }}</p>
     <div class="progress-bar">
       <div class="fill total"></div>
     </div>
@@ -47,17 +47,17 @@
 
   <article class="stat-card">
     <small>ACTIVO</small>
-    <p class="stat-value text-green">5</p>
+    <p class="stat-value text-green">{{ active }}</p>
     <div class="progress-bar">
-      <div class="fill green" style="width: 42%"></div>
+      <div class="fill green"></div>
     </div>
   </article>
 
   <article class="stat-card">
     <small>INACTIVO</small>
-    <p class="stat-value text-red">1</p>
+    <p class="stat-value text-red">{{ inactive }}</p>
     <div class="progress-bar">
-      <div class="fill red" style="width: 8%"></div>
+      <div class="fill red"></div>
     </div>
   </article>
 
@@ -82,73 +82,72 @@
           <th class="text-right">Acciones</th>
         </tr>
       </thead>
+
       <tbody>
 
-        <!-- ROW 1 -->
-        <tr>
-          <td><span class="unit-id">U-001</span></td>
+        <!-- DATA ROWS -->
+        <tr *ngFor="let v of vehicles">
+          <td><span class="unit-id">{{ v.unitId }}</span></td>
+
+          <!-- Foto (por ahora placeholder fijo porque tu DTO no trae foto) -->
           <td>
-            <div class="vehicle-thumb">
-              <img src="/img/van1.png" alt="Vehículo">
+            <div class="vehicle-thumb placeholder">
+              <i class="bi bi-image"></i>
             </div>
           </td>
+
+          <!-- Tipo (tu DTO no trae type, así que lo dejamos fijo por ahora) -->
           <td><span class="badge-type">Mini Van 15 pax</span></td>
-          <td class="font-semibold">ABC-123</td>
-          <td class="font-semibold">Toyota Hiace</td>
+
+          <td class="font-semibold">{{ v.plate }}</td>
+          <td class="font-semibold">{{ v.model }}</td>
+
+          <!-- Conductor -->
           <td>
             <div class="driver-info">
-              <div class="avatar">RC</div>
-              <span>Ricardo Castillo</span>
+              <div class="avatar">
+                {{ (v.driver || 'SA').substring(0,2).toUpperCase() }}
+              </div>
+              <span>{{ v.driver }}</span>
             </div>
           </td>
-          <!-- Estado: ACTIVO (Azul) -->
-          <td><span class="badge status-blue">ACTIVO</span></td>
-          <td class="text-center"><i class="bi bi-patch-check-fill text-green text-xl" title="Vigente"></i></td>
+
+          <!-- Estado -->
+          <td>
+            <span class="badge" [ngClass]="v.isActive ? 'status-blue' : 'status-red'">
+              {{ v.isActive ? 'ACTIVO' : 'INACTIVO' }}
+            </span>
+          </td>
+
+          <!-- SOAT/Lic -->
+          <td class="text-center">
+            <i *ngIf="v.soatOk"
+               class="bi bi-patch-check-fill text-green text-xl"
+               title="Vigente"></i>
+
+            <i *ngIf="!v.soatOk"
+               class="bi bi-exclamation-triangle-fill text-amber text-xl"
+               title="No vigente"></i>
+          </td>
+
+          <!-- Acciones -->
           <td class="text-right">
             <div class="actions">
-              <button class="btn-icon"
-                (click)="openEditModal({unitCode:'U-001', plate:'ABC-123', type:'minivan15', model:'Toyota Hiace', driverName:'Ricardo Castillo', status:'active', soatExpiry:'2025-12-31'})">
+              <button class="btn-icon" (click)="openEditModal(v)">
                 <i class="bi bi-pencil"></i>
               </button>
-              <button class="btn-icon hover-red" (click)="openDeleteModal()">
+
+              <button class="btn-icon hover-red" (click)="openDeleteModal(v)">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
           </td>
         </tr>
 
-        <!-- ROW 2 -->
-        <tr>
-          <td><span class="unit-id">U-005</span></td>
-          <td>
-            <div class="vehicle-thumb placeholder">
-              <i class="bi bi-image"></i>
-            </div>
-          </td>
-          <td><span class="badge-type">Mini Van 15 pax</span></td>
-          <td class="font-semibold">XYZ-987</td>
-          <td class="font-semibold">Toyota Hiace</td>
-          <td>
-            <div class="driver-info">
-              <div class="avatar">MA</div>
-              <span>Marco Arrieta</span>
-            </div>
-          </td>
- 
-          <!-- Estado: INACTIVO (Rojo) -->
-          <td><span class="badge status-red">INACTIVO</span></td>
-          <td class="text-center"><i class="bi bi-exclamation-triangle-fill text-amber text-xl" title="Por vencer"></i>
-          </td>
-          <td class="text-right">
-            <div class="actions">
-              <button class="btn-icon"
-                (click)="openEditModal({unitCode:'U-012', plate:'DEF-456', type:'auto', model:'Sedán Ejecutivo', driverName:'', status:'maintenance', soatExpiry:'2024-05-15'})">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn-icon hover-red" (click)="openDeleteModal()">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
+        <!-- Empty state -->
+        <tr *ngIf="vehicles.length === 0">
+          <td colspan="9" class="text-center text-muted" style="padding: 20px;">
+            No hay vehículos para mostrar.
           </td>
         </tr>
 
@@ -158,7 +157,7 @@
 
   <!-- FOOTER -->
   <div class="table-footer">
-    <span class="text-muted">Mostrando 3 de 12 unidades</span>
+    <span class="text-muted">Mostrando {{ vehicles.length }} de {{ totalUnits }} unidades</span>
     <div class="pagination">
       <button disabled><i class="bi bi-chevron-left"></i></button>
       <button class="active">1</button>
@@ -169,11 +168,18 @@
 </section>
 
 <!-- MODALS -->
-<app-register-new-vehicle [isOpen]="isRegisterModalOpen" (close)="isRegisterModalOpen = false">
+<app-register-new-vehicle
+  [isOpen]="isRegisterModalOpen"
+  (close)="isRegisterModalOpen = false">
 </app-register-new-vehicle>
 
-<app-edit-vehicle [isOpen]="isEditModalOpen" [vehicleToEdit]="selectedVehicle" (close)="isEditModalOpen = false">
+<app-edit-vehicle
+  [isOpen]="isEditModalOpen"
+  [vehicleToEdit]="selectedVehicle"
+  (close)="isEditModalOpen = false">
 </app-edit-vehicle>
 
-<app-delete-vehicle [isOpen]="isDeleteModalOpen" (close)="isDeleteModalOpen = false">
+<app-delete-vehicle
+  [isOpen]="isDeleteModalOpen"
+  (close)="isDeleteModalOpen = false">
 </app-delete-vehicle>
