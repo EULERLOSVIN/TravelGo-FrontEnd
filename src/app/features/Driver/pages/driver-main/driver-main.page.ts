@@ -36,36 +36,34 @@ export class DriverMainPage implements OnInit {
 
   getDepartureOrderOfDriver(): void {
     this.tripService.getStartingOrderOfDriver(this.accountId).subscribe({
-      next:(response) =>{
-        if(response.isSuccess){
+      next: (response) => {
+        if (response.isSuccess) {
           this.departureOrder = response.value
           console.log("numero de orden:" + response.value);
           this.cdr.detectChanges();
         }
       },
-      error:(err) => {
+      error: (err) => {
         console.log("Error al obtener order de la cola" + err);
       }
-      
+
     });
   }
 
-  getTripsMadeOfDriver():void{
+  getTripsMadeOfDriver(): void {
     this.tripService.getTripsMadeByDriver(this.accountId, 0).subscribe(
       {
-        next:(response) =>{
-          if(response.isSuccess){
+        next: (response) => {
+          if (response.isSuccess) {
             this.Trips = response.value;
             console.log(this.Trips);
             this.cdr.detectChanges();
           }
         },
-        error:(err) =>{
+        error: (err) => {
           console.log("Error al obtener los viajes realizados" + err);
         }
       }
     );
   }
-
-
 }

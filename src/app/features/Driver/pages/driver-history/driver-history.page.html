@@ -3,14 +3,14 @@
         <div class="col-12 col-lg-6">
             <div class="d-flex flex-column card-style shadow">
                 <h5 class="text-secondary">CARRERAS COMPLETADAS</h5>
-                <h5 class="fs-1 text-success">6 <span class="fs-6 text-dark">Hoy</span></h5>
+                <h5 class="fs-1 text-success">{{staticsSummary?.completedRaces}} <span class="fs-6 text-dark">Hoy</span></h5>
             </div>
         </div>
 
         <div class="col-12 col-lg-6">
             <div class="d-flex flex-column card-style shadow">
                 <h5 class="text-secondary">PASAJEROS</h5>
-                <h5 class="fs-1 text-success">24 <span class="fs-6 text-dark">Total</span></h5>
+                <h5 class="fs-1 text-success">{{staticsSummary?.numberPassengers}}<span class="fs-6 text-dark">Total</span></h5>
             </div>
         </div>
 
@@ -19,25 +19,26 @@
 
                 <strong class="text-uppercase fs-3 mb-0">Mis Recorridos</strong>
 
-                <select class="form-select form-select-sm w-auto shadow-none border-secondary-subtle">
+                <select class="form-select form-select-sm w-auto shadow-none border-secondary-subtle"
+                    [(ngModel)]="selectedFilter" (ngModelChange)="getTripsMadeOfDriver()">
                     <option disabled>Hoy</option>
                     @for(t of listFilters; track t.id){
-                    <option [value]="t.id">{{t.label}}</option>
+                    <option [value]="t.equivalentDay">{{t.time}}</option>
                     }
                 </select>
             </div>
         </div>
 
-        @for(r of listRoute; track r.id){
+        @for(r of Trips; track r.nameRoute){
         <div class="col-12">
 
             <div class="card-style d-flex justify-content-between align-content-center">
                 <div class="d-flex flex-column gap-2">
-                    <span class="text-secondary">{{r.fecha}}</span>
+                    <span class="text-secondary">{{r.departureDate}}</span>
                     <strong>{{r.nameRoute}}</strong>
-                    <h6 class="fw-bold">{{r.passengers}} <span class="fw-normal text-secondary">Pasageros</span></h6>
+                    <h6 class="fw-bold">{{r.numberPassengers}}<span class="fw-normal text-secondary"> Pasageros</span></h6>
                 </div>
-                <span class="badge-state" [ngClass]="getBadgeClass(r.state)">{{r.state}}</span>
+                <!-- <span class="badge-state" [ngClass]="getBadgeClass(r.state)">{{r.state}}</span> -->
             </div>
         </div>
         }
