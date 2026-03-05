@@ -2,8 +2,9 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RoutesService, TravelRoute } from '../../services/routes.service';
+import { RoutesService} from '../../services/routes.service';
 import { PlacesService } from '../../services/places.service';
+import { TravelRouteModel } from '../../models/TravelRoute.model';
 
 @Component({
   selector: 'app-register-new-route',
@@ -21,7 +22,7 @@ export class RegisterNewRouteComponent {
   origin: string = '';
   destination: string = '';
 
-  formData: TravelRoute = {
+  formData: TravelRouteModel = {
     nameRoute: '',
     price: null as any,
     idPlaceA: null as any,
