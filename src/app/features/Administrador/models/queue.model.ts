@@ -4,9 +4,13 @@ export interface QueueItem {
     driverDni: string;
     driverFullName: string;
     arrivalTime: Date;
+    scheduledDepartureTime: Date;
     estimatedWaitTimeMinutes: number;
     idVehicle?: number;
     vehiclePlate?: string;
+    vehicleModel?: string;
+    occupiedSeats: number;
+    totalSeats: number;
     idRoute: number;
     routeName: string;
     statusName: string; // 'En Cola', 'Próximo a Salir'
