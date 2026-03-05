@@ -15,11 +15,23 @@ export interface TravelRoute {
     isActive?: boolean;
 }
 
+export interface DepartureTime {
+    idDepartureTime: number;
+    idTravelRoute: number;
+    hour: string; // Devuelto como "HH:mm:ss"
+}
+
+export interface AddDepartureTimeDto {
+    idTravelRoute: number;
+    hour: string; // Formato esperado "HH:mm:ss"
+}
+
 @Injectable({
     providedIn: 'root'
 })
 export class RoutesService {
     private apiUrl = `${environment.apiUrl}/TravelRoute`; // Usar URL del entorno
+    private departureTimeUrl = `${environment.apiUrl}/DepartureTime`;
 
     constructor(private http: HttpClient) { }
 
@@ -37,5 +49,18 @@ export class RoutesService {
 
     delete(id: number): Observable<boolean> {
         return this.http.delete<boolean>(`${this.apiUrl}/delete/${id}`);
+    }
+
+    // --- DEPARTURE TIMES (HORARIOS) ---
+    getDepartureTimesByRoute(idTravelRoute: number): Observable<DepartureTime[]> {
+        return this.http.get<DepartureTime[]>(`${this.departureTimeUrl}/route/${idTravelRoute}`);
+    }
+
+    addDepartureTime(dto: AddDepartureTimeDto): Observable<any> {
+        return this.http.post<any>(`${this.departureTimeUrl}`, dto);
+    }
+
+    deleteDepartureTime(idDepartureTime: number): Observable<any> {
+        return this.http.delete<any>(`${this.departureTimeUrl}/${idDepartureTime}`);
     }
 }

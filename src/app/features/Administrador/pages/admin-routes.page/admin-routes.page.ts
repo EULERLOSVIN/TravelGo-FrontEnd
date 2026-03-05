@@ -1,5 +1,4 @@
 // rutas=darwin
-
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +18,9 @@ export class AdminRoutesComponent implements OnInit {
   allRoutes: TravelRoute[] = []; // Ruta Maestra
   routes: TravelRoute[] = []; // Vista Filtrada
 
+  // Departure times per route: { [idTravelRoute]: string[] }
+  routeDepartureTimes: Record<number, string[]> = {};
+
   // Stats
   statsRoute = {
     total: 0,
@@ -28,7 +30,7 @@ export class AdminRoutesComponent implements OnInit {
 
   // Filters
   searchTerm: string = '';
-  filterState = 'all'; // 'all', 'active', 'inactive'
+  filterState = 'active'; // 'all', 'active', 'inactive'
 
   // Pagination
   paginatedRoutes: TravelRoute[] = [];
@@ -61,8 +63,28 @@ export class AdminRoutesComponent implements OnInit {
         // Inicializar lista filtrada
         this.applyFilters();
         this.cdr.detectChanges();
+
+        // Load departure times for each route
+        this.allRoutes.forEach(r => {
+          if (r.idTravelRoute) {
+            this.loadDepartureTimes(r.idTravelRoute);
+          }
+        });
       },
       error: (e) => console.error('Error al cargar rutas', e)
+    });
+  }
+
+  loadDepartureTimes(idTravelRoute: number) {
+    this.routesService.getDepartureTimesByRoute(idTravelRoute).subscribe({
+      next: (times) => {
+        // Convertir "HH:mm:ss" a "HH:mm" para mostrar más limpio
+        this.routeDepartureTimes[idTravelRoute] = times.map(t => t.hour.substring(0, 5));
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.routeDepartureTimes[idTravelRoute] = [];
+      }
     });
   }
 
