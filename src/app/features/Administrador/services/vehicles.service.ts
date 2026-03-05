@@ -32,7 +32,7 @@ export class VehiclesService {
 
   private baseUrl = 'https://localhost:7134/api/Vehicles';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getVehicles(): Observable<VehicleListItemDto[]> {
     return this.http.get<VehicleListItemDto[]>(this.baseUrl);
