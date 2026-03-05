@@ -31,6 +31,7 @@ export interface AddDepartureTimeDto {
 })
 export class RoutesService {
     private apiUrl = `${environment.apiUrl}/TravelRoute`; // Usar URL del entorno
+    private departureTimeUrl = `${environment.apiUrl}/DepartureTime`;
 
     constructor(private http: HttpClient) { }
 

@@ -23,16 +23,22 @@ export class DeleteRouteComponent {
         this.isLoading = true;
 
         this.routesService.delete(this.route.idTravelRoute).subscribe({
-            next: () => {
-                this.close.emit();
-                window.location.reload();
+            next: (success) => {
+                if (success) {
+                    alert('Ruta eliminada (desactivada) correctamente.');
+                    this.close.emit();
+                    window.location.reload();
+                } else {
+                    alert('No se pudo desactivar la ruta. Es posible que el registro ya no exista.');
+                    this.isLoading = false;
+                }
             },
             error: (e) => {
                 console.error('Error al eliminar', e);
-                alert('No se pudo eliminar. \n\nCausa probable: La ruta tiene historial (Tickets o Asignaciones) y no puede ser borrada.');
+                const msg = e.error?.message || e.message || 'Error desconocido';
+                alert('Error al procesar la solicitud: ' + msg);
                 this.isLoading = false;
-            },
-            complete: () => this.isLoading = false
+            }
         });
     }
 }

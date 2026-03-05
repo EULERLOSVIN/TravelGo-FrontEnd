@@ -1,5 +1,4 @@
 // rutas=darwin
-
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +17,9 @@ import { RoutesService, TravelRoute } from '../../services/routes.service';
 export class AdminRoutesComponent implements OnInit {
   allRoutes: TravelRoute[] = [];
   routes: TravelRoute[] = [];
+
+  // Departure times per route: { [idTravelRoute]: string[] }
+  routeDepartureTimes: Record<number, string[]> = {};
 
   // Departure times per route: { [idTravelRoute]: string[] }
   routeDepartureTimes: Record<number, string[]> = {};
