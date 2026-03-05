@@ -1,7 +1,7 @@
 /* ==================================================
-   SALES HISTORY BASE
+   1. CONTENEDOR PRINCIPAL
 ================================================== */
-.sales-history {
+.sales-container {
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@
 }
 
 /* ==================================================
-   HEADER
+   2. HEADER
 ================================================== */
 .sales-header {
   display: flex;
@@ -18,71 +18,85 @@
   gap: 20px;
 }
 
-.header-text h2 {
+.sales-title {
   margin: 0;
   font-weight: 700;
+  font-size: 1.5rem;
+  color: #111827;
 }
 
-.header-text p {
+.sales-subtitle {
   margin: 4px 0 0;
   color: #6b7280;
   font-size: 0.9rem;
 }
 
-.header-actions {
+.sales-actions {
   display: flex;
   gap: 12px;
 }
 
-/* BUTTONS */
-.btn-primary {
+.sales-btn-primary {
   background: #16a34a;
-  color: #fff;
+  color: #ffffff;
   border: none;
   padding: 10px 16px;
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
-.btn-secondary {
+.sales-btn-primary:hover {
+  background: #15803d;
+}
+
+.sales-btn-secondary {
   background: #f1f5f9;
+  color: #374151;
   border: none;
   padding: 10px 16px;
   border-radius: 12px;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sales-btn-secondary:hover {
+  background: #e2e8f0;
 }
 
 /* ==================================================
-   FILTERS
+   3. FILTROS
 ================================================== */
-.filters {
+.sales-filters {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
-.filter label {
-  font-size: 0.7rem;
-  color: #6b7280;
-  display: block;
+.sales-filter-group {
+  display: flex;
+  flex-direction: column;
 }
 
-/* INPUTS / SELECTS */
-.filter input,
-.filter select {
-  margin-top: 6px;
+.sales-filter-label {
+  font-size: 0.7rem;
+  color: #6b7280;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sales-input,
+.sales-select {
   padding: 8px 12px;
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   font-size: 0.8rem;
+  background: #ffffff;
 }
 
-/* ==================================================
-   DATE RANGE PICKER (RANGO DE FECHAS)
-================================================== */
-.date-range {
-  margin-top: 6px;
+.sales-date-range {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -92,133 +106,100 @@
   background: #ffffff;
 }
 
-.date-range i {
+.sales-date-icon {
   color: #6b7280;
-  font-size: 1rem;
 }
 
-.date-range input[type="date"] {
+.sales-date-input {
   border: none;
   outline: none;
   background: transparent;
   font-size: 0.8rem;
-  color: #111827;
-  width: 120px;
+  width: 100px;
 }
 
-.date-range .separator {
-  color: #9ca3af;
-  font-size: 0.8rem;
-}
-
-/* ==================================================
-   STATUS TABS
-================================================== */
-.status-tabs {
+.sales-tabs {
   display: flex;
   gap: 6px;
-  margin-top: 6px;
 }
 
-.status-tabs button {
+.sales-tab-btn {
   border: none;
   padding: 6px 10px;
   border-radius: 8px;
   background: #f1f5f9;
+  color: #374151;
   cursor: pointer;
   font-size: 0.75rem;
+  font-weight: 500;
 }
 
-.status-tabs button.active {
+.sales-tab-btn--active {
   background: #16a34a;
-  color: #fff;
+  color: #ffffff;
 }
 
 /* ==================================================
-   TABLE
+   4. TABLA
 ================================================== */
-.table-card {
-  background: #fff;
-  border-radius: 18px;
-  padding: 18px;
+.sales-card {
+  background: #ffffff;
+  /* 1. Define el redondeo aquí (20px es un estándar moderno) */
+  border-radius: 20px; 
+  /* 2. Esto es vital: recorta todo lo que se salga de los bordes redondeados */
+  overflow: hidden; 
+  /* 3. Asegura que la tabla no tenga bordes extra */
+  border: 1px solid #f3f4f6;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+/* Ajuste para que la tabla sea fluida dentro del card redondeado */
 .sales-table {
   width: 100%;
   border-collapse: collapse;
+  /* Quitamos el borde por defecto de la tabla para que el card haga el trabajo */
+  border: none;
 }
 
-.sales-table thead th {
+.sales-thead-dark {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.sales-thead-dark th {
+  padding: 16px 12px;
   font-size: 0.75rem;
-  color: #6b7280;
+  font-weight: 600;
   text-align: left;
-  padding-bottom: 12px;
+  /* Importante: para que el borde del encabezado no se corte bruscamente */
+  border: none; 
 }
 
-.sales-table tbody td {
-  padding: 14px 0;
-  border-top: 1px solid #f1f5f9;
+.sales-td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.85rem;
+  color: #374151;
 }
 
-.sales-table small {
-  color: #6b7280;
-  font-size: 0.7rem;
-}
-
-/* ROUTES */
-.route {
+.sales-route-badge {
   background: #dbeafe;
   color: #2563eb;
-  padding: 2px 6px;
+  padding: 2px 8px;
   border-radius: 6px;
   font-size: 0.7rem;
-}
-
-.route-sub {
-  background: #e0f2fe;
-  color: #0284c7;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  margin-left: 4px;
-}
-
-.route.alt,
-.route-sub.alt {
-  background: #ffedd5;
-  color: #f97316;
-}
-
-/* AMOUNT */
-.amount {
   font-weight: 600;
 }
 
-/* SEAT */
-.seat {
-  font-weight: 600;
-}
-
-/* STATUS */
-.status.canceled {
+.sales-status-badge--canceled {
   color: #dc2626;
   font-weight: 600;
 }
 
-/* ACTIONS */
-.actions i {
-  cursor: pointer;
-  color: #6b7280;
-}
-
-.actions i:hover {
-  color: #16a34a;
-}
-
 /* ==================================================
-   FOOTER
+   5. PAGINACIÓN
 ================================================== */
-.table-footer {
+.sales-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -227,72 +208,60 @@
   color: #6b7280;
 }
 
-.pagination {
+.sales-pagination {
   display: flex;
   gap: 6px;
 }
 
-.pagination button {
+.sales-pagination-btn {
   border: none;
   background: #f1f5f9;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
+  color: #374151;
 }
 
-.pagination button.active {
+.sales-pagination-btn--active {
   background: #16a34a;
-  color: #fff;
+  color: #ffffff;
+}
+
+.sales-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* ==================================================
-   RESPONSIVE
+   6. RESPONSIVO
 ================================================== */
 @media (max-width: 1024px) {
-  .filters {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .sales-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  .sales-filters { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
-
-  .filters {
-    grid-template-columns: 1fr;
+  .sales-filters { grid-template-columns: 1fr; }
+  
+  .sales-table thead { display: none; }
+  
+  .sales-row { 
+    display: block; 
+    margin-bottom: 14px; 
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
   }
-
-  .date-range {
-    width: 100%;
-    justify-content: space-between;
+  
+  .sales-td { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 8px 0 !important; 
+    border-bottom: none !important;
   }
-
-  .date-range input[type="date"] {
-    width: 100%;
-  }
-
-  .sales-table thead {
-    display: none;
-  }
-
-  .sales-table tr {
-    display: block;
-    margin-bottom: 14px;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  .sales-table td {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-  }
-
-  .sales-table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #6b7280;
+  
+  .sales-td::before { 
+    content: attr(data-label); 
+    font-weight: 600; 
+    color: #6b7280; 
   }
 }

@@ -8,6 +8,13 @@ import { NgClass } from '@angular/common';
   styleUrl: './driver-history.page.scss',
 })
 export class DriverHistoryPage {
+  
+  listFilter = [
+    {id:1, time: "Hace 1 semana",  equivalentDay: 7},
+    {id:1, time: "Hace 2 semana",  equivalentDay: 14},
+    {id:1, time: "Hace 3 semana",  equivalentDay: 21},
+    {id:1, time: "Hace 1 mes",  equivalentDay: 30}
+  ]
 
   listFilters = [
     { id: 1, label: 'Hoy', value: 'today' },
