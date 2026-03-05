@@ -8,16 +8,16 @@
                     <div class="queue-card__city">ESTADO EN HUÁNUCO</div>
                 </div>
 
-                <div class="queue-card__number">#3</div>
+                <div class="queue-card__number"># {{departureOrder}}</div>
                 <div class="queue-card__label">Posición en Cola</div>
 
                 <button class="btn chip-warn mt-3" type="button">
                     <i class="bi bi-bell-fill me-2"></i> ¡PREPÁRATE!
                 </button>
 
-                <button class="btn btn-join mt-3 w-100" type="button">
+                <!-- <button class="btn btn-join mt-3 w-100" type="button">
                     <i class="bi bi-box-arrow-in-right me-2"></i> Incorporarse
-                </button>
+                </button> -->
             </div>
 
             <div class="section">
@@ -27,6 +27,7 @@
                 </div>
 
                 <div class="card soft-card list-card">
+                    @for(r of Trips; track r.idTrip){
                     <div class="list-item">
                         <div class="list-item__icon">
                             <i class="bi bi-clock"></i>
@@ -39,17 +40,7 @@
                     </div>
 
                     <div class="divider"></div>
-
-                    <div class="list-item">
-                        <div class="list-item__icon">
-                            <i class="bi bi-clock"></i>
-                        </div>
-                        <div class="list-item__body">
-                            <div class="list-item__title">Huánuco → Tingo María</div>
-                            <div class="list-item__sub">Salida: 12:15 PM • 4 pasajeros</div>
-                        </div>
-                        <div class="list-item__status status-done">Finalizado</div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

@@ -3,17 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environment/environment.local'; // Importar entorno
-
+import { TravelRouteModel } from '../models/TravelRoute.model';
 // Definimos cómo se ve una ruta en el frontend
-export interface TravelRoute {
-    idTravelRoute?: number;
-    nameRoute: string; // "Origen - Destino"
-    price: number;
-    idPlaceA: number;
 
-    idPlaceB: number;
-    isActive?: boolean;
-}
 
 @Injectable({
     providedIn: 'root'
@@ -23,15 +15,15 @@ export class RoutesService {
 
     constructor(private http: HttpClient) { }
 
-    getAll(): Observable<TravelRoute[]> {
-        return this.http.get<TravelRoute[]>(`${this.apiUrl}/getAll`);
+    getAll(): Observable<TravelRouteModel[]> {
+        return this.http.get<TravelRouteModel[]>(`${this.apiUrl}/getAll`);
     }
 
-    create(route: TravelRoute): Observable<number> {
+    create(route: TravelRouteModel): Observable<number> {
         return this.http.post<number>(`${this.apiUrl}/add`, route);
     }
 
-    update(route: TravelRoute): Observable<boolean> {
+    update(route: TravelRouteModel): Observable<boolean> {
         return this.http.put<boolean>(`${this.apiUrl}/update`, route);
     }
 

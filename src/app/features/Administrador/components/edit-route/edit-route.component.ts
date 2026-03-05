@@ -2,8 +2,9 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RoutesService, TravelRoute } from '../../services/routes.service';
+import { RoutesService } from '../../services/routes.service';
 import { PlacesService } from '../../services/places.service';
+import { TravelRouteModel } from '../../models/TravelRoute.model';
 
 @Component({
     selector: 'app-edit-route',
@@ -15,7 +16,7 @@ import { PlacesService } from '../../services/places.service';
 })
 export class EditRouteComponent implements OnChanges {
     @Input() isOpen = false;
-    @Input() routeToEdit: TravelRoute | null = null;
+    @Input() routeToEdit: TravelRouteModel | null = null;
     @Output() close = new EventEmitter<void>();
 
     origin: string = '';
@@ -35,7 +36,7 @@ export class EditRouteComponent implements OnChanges {
         });
     }
 
-    originalRoute: TravelRoute | null = null;
+    originalRoute: TravelRouteModel | null = null;
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['routeToEdit'] && this.routeToEdit) {

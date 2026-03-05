@@ -6,7 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { RegisterNewRouteComponent } from '../../components/register-new-route/register-new-route.component';
 import { EditRouteComponent } from '../../components/edit-route/edit-route.component';
 import { DeleteRouteComponent } from '../../components/delete-route/delete-route.component';
-import { RoutesService, TravelRoute } from '../../services/routes.service';
+import { RoutesService} from '../../services/routes.service';
+import { TravelRouteModel } from '../../models/TravelRoute.model';
 
 @Component({
   selector: 'app-admin-routes',
@@ -16,8 +17,8 @@ import { RoutesService, TravelRoute } from '../../services/routes.service';
   styleUrl: './admin-routes.page.scss',
 })
 export class AdminRoutesComponent implements OnInit {
-  allRoutes: TravelRoute[] = []; // Ruta Maestra
-  routes: TravelRoute[] = []; // Vista Filtrada
+  allRoutes: TravelRouteModel[] = []; // Ruta Maestra
+  routes: TravelRouteModel[] = []; // Vista Filtrada
 
   // Stats
   statsRoute = {
@@ -31,7 +32,7 @@ export class AdminRoutesComponent implements OnInit {
   filterState = 'all'; // 'all', 'active', 'inactive'
 
   // Pagination
-  paginatedRoutes: TravelRoute[] = [];
+  paginatedRoutes: TravelRouteModel[] = [];
   currentPage = 1;
   pageSize = 15;
   totalPages = 1;
