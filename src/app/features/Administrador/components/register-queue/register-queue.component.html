@@ -1,0 +1,89 @@
+<div class="modal fade" [ngClass]="{'show d-block': isOpen}" tabindex="-1" role="dialog" [attr.aria-hidden]="!isOpen">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content glass-modal border-0">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-gradient">
+                    <i class="bi bi-plus-circle-dotted me-2"></i> Ingresar Unidad a Cola
+                </h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeModal()"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4">
+                <!-- Paso 1: Búsqueda por DNI -->
+                <div class="search-section mb-4">
+                    <label class="form-label small fw-bold text-white-50 uppercase tracking-wider">Identificar
+                        Conductor</label>
+                    <div class="input-group">
+                        <span class="input-group-text glass-input border-end-0">
+                            <i class="bi bi-person-badge"></i>
+                        </span>
+                        <input type="text" class="form-control glass-input border-start-0"
+                            placeholder="Ingrese DNI del chofer..." [(ngModel)]="dni" (keyup.enter)="onSearchDni()">
+                        <button class="btn btn-primary-gradient px-4" (click)="onSearchDni()" [disabled]="isLoading">
+                            <i class="bi bi-search" *ngIf="!isLoading"></i>
+                            <span class="spinner-border spinner-border-sm" *ngIf="isLoading"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div class="alert alert-danger glass-alert mt-2" *ngIf="errorMessage">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ errorMessage }}
+                </div>
+
+                <!-- Paso 2: Información Revelada -->
+                <div class="info-reveal-container" *ngIf="driverInfo">
+                    <div class="row g-4">
+                        <!-- Driver card -->
+                        <div class="col-md-6">
+                            <div class="info-card glass-card p-3">
+                                <span class="label small text-white-50">Conductor</span>
+                                <h4 class="mb-0 text-white mt-1">{{ driverInfo.fullName }}</h4>
+                            </div>
+                        </div>
+                        <!-- Vehicle card -->
+                        <div class="col-md-6">
+                            <div class="info-card glass-card p-3">
+                                <span class="label small text-white-50">Vehículo</span>
+                                <div class="d-flex align-items-center mt-1">
+                                    <span class="plate-badge me-2">{{ driverInfo.plateNumber }}</span>
+                                    <span class="text-white">{{ driverInfo.model }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Selección de Ruta -->
+                    <div class="route-selection mt-4">
+                        <label class="form-label small fw-bold text-white-50 uppercase tracking-wider">Seleccionar Ruta
+                            de Salida</label>
+                        <div class="routes-grid mt-2">
+                            <div class="route-option glass-card" *ngFor="let route of driverInfo.assignedRoutes"
+                                [class.selected]="selectedRouteId === route.idTravelRoute"
+                                (click)="selectedRouteId = route.idTravelRoute">
+                                <div class="route-info">
+                                    <i class="bi bi-geo-alt-fill me-2"></i>
+                                    <span>{{ route.nameRoute }}</span>
+                                </div>
+                                <div class="check-icon" *ngIf="selectedRouteId === route.idTravelRoute">
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 p-0 mt-4" *ngIf="driverInfo">
+                    <button type="button" class="btn btn-outline-light px-4" (click)="closeModal()">Cancelar</button>
+                    <button type="button" class="btn btn-primary-gradient px-5 py-2 shadow-lg" (click)="onSubmit()"
+                        [disabled]="!selectedRouteId || isLoading">
+                        <i class="bi bi-check-lg me-2"></i> Confirmar Ingreso
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="isOpen"></div>

@@ -1,0 +1,117 @@
+<div class="admin-queue-container p-4">
+    <!-- Header -->
+    <header class="d-flex justify-content-between align-items-center mb-4">
+        <div class="title-section">
+            <h1 class="text-white fw-bold mb-0">Gestión de Colas</h1>
+            <p class="text-white-50 small mb-0">Control de flujo y orden de salida de unidades</p>
+        </div>
+        <button class="btn btn-primary-gradient px-4 py-2 shadow-lg" (click)="openRegisterModal()">
+            <i class="bi bi-plus-lg me-2"></i> Registrar Entrada
+        </button>
+    </header>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="stat-card glass-card p-4">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="text-white-50 small uppercase tracking-wider">Total Unidades</span>
+                        <h2 class="text-white fw-bold mb-0 mt-1">{{ totalUnits }}</h2>
+                    </div>
+                    <div class="stat-icon bg-indigo-soft text-indigo">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card glass-card p-4">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="text-white-50 small uppercase tracking-wider">Esperando</span>
+                        <h2 class="text-white fw-bold mb-0 mt-1">{{ waiting }}</h2>
+                    </div>
+                    <div class="stat-icon bg-orange-soft text-orange">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card glass-card p-4">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="text-white-50 small uppercase tracking-wider">En Ruta</span>
+                        <h2 class="text-white fw-bold mb-0 mt-1">{{ inTransit }}</h2>
+                    </div>
+                    <div class="stat-icon bg-green-soft text-green">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content: Queue Lists -->
+    <div class="dashboard-card glass-card p-0 overflow-hidden">
+        <div class="card-header border-0 p-4 d-flex justify-content-between align-items-center">
+            <h3 class="text-white h5 mb-0">Unidades en Espera</h3>
+            <div class="search-input-group">
+                <i class="bi bi-search text-white-50"></i>
+                <input type="text" class="glass-search" placeholder="Buscar por placa o chofer..."
+                    [(ngModel)]="searchTerm">
+            </div>
+        </div>
+
+        <div class="table-responsive" *ngIf="filteredQueue.length > 0">
+            <table class="table table-dark-custom">
+                <thead>
+                    <tr>
+                        <th class="ps-4">ORDEN</th>
+                        <th>PLACA</th>
+                        <th>CONDUCTOR</th>
+                        <th>RUTA</th>
+                        <th>HORA INGRESO</th>
+                        <th class="text-end pe-4">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of filteredQueue">
+                        <td class="ps-4">
+                            <span class="order-badge">#{{ item.number }}</span>
+                        </td>
+                        <td>
+                            <span class="plate-badge">{{ item.plateNumber }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm me-2">{{ (item.driverName || 'SN') | slice:0:2 | uppercase }}
+                                </div>
+                                <span class="text-white">{{ item.driverName || 'Conductor no asignado' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge glass-badge">{{ item.routeName }}</span>
+                        </td>
+                        <td class="text-white-50">{{ item.entryTime | date:'shortTime' }}</td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-icon-glass text-danger" (click)="confirmRemove(item.idQueueVehicle)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="empty-state p-5 text-center" *ngIf="totalUnits === 0">
+            <i class="bi bi-inbox text-white-50 display-1 mb-3"></i>
+            <h4 class="text-white">No hay unidades en cola</h4>
+            <p class="text-white-50">Registra una unidad para comenzar</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<app-register-queue [isOpen]="isRegisterModalOpen" (close)="closeRegisterModal()"></app-register-queue>
