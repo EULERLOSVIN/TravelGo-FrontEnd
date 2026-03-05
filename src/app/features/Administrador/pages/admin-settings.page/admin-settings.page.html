@@ -1,219 +1,31 @@
-<div class="settings-grid-container">
-  <!-- Top Navigation (Mini Navbar) -->
-  <nav class="settings-nav-top glass">
-    <div class="nav-brand">
-      <i class="bi bi-gear-fill"></i>
-      <span>Ajustes</span>
+<div class="container-fluid py-4 settings-container" style="max-width: 1000px; margin: 0 auto;">
+  <!-- Header Title -->
+  <header class="mb-4 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="p-2 rounded-3 me-3" style="background-color: rgba(22, 163, 74, 0.1); color: #16a34a;">
+        <i class="bi bi-gear-fill fs-4"></i>
+      </div>
+      <div>
+        <h1 class="h3 fw-bold text-dark mb-0">Ajustes Generales</h1>
+        <p class="text-muted mb-0">Gestiona los parámetros globales de la aplicación</p>
+      </div>
     </div>
 
-    <div class="nav-links">
-      <button [class.active]="activeTab === 'general'" (click)="setActiveTab('general')">
-        <i class="bi bi-building"></i> <span>General</span>
-      </button>
-      <button [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')">
-        <i class="bi bi-person-circle"></i> <span>Perfil</span>
-      </button>
-      <button [class.active]="activeTab === 'billing'" (click)="setActiveTab('billing')">
-        <i class="bi bi-receipt"></i> <span>Facturación</span>
-      </button>
-      <button [class.active]="activeTab === 'notifications'" (click)="setActiveTab('notifications')">
-        <i class="bi bi-bell"></i> <span>Alertas</span>
-      </button>
-      <button [class.active]="activeTab === 'maintenance'" (click)="setActiveTab('maintenance')">
-        <i class="bi bi-database-fill-gear"></i> <span>Sistema</span>
-      </button>
+    <div
+      class="d-flex align-items-center badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-2 shadow-sm">
+      <span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"
+        style="width: 0.5rem; height: 0.5rem;"></span>
+      <span class="fw-semibold">Sistema En Línea</span>
     </div>
-  </nav>
+  </header>
 
   <!-- Contenido Principal -->
-  <main class="settings-main-content">
-    <header class="content-header">
-      <div class="header-info">
-        <h2 *ngIf="activeTab === 'general'">Datos de la Empresa</h2>
-        <h2 *ngIf="activeTab === 'profile'">Mi Perfil de Administrador</h2>
-        <h2 *ngIf="activeTab === 'billing'">Configuración de Comprobantes</h2>
-        <h2 *ngIf="activeTab === 'notifications'">Preferencias de Notificación</h2>
-        <h2 *ngIf="activeTab === 'maintenance'">Mantenimiento y Estado</h2>
-        <p>Gestiona los parámetros globales de la aplicación</p>
-      </div>
-      <div class="system-badge">
-        <span class="status-dot"></span>
-        En Línea
-      </div>
-    </header>
+  <main class="settings-content">
 
-    <div class="tab-pane" [ngClass]="{'active': activeTab === 'general'}">
-      <section class="settings-card glass">
-        <h3><i class="bi bi-info-circle"></i> Información Básica</h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Razón Social</label>
-            <input type="text" value="Transportes Seis Especial S.A.C." />
-          </div>
-          <div class="form-group">
-            <label>RUC</label>
-            <input type="text" value="20601234567" />
-          </div>
-          <div class="form-group">
-            <label>Nombre Comercial</label>
-            <input type="text" value="Seis Especial - El Original" />
-          </div>
-          <div class="form-group full">
-            <label>Dirección Legal</label>
-            <input type="text" value="Av. Raimondi 456, Tingo María, Huánuco" />
-          </div>
-          <div class="form-group">
-            <label>Teléfono Principal</label>
-            <input type="text" value="962 456 789" />
-          </div>
-          <div class="form-group">
-            <label>Correo Corporativo</label>
-            <input type="email" value="contacto@seisespecial.com" />
-          </div>
-        </div>
-      </section>
+    <!-- Componente Hijo (Único) -->
+    <div class="fade show">
+      <app-settings-general></app-settings-general>
     </div>
 
-    <div class="tab-pane" [ngClass]="{'active': activeTab === 'profile'}">
-      <section class="settings-card glass">
-        <div class="profile-header">
-          <div class="avatar-wrapper">
-            <img src="https://ui-avatars.com/api/?name=Admin+TravelGo&background=10b981&color=fff" alt="Avatar">
-            <button class="btn-edit-avatar"><i class="bi bi-camera"></i></button>
-          </div>
-          <div class="profile-info">
-            <h3>Admin TravelGo</h3>
-            <span>Super Administrador • Activo</span>
-          </div>
-        </div>
-        <div class="form-grid mt-4">
-          <div class="form-group">
-            <label>Nombre Completo</label>
-            <input type="text" value="Admin TravelGo" />
-          </div>
-          <div class="form-group">
-            <label>ID de Empleado</label>
-            <input type="text" value="EMP-2024-001" readonly />
-          </div>
-          <div class="form-group">
-            <label>Cambiar Contraseña</label>
-            <input type="password" placeholder="Nueva contraseña" />
-          </div>
-          <div class="form-group">
-            <label>Confirmar Contraseña</label>
-            <input type="password" placeholder="Repite la contraseña" />
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="tab-pane" [ngClass]="{'active': activeTab === 'billing'}">
-      <section class="settings-card glass">
-        <h3><i class="bi bi-printer"></i> Series y Correlativos</h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Serie de Boleta</label>
-            <div class="input-group">
-              <span class="addon">B001</span>
-              <input type="number" value="1054" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Serie de Factura</label>
-            <div class="input-group">
-              <span class="addon">F001</span>
-              <input type="number" value="422" />
-            </div>
-          </div>
-          <div class="form-group full">
-            <label>Pie de Página en Ticket</label>
-            <textarea rows="3">¡Que Dios los bendiga! Gracias por viajar con Seis Especial - El Original.</textarea>
-          </div>
-        </div>
-
-        <h3 class="mt-4"><i class="bi bi-image"></i> Identidad Visual</h3>
-        <div class="upload-zone">
-          <i class="bi bi-cloud-arrow-up"></i>
-          <p>Sube el logo para los comprobantes</p>
-          <small>Recomendado: PNG fondo transparente (250x100px)</small>
-          <button class="btn-upload">Seleccionar Archivo</button>
-        </div>
-      </section>
-    </div>
-
-    <div class="tab-pane" [ngClass]="{'active': activeTab === 'notifications'}">
-      <section class="settings-card glass">
-        <h3><i class="bi bi-app-indicator"></i> Alertas del Sistema</h3>
-        <div class="toggle-list">
-          <div class="toggle-item">
-            <div class="toggle-text">
-              <strong>Alertas por Email</strong>
-              <p>Recibe reportes diarios de ventas por correo</p>
-            </div>
-            <label class="switch">
-              <input type="checkbox" checked>
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div class="toggle-item">
-            <div class="toggle-text">
-              <strong>Notificaciones Push</strong>
-              <p>Alertas inmediatas en el navegador para nuevas reservas</p>
-            </div>
-            <label class="switch">
-              <input type="checkbox" checked>
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div class="toggle-item">
-            <div class="toggle-text">
-              <strong>Recordatorios de Mantenimiento</strong>
-              <p>Avisos sobre buses que requieren revisión técnica</p>
-            </div>
-            <label class="switch">
-              <input type="checkbox">
-              <span class="slider"></span>
-            </label>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="tab-pane" [ngClass]="{'active': activeTab === 'maintenance'}">
-      <div class="maint-grid">
-        <div class="settings-card glass stat-card">
-          <i class="bi bi-database-check"></i>
-          <div class="stat-info">
-            <strong>Base de Datos</strong>
-            <span>Optimizado • 45.2 MB</span>
-          </div>
-          <button class="btn-action">Respaldar</button>
-        </div>
-        <div class="settings-card glass stat-card">
-          <i class="bi bi-hdd-network"></i>
-          <div class="stat-info">
-            <strong>Almacenamiento</strong>
-            <span>82% disponible</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress" style="width: 18%"></div>
-          </div>
-        </div>
-      </div>
-
-      <section class="settings-card glass mt-4">
-        <h3><i class="bi bi-clock-history"></i> Registros de Auditoría</h3>
-        <p>Consulta los últimos cambios realizados en el sistema</p>
-        <button class="btn-secondary">Ver Logs Completos</button>
-      </section>
-    </div>
-
-    <footer class="settings-footer">
-      <button class="btn-cancel">Descartar</button>
-      <button class="btn-save">
-        <i class="bi bi-check-lg"></i>
-        Guardar Cambios
-      </button>
-    </footer>
   </main>
 </div>

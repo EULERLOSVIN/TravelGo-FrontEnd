@@ -29,6 +29,19 @@ export class EditPersonComponent implements OnInit {
     stateOfAccount: [],
   };
 
+  simulatedEmail: string = '';
+
+  updateEmail() {
+    const first = (this.editForm.get('firstName')?.value || '').trim().toLowerCase().replace(/\s+/g, '');
+    const last = (this.editForm.get('lastName')?.value || '').trim().toLowerCase().split(' ')[0] || '';
+
+    if (first || last) {
+      this.simulatedEmail = `${first}.${last}@travelgo.com`.replace('..', '.');
+    } else {
+      this.simulatedEmail = '';
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
     private editPersonnelService: EditPersonnelService,
@@ -55,7 +68,7 @@ export class EditPersonComponent implements OnInit {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         idTypeDocument: [1, [Validators.required]],
-        numberDocument: ['', [Validators.required]],
+        numberDocument: [{ value: '', disabled: true }, [Validators.required]], // Disabled DNI per user request
         phoneNumber: ['', [Validators.required]],
         idRole: [1, [Validators.required]],
         newPassword: [''],
@@ -64,6 +77,9 @@ export class EditPersonComponent implements OnInit {
       },
       { validators: this.passwordMatchValidator },
     );
+
+    this.editForm.get('firstName')?.valueChanges.subscribe(() => this.updateEmail());
+    this.editForm.get('lastName')?.valueChanges.subscribe(() => this.updateEmail());
   }
 
   passwordMatchValidator(g: FormGroup) {
@@ -132,7 +148,7 @@ export class EditPersonComponent implements OnInit {
     }
 
     this.isLoading = true;
-    const formValue = this.editForm.value;
+    const formValue = this.editForm.getRawValue();
 
     // CONSTRUCCIÓN DEL OBJETO EXACTO SEGÚN TU BACKEND
     const updateData = {

@@ -1,0 +1,134 @@
+<div class="container-fluid p-0">
+
+    <div class="row g-3 mb-3">
+        <div class="col-12 col-md-8 col-xl-9 col-xxl-10 order-lg-1">
+            <div class="header-content">
+                <h2>Gestión de Cola</h2>
+                <p>Control de despachos y asignación de rutas por sede.</p>
+            </div>
+        </div>
+        <div
+            class="col-12 col-md-4 col-xl-3 col-xxl-2 order-lg-2 order-xxl-3 d-flex flex-column gap-2 justify-content-end">
+            <select class="custom-select form-select" [(ngModel)]="selectedHeadquarterId"
+                (change)="onHeadquarterChange()">
+                <option *ngFor="let hq of headquarters" [value]="hq.idHeadquarter">
+                    Sede: {{ hq.headquarterName }}
+                </option>
+            </select>
+
+            <!-- Now Destination is also a Select -->
+            <select class="custom-select form-select bg-white" [(ngModel)]="selectedRouteId"
+                (change)="onRouteSelect($any($event.target).value)">
+                <option *ngFor="let route of routes" [value]="route.idRoute">
+                    Destino: {{ route.destinationName.replace('Hacia ', '') }} ({{ route.inQueueCount }})
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-4">
+            <div class="stat-card">
+                <small>EN ESPERA TOTAL</small>
+                <p class="value">{{ queue.length }}</p>
+                <div class="bar">
+                    <div class="fill" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="stat-card">
+                <small>ACTIVOS (ESTA RUTA)</small>
+                <p class="value green">{{ queue.length }}</p>
+                <div class="bar">
+                    <div class="fill green" style="width: 80%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4 d-flex align-items-center justify-content-center">
+            <app-queue-add-driver (onAddDriver)="registerDriverFromComponent($event)"
+                class="w-100"></app-queue-add-driver>
+        </div>
+    </div>
+
+    <section class="queue-list-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="m-0 fw-bold fs-5 d-flex align-items-center gap-2">
+                <i class="bi bi-list-ol text-success"></i> Lista de Espera
+                <span class="badge bg-success rounded-pill ms-2">{{queue.length}}</span>
+            </h5>
+            <button class="btn btn-sm btn-light text-muted" (click)="loadQueue()">
+                <i class="bi bi-arrow-clockwise"></i> Actualizar
+            </button>
+        </div>
+
+        <div class="queue-list">
+            @for (item of queue; track item.idQueue; let i = $index) {
+            <div class="queue-item card border-0 shadow-sm mb-3 rounded-4 overflow-hidden position-relative"
+                [class.is-first]="i === 0">
+                <div
+                    class="card-body p-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+
+                    <!-- Driver Info & Turn Number -->
+                    <div class="d-flex align-items-center gap-3" style="min-width: 30%;">
+                        <div class="turn-num fw-bold fs-4 d-flex align-items-center justify-content-center rounded-circle"
+                            [ngClass]="i === 0 ? 'bg-success text-white border border-4 border-success-subtle' : 'bg-light text-secondary'"
+                            style="width: 50px; height: 50px;">
+                            {{ i + 1 }}
+                        </div>
+                        <div>
+                            <h6 class="mb-1 fw-bold text-dark fs-6">{{ item.driverFullName }}</h6>
+                            <small class="text-muted font-monospace"><i class="bi bi-person-vcard text-secondary"></i>
+                                {{ item.driverDni }}</small>
+                        </div>
+                    </div>
+
+                    <!-- Info block -->
+                    <div class="d-flex flex-wrap gap-4 flex-grow-1 bg-light rounded-3 p-2 px-3 align-items-center">
+                        <div class="d-flex flex-column">
+                            <small class="text-muted text-uppercase fw-semibold"
+                                style="font-size: 0.65rem;">Destino</small>
+                            <span class="fw-bold text-primary">{{ item.routeName | uppercase }}</span>
+                        </div>
+                        <div class="vr bg-secondary opacity-25"></div>
+                        <div class="d-flex flex-column">
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.65rem;">Tiempo
+                                Estimado</small>
+                            <span class="fw-semibold text-dark"><i class="bi bi-clock text-warning"></i> {{
+                                item.estimatedWaitTimeMinutes }} mins</span>
+                        </div>
+                        <div class="vr bg-secondary opacity-25"></div>
+                        <div class="d-flex flex-column">
+                            <small class="text-muted text-uppercase fw-semibold"
+                                style="font-size: 0.65rem;">Estado</small>
+                            <span class="badge" [class.bg-success]="i === 0" [class.bg-secondary]="i > 0">
+                                {{ i === 0 ? 'A BORDO' : 'EN COLA' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="actions d-flex gap-2 justify-content-end">
+                        <button class="btn btn-success fw-bold px-4 rounded-pill" (click)="assignRoute(item.idQueue)">
+                            <i class="bi bi-truck me-1"></i> Asignar
+                        </button>
+                        <button
+                            class="btn btn-outline-danger shadow-sm rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;" (click)="removeDriver(item.idQueue)" title="Remover">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            } @empty {
+            <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-light">
+                <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
+                <h5 class="text-secondary fw-bold">Cola Vacía</h5>
+                <p class="text-muted mb-0">No hay choferes formados para esta ruta actualmente.</p>
+            </div>
+            }
+        </div>
+    </section>
+</div>

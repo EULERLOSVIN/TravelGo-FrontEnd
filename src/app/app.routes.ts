@@ -20,7 +20,8 @@ import { DriverMainPage } from './features/Driver/pages/driver-main/driver-main.
 import { DriverHistoryPage } from './features/Driver/pages/driver-history/driver-history.page';
 import { RouteSelectionPage } from './features/Home/pages/route-selection/route-selection.page';
 import { AdminPlacesPage } from './features/Administrador/pages/admin-places.page/admin-places.page';
-
+import { AdminProfilePage } from './features/Administrador/pages/admin-profile.page/admin-profile.page';
+import { AdminQueuePage } from './features/Administrador/pages/admin-queue.page/admin-queue.page';
 
 export const routes: Routes = [
     {
@@ -62,7 +63,7 @@ export const routes: Routes = [
                 redirectTo: 'summary',
                 pathMatch: 'full'
             },
-            { 
+            {
                 path: 'summary',
                 component: AdminSummaryComponent
             },
@@ -103,8 +104,16 @@ export const routes: Routes = [
                 component: AdministratorComponent
             },
             {
-                path:'places',
-                component:AdminPlacesPage
+                path: 'places',
+                component: AdminPlacesPage
+            },
+            {
+                path: 'profile',
+                component: AdminProfilePage
+            },
+            {
+                path: 'queue',
+                component: AdminQueuePage
             }
 
         ]
@@ -114,22 +123,22 @@ export const routes: Routes = [
         component: AuthenticationPage
     },
     {
-        path:'driver',
-        component:DriverPage,
+        path: 'driver',
+        component: DriverPage,
         canActivate: [authGuard],
-        children:[
+        children: [
             {
-                path:'',
-                redirectTo:'driver-main',
-                pathMatch:'full'
+                path: '',
+                redirectTo: 'driver-main',
+                pathMatch: 'full'
             },
             {
-                path:'driver-main',
+                path: 'driver-main',
                 component: DriverMainPage
             },
             {
-                path:'driver-history',
-                component:DriverHistoryPage
+                path: 'driver-history',
+                component: DriverHistoryPage
             }
         ]
     }

@@ -1,0 +1,77 @@
+<section class="settings-card p-4 bg-white rounded shadow-sm border-0">
+    <h3 class="h5 mb-4" style="color: #16a34a;"><i class="bi bi-info-circle me-2"></i> Información Básica</h3>
+
+    <div *ngIf="isLoading" class="text-center py-4">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2 text-muted">Cargando configuración de la empresa...</p>
+    </div>
+
+    <div *ngIf="!isLoading && errorMessage" class="text-center py-4">
+        <div class="text-danger mb-3">
+            <i class="bi bi-exclamation-triangle fs-1"></i>
+        </div>
+        <h4 class="h5 text-dark">Error al cargar</h4>
+        <p class="text-muted">{{ errorMessage }}</p>
+    </div>
+
+    <form class="row g-3" *ngIf="!isLoading && !errorMessage" (ngSubmit)="saveSettings()">
+        <div class="col-md-6">
+            <label class="form-label fw-semibold text-muted">Razón Social</label>
+            <input type="text" class="form-control focus-brand" [(ngModel)]="companySettings.businessName"
+                name="businessName" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-semibold text-muted">RUC</label>
+            <input type="text" class="form-control focus-brand" [(ngModel)]="companySettings.ruc" name="ruc" />
+        </div>
+
+        <div class="col-12">
+            <label class="form-label fw-semibold text-muted">Dirección Legal</label>
+            <input type="text" class="form-control focus-brand" [(ngModel)]="companySettings.fiscalAddress"
+                name="fiscalAddress" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-semibold text-muted">Teléfono Principal</label>
+            <input type="text" class="form-control focus-brand" [(ngModel)]="companySettings.phone" name="phone" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-semibold text-muted">Correo Corporativo</label>
+            <input type="email" class="form-control focus-brand" [(ngModel)]="companySettings.email" name="email" />
+        </div>
+
+        <div class="col-12 mt-4 text-end">
+            <button type="submit"
+                class="btn text-white px-4 fw-semibold shadow-sm rounded-pill d-inline-flex align-items-center"
+                style="background-color: #16a34a; border-color: #16a34a;" [disabled]="isSaving">
+                <i class="bi bi-check-lg me-2"></i> {{ isSaving ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+        </div>
+    </form>
+</section>
+
+<!-- Toast Notification -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+    <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true"
+        [class.show]="showSuccessToast" [style.display]="showSuccessToast ? 'block' : 'none'">
+        <div class="d-flex">
+            <div class="toast-body fw-medium">
+                <i class="bi bi-check-circle-fill me-2"></i> Configuración actualizada correctamente.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="showSuccessToast = false"
+                aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilo para que los inputs no se pongan azules al hacer focus, sino del color de la marca */
+    .focus-brand:focus {
+        border-color: #16a34a;
+        box-shadow: 0 0 0 0.25rem rgba(22, 163, 74, 0.25);
+    }
+</style>
