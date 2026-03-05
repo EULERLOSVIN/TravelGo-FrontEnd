@@ -21,13 +21,27 @@
                     </div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-3">
                     <label class="form-label fw-semibold text-dark small">Ruta de Destino</label>
-                    <select class="form-select shadow-none" [(ngModel)]="routeId">
+                    <select class="form-select shadow-none" [(ngModel)]="routeId"
+                        (ngModelChange)="onRouteSelectChange()">
                         <option *ngFor="let route of routes" [ngValue]="route.idRoute">
                             Hacia: {{ route.destinationName.replace('Hacia ', '') }}
                         </option>
                     </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold text-dark small">Horario de Salida Programado</label>
+                    <select class="form-select shadow-none" [(ngModel)]="departureTimeId">
+                        <option [ngValue]="null">-- Sin horario fijo / Partida Libre --</option>
+                        <option *ngFor="let time of departureTimes" [ngValue]="time.idDepartureTime">
+                            {{ time.hour }}
+                        </option>
+                    </select>
+                    <small *ngIf="routeId && departureTimes.length === 0" class="text-muted d-block mt-1">
+                        <i class="bi bi-info-circle"></i> Esta ruta no tiene horarios fijos programados.
+                    </small>
                 </div>
 
             </div>

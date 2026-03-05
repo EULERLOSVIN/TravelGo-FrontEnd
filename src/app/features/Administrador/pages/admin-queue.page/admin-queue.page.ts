@@ -127,13 +127,13 @@ export class AdminQueuePage implements OnInit, OnDestroy {
     // Usually triggered via data-bs-toggle="modal", but kept here for programmatic expanding later if needed
   }
 
-  confirmAddDriverFromComponent(data: { dni: string, routeId: number }): void {
+  confirmAddDriverFromComponent(data: { dni: string, routeId: number, departureTimeId: number | null }): void {
     if (!data.dni || data.dni.trim().length < 8) {
       alert('Por favor ingrese un DNI o Nombre válido para buscar.');
       return;
     }
 
-    this.queueService.addDriverToQueue(data.dni, Number(data.routeId)).subscribe(() => {
+    this.queueService.addDriverToQueue(data.dni, Number(data.routeId), data.departureTimeId).subscribe(() => {
       if (Number(data.routeId) === Number(this.selectedRouteId)) {
         this.loadQueue();
       }

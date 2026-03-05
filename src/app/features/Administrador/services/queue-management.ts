@@ -53,7 +53,7 @@ export class QueueManagement {
     return of(filtered);
   }
 
-  addDriverToQueue(dni: string, idRoute: number): Observable<boolean> {
+  addDriverToQueue(dni: string, idRoute: number, departureTimeId?: number | null): Observable<boolean> {
     const newItem: QueueItem = {
       idQueue: Math.floor(Math.random() * 1000),
       turnNumber: this.mockQueue.filter(q => q.idRoute === idRoute).length + 1,
