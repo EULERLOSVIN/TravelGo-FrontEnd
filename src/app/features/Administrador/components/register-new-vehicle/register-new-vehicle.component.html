@@ -1,163 +1,147 @@
-<!-- 
-  ==================================================
-  MODAL OVERLAY
-  ==================================================
--->
-
+<!-- ==================================================
+     MODAL OVERLAY
+================================================== -->
 <div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
 
-```
-<div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
 
-    <!-- HEADER -->
-    <header class="modal-header">
-        <div class="header-content">
-            <h2>Nuevo Vehículo</h2>
-            <p>Complete la información para registrar la unidad.</p>
-        </div>
-        <button class="btn-close" (click)="closeModal()">
-            <i class="bi bi-x-lg"></i>
-        </button>
-    </header>
+        <!-- HEADER -->
+        <header class="modal-header">
+            <div class="header-content">
+                <h2>Nuevo Vehículo</h2>
+                <p>Complete la información para registrar la unidad.</p>
+            </div>
 
-    <!-- CONTENT -->
-    <div class="modal-body">
-        <form class="vehicle-form" (ngSubmit)="saveVehicle()">
+            <button class="btn-close" type="button" (click)="closeModal()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </header>
 
-            <!-- SECTION: PHOTOS -->
-            <div class="section-photos">
-                <h3 class="section-title">
-                    <i class="bi bi-camera"></i> Imágenes del Vehículo
-                </h3>
+        <!-- CONTENT -->
+        <div class="modal-body">
+            <form class="vehicle-form" (ngSubmit)="saveVehicle()">
 
-                <div class="photos-grid">
-                    <!-- Main Photo -->
-                    <label class="photo-upload main">
-                        <div class="upload-content">
-                            <i class="bi bi-cloud-arrow-up icon-large"></i>
-                            <p class="text-bold">Subir Foto Principal</p>
-                            <p class="text-small">Vista frontal o lateral (JPG, PNG)</p>
+                <!-- SECTION: PHOTOS -->
+                <div class="section-photos">
+                    <h3 class="section-title">
+                        <i class="bi bi-camera"></i> Imágenes del Vehículo
+                    </h3>
+
+                    <div class="photos-grid">
+                        <!-- Main Photo -->
+                        <label class="photo-upload main">
+                            <div class="upload-content">
+                                <i class="bi bi-cloud-arrow-up icon-large"></i>
+                                <p class="text-bold">Subir Foto Principal</p>
+                                <p class="text-small">Vista frontal o lateral (JPG, PNG)</p>
+
+                                <!-- Opcional: indicador simple si ya cargó foto -->
+                                <p class="text-small" *ngIf="mainPhotoBase64">✅ Foto cargada</p>
+                            </div>
+
+                            <input type="file" accept="image/png,image/jpeg" hidden
+                                (change)="onMainPhotoSelected($event)">
+                        </label>
+
+                        <!-- Extra Photos (no implementadas aún) -->
+                        <div class="photos-extras">
+                            <label class="photo-upload extra">
+                                <i class="bi bi-image"></i>
+                                <span>Foto Extra 1</span>
+                                <input type="file" hidden>
+                            </label>
+                            <label class="photo-upload extra">
+                                <i class="bi bi-image"></i>
+                                <span>Foto Extra 2</span>
+                                <input type="file" hidden>
+                            </label>
                         </div>
-                        <input type="file" hidden>
-                    </label>
-
-                    <!-- Extra Photos -->
-                    <div class="photos-extras">
-                        <label class="photo-upload extra">
-                            <i class="bi bi-image"></i>
-                            <span>Foto Extra 1</span>
-                            <input type="file" hidden>
-                        </label>
-                        <label class="photo-upload extra">
-                            <i class="bi bi-image"></i>
-                            <span>Foto Extra 2</span>
-                            <input type="file" hidden>
-                        </label>
                     </div>
                 </div>
-            </div>
 
-            <!-- SECTION: FIELDS -->
-            <div class="fields-grid">
+                <!-- SECTION: FIELDS -->
+                <div class="fields-grid">
 
-                <!-- Unit -->
-                <div class="form-group">
-                    <label>Unidad (ID Auto-increment)</label>
-                    <input type="text"
-                           [(ngModel)]="vehicleData.unitCode"
-                           name="unitCode"
-                           disabled
-                           class="input-disabled">
-                </div>
+                    <!-- Unit (solo visual) -->
+                    <div class="form-group">
+                        <label>Unidad (ID Auto-increment)</label>
+                        <input type="text" [(ngModel)]="vehicleData.unitCode" name="unitCode" disabled
+                            class="input-disabled">
+                    </div>
 
-                <!-- Plate -->
-                <div class="form-group">
-                    <label>Placa</label>
-                    <input type="text"
-                           [(ngModel)]="vehicleData.plate"
-                           name="plate"
-                           placeholder="ABC-123"
-                           class="input-default">
-                </div>
-
-                <!-- Type -->
-                <div class="form-group">
-                    <label>Tipo de Vehículo</label>
-                    <select [(ngModel)]="vehicleData.type"
-                            name="type"
+                    <!-- Plate -->
+                    <div class="form-group">
+                        <label>Placa</label>
+                        <input type="text" [(ngModel)]="vehicleData.plate" name="plate" placeholder="ABC-123"
                             class="input-default">
-                        <option value="">Seleccionar tipo...</option>
-                        <option value="auto">Auto de 5 pasajeros</option>
-                        <option value="minivan7">Mini Van 7 pasajeros</option>
-                        <option value="minivan15">Mini Van 15 pasajeros</option>
-                    </select>
-                </div>
+                    </div>
 
-                <!-- ✅ NUEVO: NUMERO DE ASIENTOS -->
-                <div class="form-group">
-                    <label>Número de Asientos</label>
-                    <input type="number"
-                           [(ngModel)]="vehicleData.seats"
-                           name="seats"
-                           placeholder="Ej: 5"
-                           class="input-default">
-                </div>
+                    <!-- Type -->
+                    <div class="form-group">
+                        <label>Tipo de Vehículo</label>
+                        <select [(ngModel)]="vehicleData.type" name="type" class="input-default">
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="Auto 5 pax">Auto de 5 pasajeros</option>
+                            <option value="Mini Van 7 pax">Mini Van 7 pasajeros</option>
+                            <option value="Mini Van 15 pax">Mini Van 15 pasajeros</option>
+                        </select>
+                    </div>
 
-                <!-- Model -->
-                <div class="form-group">
-                    <label>Modelo del Vehículo</label>
-                    <input type="text"
-                           [(ngModel)]="vehicleData.model"
-                           name="model"
-                           placeholder="Ej: Toyota Hiace"
-                           class="input-default">
-                </div>
-
-                <!-- Driver -->
-                <div class="form-group">
-                    <label>Conductor Asignado</label>
-                    <select [(ngModel)]="vehicleData.driverName"
-                            name="driverName"
+                    <!-- Seats -->
+                    <div class="form-group">
+                        <label>Número de Asientos</label>
+                        <input type="number" [(ngModel)]="vehicleData.seats" name="seats" placeholder="Ej: 5"
                             class="input-default">
-                        <option value="">Sin asignar</option>
-                        <option value="Ricardo Castillo">Ricardo Castillo</option>
-                        <option value="Marco Arrieta">Marco Arrieta</option>
-                    </select>
+                    </div>
+
+                    <!-- Model (tu backend es int?; si pones texto se enviará null) -->
+                    <div class="form-group">
+                        <label>Modelo (número)</label>
+                        <input type="text" [(ngModel)]="vehicleData.model" name="model"
+                            placeholder="Ej: 2024 (si no, dejar vacío)" class="input-default">
+                    </div>
+
+                    <!-- Driver dinámico -->
+                    <div class="form-group">
+                        <label>Conductor Asignado</label>
+
+                        <select [(ngModel)]="vehicleData.driverId" name="driverId" class="input-default"
+                            [disabled]="loadingDrivers">
+                            <option [ngValue]="null">Sin asignar</option>
+
+                            <option *ngFor="let d of drivers" [ngValue]="d.idPerson">
+                                {{ d.name }}
+                            </option>
+                        </select>
+
+                        <small *ngIf="loadingDrivers">Cargando conductores...</small>
+                    </div>
+
+                    <!-- Status (1 ACTIVO / 2 INACTIVO) -->
+                    <div class="form-group">
+                        <label>Estado Operativo</label>
+                        <select [(ngModel)]="vehicleData.statusId" name="statusId" class="input-default">
+                            <option [ngValue]="1">ACTIVO</option>
+                            <option [ngValue]="2">INACTIVO</option>
+                        </select>
+                    </div>
+
+                    <!-- SOAT -->
+                    <div class="form-group">
+                        <label>Fecha Vencimiento SOAT</label>
+                        <input type="date" [(ngModel)]="vehicleData.soatExpiry" name="soatExpiry" class="input-default">
+                    </div>
+
                 </div>
 
-                <!-- Status -->
-                <div class="form-group">
-                    <label>Estado Operativo</label>
-                    <select [(ngModel)]="vehicleData.status"
-                            name="status"
-                            class="input-default">
-                        <option value="active">En Fila</option>
-                        <option value="route">En Ruta</option>
-                        <option value="maintenance">Taller</option>
-                    </select>
-                </div>
+                <!-- FOOTER -->
+                <footer class="modal-footer">
+                    <button class="btn-cancel" type="button" (click)="closeModal()">Cancelar</button>
+                    <button class="btn-save" type="submit">Guardar Vehículo</button>
+                </footer>
 
-                <!-- SOAT -->
-                <div class="form-group">
-                    <label>Fecha Vencimiento SOAT</label>
-                    <input type="date"
-                           [(ngModel)]="vehicleData.soatExpiry"
-                           name="soatExpiry"
-                           class="input-default">
-                </div>
+            </form>
+        </div>
 
-            </div>
-
-        </form>
     </div>
-
-    <!-- FOOTER -->
-    <footer class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
-        <button class="btn-save" (click)="saveVehicle()">Guardar Vehículo</button>
-    </footer>
-
-</div>
-```
-
 </div>
