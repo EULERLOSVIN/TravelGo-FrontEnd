@@ -1,161 +1,119 @@
-<!-- ==================================================
-     SALES HISTORY / HISTORIAL DE VENTAS
-================================================== -->
-<section class="sales-history">
-
-    <!-- ===============================
-       HEADER
-  ================================ -->
+<section class="sales-container">
     <header class="sales-header">
         <div class="header-text">
-            <h2>Historial de Ventas</h2>
-            <p>Gestión de boletos y reportes financieros</p>
+            <h2 class="sales-title">Historial de Ventas</h2>
+            <p class="sales-subtitle">Gestión de boletos y reportes financieros</p>
         </div>
-
-        <div class="header-actions">
-            <button class="btn-secondary">
-                <i class="bi bi-download"></i>
-                Descargar Excel
+        <div class="sales-actions">
+            <button class="sales-btn-secondary" (click)="exportToExcel()">
+                <i class="bi bi-download"></i> Excel
             </button>
-            <button class="btn-primary">
-                <i class="bi bi-printer"></i>
-                Imprimir Reporte
+
+            <button class="sales-btn-primary" onclick="window.print()">
+                <i class="bi bi-printer"></i> Imprimir
             </button>
         </div>
     </header>
 
-    <!-- ===============================
-       FILTERS
-  ================================ -->
-    <section class="filters">
-
-        <div class="filter">
-            <label>Rango de fechas</label>
-
-            <div class="date-range">
-                <i class="bi bi-calendar3"></i>
-
-                <input type="date" />
-                <span class="separator">—</span>
-                <input type="date" />
+    <section class="sales-filters">
+        <div class="sales-filter-group">
+            <label class="sales-filter-label">Rango de fechas</label>
+            <div class="sales-date-range">
+                <i class="bi bi-calendar3 sales-date-icon"></i>
+                <input type="date" class="sales-date-input" [(ngModel)]="filters.fromDate"
+                    (ngModelChange)="onFilterChange()" />
+                <span class="sales-date-separator">—</span>
+                <input type="date" class="sales-date-input" [(ngModel)]="filters.untilDate"
+                    (ngModelChange)="onFilterChange()" />
             </div>
         </div>
 
-
-        <div class="filter">
-            <label>Ruta</label>
-            <select>
-                <option>Todas las rutas</option>
+        <div class="sales-filter-group">
+            <label class="sales-filter-label">Ruta</label>
+            <select class="sales-select" [(ngModel)]="filters.idRoute" (ngModelChange)="onFilterChange()">
+                <option [ngValue]="null">Todas las rutas</option>
+                @for(route of routes; track route.idRoute){
+                <option [ngValue]="route.idRoute">{{route.name}}</option>
+                }
             </select>
         </div>
 
-        <div class="filter">
-            <label>Vendedor</label>
-            <select>
-                <option>Todos los vendedores</option>
-            </select>
-        </div>
-
-        <div class="filter">
-            <label>Estado</label>
-            <div class="status-tabs">
-                <button class="active">Todos</button>
-                <button>Completado</button>
-                <button>Anulado</button>
+        <div class="sales-filter-group">
+            <label class="sales-filter-label">Estado</label>
+            <div class="sales-tabs">
+                <button class="sales-tab-btn" [class.sales-tab-btn--active]="filters.stateTicket === null"
+                    (click)="setFilterStatus(null)">Todos</button>
+                @for(state of stateTickets; track state.idState){
+                <button class="sales-tab-btn" [class.sales-tab-btn--active]="filters.stateTicket === state.idState"
+                    (click)="setFilterStatus(state.idState)">
+                    {{ state.name }}
+                </button>
+                }
             </div>
         </div>
-
     </section>
 
-    <!-- ===============================
-       TABLE
-  ================================ -->
-    <section class="table-card">
+    <section class="sales-card shadow-sm rounded overflow-hidden">
+        <div class="table-responsive">
+            <table class="sales-table">
+                <thead class="sales-thead-dark">
+                    <tr>
+                        <th>Fecha / Hora</th>
+                        <th>Pasajero</th>
+                        <th>DNI</th>
+                        <th>Ruta</th>
+                        <th>Asiento</th>
+                        <th>Monto (S/)</th>
+                        <th>Método</th>
+                    </tr>
+                </thead>
 
-        <table class="sales-table">
-            <thead>
-                <tr>
-                    <th>Fecha / Hora</th>
-                    <th>Pasajero</th>
-                    <th>DNI</th>
-                    <th>Ruta</th>
-                    <th>Asiento</th>
-                    <th>Vendedor</th>
-                    <th>Monto (S/)</th>
-                    <th>Método</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
+                <tbody>
+                    @for(sale of sales; track sale.idTicket) {
+                    <tr class="sales-row" [class.table-danger]="sale.paymentMethod === 'ANULADO'">
+                        <td class="sales-td" data-label="Fecha">{{ sale.date | date:'dd MMM yyyy' }}</td>
+                        <td class="sales-td" data-label="Pasajero"><strong>{{ sale.firstName }} {{ sale.lastName
+                                }}</strong></td>
+                        <td class="sales-td" data-label="DNI">{{ sale.dni }}</td>
+                        <td class="sales-td" data-label="Ruta">
+                            <span class="badge bg-primary-subtle text-primary">{{ sale.route }}</span>
+                        </td>
+                        <td class="sales-td" data-label="Asiento">{{ sale.seatNumber || '—' }}</td>
+                        <td class="sales-td" data-label="Monto">S/ {{ sale.unitPrice | number:'1.2-2' }}</td>
+                        <td class="sales-td" data-label="Método">
+                            <span class="badge" [class.bg-danger-subtle]="sale.paymentMethod === 'ANULADO'"
+                                [class.text-danger]="sale.paymentMethod === 'ANULADO'"
+                                [class.bg-success-subtle]="sale.paymentMethod !== 'ANULADO'"
+                                [class.text-success]="sale.paymentMethod !== 'ANULADO'">
+                                {{ sale.paymentMethod }}
+                            </span>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">No se encontraron registros.</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-            <tbody>
-                <tr>
-                    <td data-label="Fecha">24 Oct 2023<br><small>10:45 AM</small></td>
-                    <td data-label="Pasajero"><strong>Carlos Alberto Ruiz</strong></td>
-                    <td data-label="DNI">45829310</td>
-                    <td data-label="Ruta">
-                        <span class="route">HUÁNUCO</span>
-                        <span class="route-sub">TM</span>
-                    </td>
-                    <td data-label="Asiento" class="seat">A-03</td>
-                    <td data-label="Vendedor">Secretaría (Sede)</td>
-                    <td data-label="Monto" class="amount">S/ 25.00</td>
-                    <td data-label="Método">Efectivo</td>
-                    <td data-label="Acciones" class="actions">
-                        <i class="bi bi-eye"></i>
-                    </td>
-                </tr>
+        <footer class="sales-footer p-3 bg-light border-top">
+            <span class="text-muted small">Página {{ filters.page }}</span>
+            <div class="sales-pagination">
+                <button class="sales-pagination-btn" (click)="changePage(-1)" [disabled]="(filters.page || 1) === 1">
+                    &lt;
+                </button>
 
-                <tr>
-                    <td data-label="Fecha">24 Oct 2023<br><small>09:15 AM</small></td>
-                    <td data-label="Pasajero"><strong>María Fernanda L.</strong></td>
-                    <td data-label="DNI">70123456</td>
-                    <td data-label="Ruta">
-                        <span class="route alt">TM</span>
-                        <span class="route-sub alt">HUÁNUCO</span>
-                    </td>
-                    <td data-label="Asiento" class="seat">A-01</td>
-                    <td data-label="Vendedor">Venta Web</td>
-                    <td data-label="Monto" class="amount">S/ 30.00</td>
-                    <td data-label="Método">Yape</td>
-                    <td data-label="Acciones" class="actions">
-                        <i class="bi bi-eye"></i>
-                    </td>
-                </tr>
+                <button class="sales-pagination-btn sales-pagination-btn--active">
+                    {{ filters.page }}
+                </button>
 
-                <tr class="canceled">
-                    <td data-label="Fecha">23 Oct 2023<br><small>05:20 PM</small></td>
-                    <td data-label="Pasajero"><strong>Jorge Ramírez Soto</strong></td>
-                    <td data-label="DNI">22998877</td>
-                    <td data-label="Ruta">
-                        <span class="route">HUÁNUCO</span>
-                        <span class="route-sub">TM</span>
-                    </td>
-                    <td data-label="Asiento">—</td>
-                    <td data-label="Vendedor">Terminal (Hco)</td>
-                    <td data-label="Monto" class="amount">S/ 25.00</td>
-                    <td data-label="Método"><span class="status canceled">ANULADO</span></td>
-                    <td data-label="Acciones" class="actions">
-                        <i class="bi bi-eye"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- ===============================
-         FOOTER
-    ================================ -->
-        <footer class="table-footer">
-            <span>Mostrando 1–10 de 128 registros</span>
-
-            <div class="pagination">
-                <button>&lt;</button>
-                <button class="active">1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>&gt;</button>
+                <button class="sales-pagination-btn" (click)="changePage(1)"
+                    [disabled]="isLastPage || sales.length === 0">
+                    &gt;
+                </button>
             </div>
         </footer>
-
     </section>
-
 </section>

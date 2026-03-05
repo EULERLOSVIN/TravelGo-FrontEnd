@@ -17,13 +17,13 @@ export class AuthService {
   login(credentials: LoginRequestModel): Observable<Result<LoginResponse>> {
     return this.http.post<Result<LoginResponse>>(this.apiUrl, credentials).pipe(
       tap(response => {
-        // Solo guardamos si el backend confirmó éxito
         if (response.isSuccess && response.value) {
           // Guardamos el ID de la cuenta para que módulos de uso personal (ej. Profile) lo consuman de forma independiente
           localStorage.setItem('idAccount', response.value.idAccount.toString());
           localStorage.setItem('token', response.value.token);
           localStorage.setItem('userEmail', response.value.email);
           localStorage.setItem('userRole', response.value.rol);
+          localStorage.setItem('idAccount',response.value.idAccount.toString());
         }
       })
     );
