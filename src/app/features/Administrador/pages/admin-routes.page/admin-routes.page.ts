@@ -16,26 +16,25 @@ import { RoutesService, TravelRoute } from '../../services/routes.service';
   styleUrl: './admin-routes.page.scss',
 })
 export class AdminRoutesComponent implements OnInit {
-  allRoutes: TravelRoute[] = []; // Ruta Maestra
-  routes: TravelRoute[] = []; // Vista Filtrada
+  allRoutes: TravelRoute[] = [];
+  routes: TravelRoute[] = [];
+
+  // Departure times per route: { [idTravelRoute]: string[] }
+  routeDepartureTimes: Record<number, string[]> = {};
 
   // Stats
-  statsRoute = {
-    total: 0,
-    activas: 0,
-    inactivas: 0
-  }
+  statsRoute = { total: 0, activas: 0, inactivas: 0 };
 
   // Filters
   searchTerm: string = '';
-  filterState = 'all'; // 'all', 'active', 'inactive'
+  filterState = 'all';
 
   // Pagination
   paginatedRoutes: TravelRoute[] = [];
   currentPage = 1;
   pageSize = 15;
   totalPages = 1;
-  Math = Math; // Expose Math to template
+  Math = Math;
 
   isModalOpen = false;
   isEditModalOpen = false;
@@ -52,48 +51,47 @@ export class AdminRoutesComponent implements OnInit {
     this.routesService.getAll().subscribe({
       next: (data) => {
         this.allRoutes = data || [];
-
-        // Calcular contadores reales
         this.statsRoute.total = this.allRoutes.length;
         this.statsRoute.activas = this.allRoutes.filter(r => r.isActive !== false).length;
         this.statsRoute.inactivas = this.allRoutes.filter(r => r.isActive === false).length;
-
-        // Inicializar lista filtrada
         this.applyFilters();
         this.cdr.detectChanges();
+        // Load departure times for all routes
+        this.allRoutes.forEach(r => {
+          if (r.idTravelRoute) this.loadDepartureTimes(r.idTravelRoute);
+        });
       },
       error: (e) => console.error('Error al cargar rutas', e)
     });
   }
 
+  loadDepartureTimes(idTravelRoute: number) {
+    this.routesService.getDepartureTimesByRoute(idTravelRoute).subscribe({
+      next: (times) => {
+        this.routeDepartureTimes[idTravelRoute] = times.map(t => t.hour);
+        this.cdr.detectChanges();
+      },
+      error: () => { this.routeDepartureTimes[idTravelRoute] = []; }
+    });
+  }
+
   applyFilters() {
     let temp = [...this.allRoutes];
-
-    // 1. Filtrar por Estado
-    if (this.filterState === 'active') {
-      temp = temp.filter(r => r.isActive !== false);
-    } else if (this.filterState === 'inactive') {
-      temp = temp.filter(r => r.isActive === false);
-    }
-
-    // 2. Filtrar por Texto Buscado
+    if (this.filterState === 'active') temp = temp.filter(r => r.isActive !== false);
+    else if (this.filterState === 'inactive') temp = temp.filter(r => r.isActive === false);
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
-      temp = temp.filter(r =>
-        r.nameRoute.toLowerCase().includes(term)
-      );
+      temp = temp.filter(r => r.nameRoute.toLowerCase().includes(term));
     }
-
     this.routes = temp;
-    this.currentPage = 1; // Reset to first page on filter
+    this.currentPage = 1;
     this.updatePagination();
   }
 
   updatePagination() {
     this.totalPages = Math.ceil(this.routes.length / this.pageSize) || 1;
     const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.paginatedRoutes = this.routes.slice(start, end);
+    this.paginatedRoutes = this.routes.slice(start, start + this.pageSize);
   }
 
   changePage(page: number) {
@@ -104,14 +102,9 @@ export class AdminRoutesComponent implements OnInit {
   }
 
   getPages(): number[] {
-    // Simple pagination logic to show max 5 buttons
     let start = Math.max(1, this.currentPage - 2);
     let end = Math.min(this.totalPages, start + 4);
-
-    if (end - start < 4) {
-      start = Math.max(1, end - 4);
-    }
-
+    if (end - start < 4) start = Math.max(1, end - 4);
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
 
@@ -130,3 +123,4 @@ export class AdminRoutesComponent implements OnInit {
     this.isDeleteModalOpen = true;
   }
 }
+
