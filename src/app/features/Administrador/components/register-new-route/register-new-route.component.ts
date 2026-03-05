@@ -80,7 +80,7 @@ export class RegisterNewRouteComponent {
             window.location.reload();
           }).catch(e => {
             console.error('Error guardando horarios:', e);
-            alert('Ruta creada con éxito, pero algunos horarios fallaron.');
+            // Aún así recargamos para mostrar la ruta creada
             this.close.emit();
             window.location.reload();
           });
@@ -95,7 +95,6 @@ export class RegisterNewRouteComponent {
         alert('Error: ' + (e.message || 'No se pudo conectar con el servidor.'));
         this.isLoading = false;
       }
-      // Quitamos complete porque Promise.all maneja el cierre cuando se termine lo asíncrono
     });
   }
 }
