@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, map } from 'rxjs';
+import { Observable, BehaviorSubject, map, throwError, switchMap } from 'rxjs';
 import { environment } from '../../../../environment/environment.local';
 import { HeadquarterContext, QueueItem, RouteFilter } from '../models/queue.model';
+import { Result } from '../../../shared/models/result.model';
 
 @Injectable({
     providedIn: 'root',
@@ -38,8 +39,9 @@ export class QueueManagementService {
     }
 
     getQueue(idHeadquarter: number, idRoute: number): Observable<QueueItem[]> {
-        return this.http.get<QueueItem[]>(`${this.apiUrl}/getActiveQueue/${idHeadquarter}`).pipe(
-            map(queue => {
+        return this.http.get<Result<QueueItem[]>>(`${this.apiUrl}/getActiveQueue/${idHeadquarter}`).pipe(
+            map(result => {
+                const queue = result.value ?? [];
                 this.activeQueueSubject.next(queue);
                 return queue.filter(q => q.idRoute === idRoute);
             })
@@ -47,25 +49,32 @@ export class QueueManagementService {
     }
 
     getDriverQueueInfo(dni: string): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/getDriverQueueInfo/${dni}`);
+        return this.http.get<Result<any>>(`${this.apiUrl}/getDriverQueueInfo/${dni}`).pipe(
+            switchMap(result => {
+                if (!result.isSuccess) {
+                    return throwError(() => ({ status: 404, error: result.errorMessage }));
+                }
+                return [result.value];
+            })
+        );
     }
 
-    addDriverToQueue(dni: string, idRoute: number, departureTimeId?: number | null): Observable<any> {
-        return this.http.post(`${this.apiUrl}/add`, {
+    addDriverToQueue(dni: string, idRoute: number, departureTimeId?: number | null): Observable<Result<number>> {
+        return this.http.post<Result<number>>(`${this.apiUrl}/add`, {
             driverDni: dni,
             idTravelRoute: idRoute,
             idDepartureTime: departureTimeId
         });
     }
 
-    updateDriverRoute(idQueue: number, idRoute: number): Observable<any> {
-        return this.http.put(`${this.apiUrl}/updateRoute`, {
+    updateDriverRoute(idQueue: number, idRoute: number): Observable<Result<boolean>> {
+        return this.http.put<Result<boolean>>(`${this.apiUrl}/updateRoute`, {
             idAssignQueue: idQueue,
             newIdTravelRoute: idRoute
         });
     }
 
-    removeDriverFromQueue(idQueue: number): Observable<any> {
-        return this.http.delete(`${this.apiUrl}/delete/${idQueue}`);
+    removeDriverFromQueue(idQueue: number): Observable<Result<boolean>> {
+        return this.http.delete<Result<boolean>>(`${this.apiUrl}/delete/${idQueue}`);
     }
 }

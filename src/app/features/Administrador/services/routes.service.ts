@@ -1,48 +1,48 @@
-// rutas=darwin  Usa HttpClient para llamar a tu API.
+// rutas=darwin
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../../environment/environment.local'; // Importar entorno
+import { Observable, map } from 'rxjs';
+import { environment } from '../../../../environment/environment.local';
 import { TravelRouteModel } from '../models/TravelRoute.model';
-// Definimos cómo se ve una ruta en el frontend
-
+import { Result } from '../../../shared/models/result.model';
 
 export interface DepartureTime {
     idDepartureTime: number;
     idTravelRoute: number;
-    hour: string; // Devuelto como "HH:mm:ss"
+    hour: string;
 }
 
 export interface AddDepartureTimeDto {
     idTravelRoute: number;
-    hour: string; // Formato esperado "HH:mm:ss"
+    hour: string;
 }
 
 @Injectable({
     providedIn: 'root'
 })
 export class RoutesService {
-    private apiUrl = `${environment.apiUrl}/TravelRoute`; // Usar URL del entorno
+    private apiUrl = `${environment.apiUrl}/TravelRoute`;
     private departureTimeUrl = `${environment.apiUrl}/DepartureTime`;
 
     constructor(private http: HttpClient) { }
 
     getAll(): Observable<TravelRouteModel[]> {
-        return this.http.get<TravelRouteModel[]>(`${this.apiUrl}/getAll`);
+        return this.http.get<Result<TravelRouteModel[]>>(`${this.apiUrl}/getAll`).pipe(
+            map(result => result.value ?? [])
+        );
     }
 
-    create(route: TravelRouteModel): Observable<number> {
-        return this.http.post<number>(`${this.apiUrl}/add`, route);
+    create(route: TravelRouteModel): Observable<Result<number>> {
+        return this.http.post<Result<number>>(`${this.apiUrl}/add`, route);
     }
 
-    update(route: TravelRouteModel): Observable<boolean> {
-        return this.http.put<boolean>(`${this.apiUrl}/update`, route);
+    update(route: TravelRouteModel): Observable<Result<boolean>> {
+        return this.http.put<Result<boolean>>(`${this.apiUrl}/update`, route);
     }
 
-    delete(id: number): Observable<boolean> {
-        return this.http.delete<boolean>(`${this.apiUrl}/delete/${id}`);
+    delete(id: number): Observable<Result<boolean>> {
+        return this.http.delete<Result<boolean>>(`${this.apiUrl}/delete/${id}`);
     }
-
 
     // --- DEPARTURE TIMES (HORARIOS) ---
 
