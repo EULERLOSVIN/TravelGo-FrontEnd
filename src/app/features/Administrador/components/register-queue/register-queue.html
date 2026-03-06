@@ -12,35 +12,59 @@
                 <p class="text-secondary small mb-4">Busque un chofer disponible en esta sede y asígnalo a una de
                     las rutas activas.</p>
 
+                <!-- DNI Input -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold text-dark small">DNI del Chofer</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-white text-muted"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control shadow-none" placeholder="Buscar por DNI o Nombre..."
-                            [(ngModel)]="driverDni">
+                        <span class="input-group-text bg-white text-muted">
+                            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+                            <i *ngIf="!isLoading" class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control shadow-none" placeholder="Ingrese DNI del chofer..."
+                            [(ngModel)]="driverDni" (ngModelChange)="onDniInput()" maxlength="8">
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold text-dark small">Ruta de Destino</label>
-                    <select class="form-select shadow-none" [(ngModel)]="routeId"
-                        (ngModelChange)="onRouteSelectChange()">
-                        <option *ngFor="let route of routes" [ngValue]="route.idRoute">
-                            Hacia: {{ route.destinationName.replace('Hacia ', '') }}
-                        </option>
-                    </select>
+                <!-- Chofer encontrado -->
+                <div *ngIf="driverInfo"
+                    class="mb-3 p-3 bg-white rounded-3 border border-success-subtle d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                        style="width:40px;height:40px;">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-bold text-dark">{{ driverInfo.driverFullName }}</div>
+                        <small *ngIf="driverInfo.vehiclePlate" class="text-muted">
+                            <i class="bi bi-car-front me-1"></i>{{ driverInfo.vehiclePlate }}
+                            &nbsp;·&nbsp;{{ driverInfo.vehicleModel || 'Sin modelo' }}
+                        </small>
+                        <small *ngIf="!driverInfo.vehiclePlate" class="text-warning fw-semibold">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>No tiene vehículo y rutas asignadas.
+                        </small>
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label fw-semibold text-dark small">Horario de Salida Programado</label>
-                    <select class="form-select shadow-none" [(ngModel)]="departureTimeId">
-                        <option [ngValue]="null">-- Sin horario fijo / Partida Libre --</option>
-                        <option *ngFor="let time of departureTimes" [ngValue]="time.idDepartureTime">
-                            {{ time.hour }}
+                <!-- Error de búsqueda -->
+                <div *ngIf="searchError" class="mb-3 p-3 bg-danger-subtle rounded-3 border border-danger-subtle">
+                    <small class="text-danger"><i class="bi bi-exclamation-circle me-1"></i>{{ searchError }}</small>
+                </div>
+
+                <!-- Seleccionar Ruta (sólo si hay rutas disponibles) -->
+                <div *ngIf="driverInfo" class="mb-4">
+                    <label class="form-label fw-semibold text-dark small">Ruta de Destino</label>
+                    <select class="form-select shadow-none" [(ngModel)]="selectedRouteId"
+                        [disabled]="!driverInfo.assignedRoutes || driverInfo.assignedRoutes.length === 0">
+                        <option *ngIf="!driverInfo.assignedRoutes || driverInfo.assignedRoutes.length === 0"
+                            [ngValue]="0">
+                            — Sin rutas asignadas —
+                        </option>
+                        <option *ngFor="let route of driverInfo.assignedRoutes" [ngValue]="route.idRoute">
+                            {{ route.destinationName }}
                         </option>
                     </select>
-                    <small *ngIf="routeId && departureTimes.length === 0" class="text-muted d-block mt-1">
-                        <i class="bi bi-info-circle"></i> Esta ruta no tiene horarios fijos programados.
+                    <small *ngIf="!driverInfo.assignedRoutes || driverInfo.assignedRoutes.length === 0"
+                        class="text-muted d-block mt-1">
+                        <i class="bi bi-info-circle"></i> Este vehículo no tiene rutas asignadas todavía.
                     </small>
                 </div>
 

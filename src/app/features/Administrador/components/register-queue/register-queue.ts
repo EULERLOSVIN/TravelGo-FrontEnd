@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouteFilter } from '../../models/queue.model';
-import { RoutesService, DepartureTime } from '../../services/routes.service';
+import { QueueManagement } from '../../services/queue-management';
 
 @Component({
   selector: 'app-register-queue',
@@ -12,45 +12,70 @@ import { RoutesService, DepartureTime } from '../../services/routes.service';
 })
 export class RegisterQueue implements OnChanges {
   @Input() routes: RouteFilter[] = [];
-  @Input() selectedRouteId: number = 0;
-
-  @Output() onAddQueue = new EventEmitter<{ dni: string, routeId: number, departureTimeId: number | null }>();
+  @Output() onAddQueue = new EventEmitter<{ dni: string, idTravelRoute: number }>();
 
   driverDni: string = '';
-  routeId: number = 0;
-  departureTimeId: number | null = null;
-  departureTimes: DepartureTime[] = [];
+  driverInfo: any = null;
+  selectedRouteId: number = 0;
+  isLoading: boolean = false;
+  searchError: string | null = null;
 
-  constructor(private routesService: RoutesService) { }
+  constructor(private queueService: QueueManagement) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedRouteId']) {
-      this.routeId = this.selectedRouteId;
-      this.loadDepartureTimes(this.routeId);
+  }
+
+  onDniInput(): void {
+    if (this.driverDni.length >= 8) {
+      this.searchDriver();
+    } else {
+      this.resetSearch();
     }
   }
 
-  onRouteSelectChange(): void {
-    this.departureTimeId = null;
-    this.departureTimes = [];
-    if (this.routeId) {
-      this.loadDepartureTimes(this.routeId);
-    }
-  }
-
-  loadDepartureTimes(idRoute: number): void {
-    this.routesService.getDepartureTimesByRoute(idRoute).subscribe(res => {
-      this.departureTimes = res || [];
+  searchDriver(): void {
+    this.isLoading = true;
+    this.searchError = null;
+    this.queueService.getDriverQueueInfo(this.driverDni).subscribe({
+      next: (res) => {
+        this.driverInfo = res;
+        this.isLoading = false;
+        if (this.driverInfo && this.driverInfo.assignedRoutes && this.driverInfo.assignedRoutes.length > 0) {
+          this.selectedRouteId = this.driverInfo.assignedRoutes[0].idRoute;
+        } else {
+          this.selectedRouteId = 0;
+        }
+      },
+      error: (err) => {
+        this.driverInfo = null;
+        this.isLoading = false;
+        if (err.status === 404) {
+          this.searchError = 'Chofer no encontrado. Verifique el DNI ingresado.';
+        } else {
+          this.searchError = 'Error al buscar el chofer. Inténtelo de nuevo.';
+        }
+      }
     });
+  }
+
+  resetSearch(): void {
+    this.driverInfo = null;
+    this.selectedRouteId = 0;
+    this.searchError = null;
   }
 
   submit(): void {
+    if (!this.driverInfo || !this.selectedRouteId || this.selectedRouteId === 0) {
+      alert('Debe buscar un chofer validó y seleccionar una ruta de la lista.');
+      return;
+    }
+
     this.onAddQueue.emit({
       dni: this.driverDni,
-      routeId: this.routeId,
-      departureTimeId: this.departureTimeId
+      idTravelRoute: Number(this.selectedRouteId)
     });
-    this.driverDni = ''; // Reset after submit
-    this.departureTimeId = null;
+
+    this.driverDni = '';
+    this.resetSearch();
   }
 }

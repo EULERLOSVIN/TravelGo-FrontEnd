@@ -80,7 +80,7 @@
         </div>
 
         <div class="queue-list">
-            @for (item of filteredQueue; track item.idQueue; let i = $index) {
+            @for (item of filteredQueue; track item.idAssignQueue; let i = $index) {
             <div class="queue-item card border-0 shadow-sm mb-3 rounded-4 overflow-hidden position-relative"
                 [class.border-start]="i === 0" [class.border-success]="i === 0" [class.border-5]="i === 0"
                 style="transition: all 0.2s ease-in-out;">
@@ -113,7 +113,7 @@
                         <div class="d-flex flex-column">
                             <small class="text-muted text-uppercase fw-semibold"
                                 style="font-size: 0.65rem;">Destino</small>
-                            <span class="fw-bold text-primary">{{ item.routeName | uppercase }}</span>
+                            <span class="fw-bold text-primary">{{ item.destinationName | uppercase }}</span>
                         </div>
                         <div class="vr bg-secondary opacity-25"></div>
                         <div class="d-flex flex-column">
@@ -134,14 +134,15 @@
                             <small class="text-muted text-uppercase fw-semibold"
                                 style="font-size: 0.65rem;">Falta</small>
                             <span class="fw-bold text-danger"><i class="bi bi-hourglass-split"></i> {{
-                                item.estimatedWaitTimeMinutes }} mins</span>
+                                item.remainingMinutes }} mins</span>
                         </div>
                         <div class="vr bg-secondary opacity-25"></div>
                         <div class="d-flex flex-column">
                             <small class="text-muted text-uppercase fw-semibold"
                                 style="font-size: 0.65rem;">Estado</small>
-                            <span class="badge" [class.bg-success]="i === 0" [class.bg-secondary]="i > 0">
-                                {{ i === 0 ? 'A BORDO' : 'EN COLA' }}
+                            <span class="badge" [class.bg-success]="item.status === 'EN TURNO'"
+                                [class.bg-secondary]="item.status !== 'EN TURNO'">
+                                {{ item.status }}
                             </span>
                         </div>
                     </div>
@@ -172,8 +173,7 @@
     </section>
 
     <!-- Extracted Modal Components -->
-    <app-register-queue [routes]="routes" [selectedRouteId]="modalSelectedRouteId"
-        (onAddQueue)="confirmAddDriverFromComponent($event)">
+    <app-register-queue (onAddQueue)="confirmAddDriverFromComponent($event)">
     </app-register-queue>
 
     <app-edit-queue [itemToEdit]="itemToEdit" [routes]="routes" (onSubmit)="confirmEditRouteFromComponent($event)">

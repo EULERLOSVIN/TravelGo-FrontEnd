@@ -14,6 +14,7 @@ import { DeleteQueue } from '../../components/delete-queue/delete-queue';
   templateUrl: './admin-queue.page.html',
   styleUrl: './admin-queue.page.scss'
 })
+
 export class AdminQueuePage implements OnInit, OnDestroy {
   headquarters: HeadquarterContext[] = [];
   selectedHeadquarterId: number = 0;
@@ -66,11 +67,11 @@ export class AdminQueuePage implements OnInit, OnDestroy {
   }
 
   updateTimers(): void {
-    const now = new Date().getTime();
+    // Timers are now fully managed by the backend (RemainingMinutes). 
+    // This frontend countdown might be redundant or we could just decrement `remainingMinutes` locally.
     this.queue.forEach(item => {
-      if (item.scheduledDepartureTime) {
-        const diffMs = new Date(item.scheduledDepartureTime).getTime() - now;
-        item.estimatedWaitTimeMinutes = Math.max(0, Math.floor(diffMs / 60000));
+      if (item.remainingMinutes > 0) {
+        item.remainingMinutes--;
       }
     });
   }
@@ -115,7 +116,6 @@ export class AdminQueuePage implements OnInit, OnDestroy {
     if (this.selectedHeadquarterId && this.selectedRouteId) {
       this.queueService.getQueue(Number(this.selectedHeadquarterId), Number(this.selectedRouteId)).subscribe(q => {
         this.queue = q;
-        this.updateTimers(); // Force update on load
         this.cdr.detectChanges();
       });
     }
@@ -127,17 +127,20 @@ export class AdminQueuePage implements OnInit, OnDestroy {
     // Usually triggered via data-bs-toggle="modal", but kept here for programmatic expanding later if needed
   }
 
-  confirmAddDriverFromComponent(data: { dni: string, routeId: number, departureTimeId: number | null }): void {
+  confirmAddDriverFromComponent(data: { dni: string, idTravelRoute: number }): void {
     if (!data.dni || data.dni.trim().length < 8) {
-      alert('Por favor ingrese un DNI o Nombre válido para buscar.');
+      alert('Por favor ingrese un DNI válido.');
       return;
     }
 
-    this.queueService.addDriverToQueue(data.dni, Number(data.routeId), data.departureTimeId).subscribe(() => {
-      if (Number(data.routeId) === Number(this.selectedRouteId)) {
+    this.queueService.addDriverToQueue(data.dni, data.idTravelRoute, null).subscribe({
+      next: () => {
         this.loadQueue();
+        this.loadRoutesForHeadquarter();
+      },
+      error: (err) => {
+        alert(err.error || 'Error al agregar chofer a la cola. Verifique que tenga un vehículo y ruta asignados.');
       }
-      this.loadRoutesForHeadquarter();
     });
   }
 
@@ -147,10 +150,15 @@ export class AdminQueuePage implements OnInit, OnDestroy {
 
   confirmDeleteDriverFromComponent(): void {
     if (this.itemToDelete) {
-      this.queueService.removeDriverFromQueue(this.itemToDelete.idQueue).subscribe(() => {
-        this.itemToDelete = null;
-        this.loadQueue();
-        this.loadRoutesForHeadquarter();
+      this.queueService.removeDriverFromQueue(this.itemToDelete.idAssignQueue).subscribe({
+        next: () => {
+          this.itemToDelete = null;
+          this.loadQueue();
+          this.loadRoutesForHeadquarter();
+        },
+        error: (err) => {
+          alert(err.error || 'Error al quitar chofer de la cola.');
+        }
       });
     }
   }
@@ -162,12 +170,15 @@ export class AdminQueuePage implements OnInit, OnDestroy {
   confirmEditRouteFromComponent(newRouteId: number): void {
     if (this.itemToEdit && newRouteId) {
       if (Number(newRouteId) !== this.itemToEdit.idRoute) {
-        this.queueService.removeDriverFromQueue(this.itemToEdit.idQueue).subscribe(() => {
-          this.queueService.addDriverToQueue(this.itemToEdit!.driverDni, Number(newRouteId)).subscribe(() => {
+        this.queueService.updateDriverRoute(this.itemToEdit.idAssignQueue, Number(newRouteId)).subscribe({
+          next: () => {
             this.itemToEdit = null;
             this.loadQueue();
             this.loadRoutesForHeadquarter();
-          });
+          },
+          error: (err) => {
+            alert(err.error || 'Error al cambiar la ruta del chofer.');
+          }
         });
       }
     }

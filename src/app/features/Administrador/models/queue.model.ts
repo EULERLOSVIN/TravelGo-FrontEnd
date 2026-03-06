@@ -1,19 +1,17 @@
 export interface QueueItem {
-    idQueue: number;
-    turnNumber: number;
-    driverDni: string;
+    idAssignQueue: number;
+    turn: number;
     driverFullName: string;
-    arrivalTime: Date;
-    scheduledDepartureTime: Date;
-    estimatedWaitTimeMinutes: number;
-    idVehicle?: number;
-    vehiclePlate?: string;
-    vehicleModel?: string;
+    driverDni: string;
+    vehiclePlate: string;
+    vehicleModel: string;
+    idRoute: number;
+    destinationName: string;
     occupiedSeats: number;
     totalSeats: number;
-    idRoute: number;
-    routeName: string;
-    statusName: string; // 'En Cola', 'Próximo a Salir'
+    scheduledDepartureTime: string;
+    remainingMinutes: number;
+    status: string;
 }
 
 export interface RouteFilter {

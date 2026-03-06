@@ -43,8 +43,8 @@ export class RoutesService {
         return this.http.delete<boolean>(`${this.apiUrl}/delete/${id}`);
     }
 
+
     // --- DEPARTURE TIMES (HORARIOS) ---
-    private departureTimeUrl = `${environment.apiUrl}/DepartureTime`;
 
     getDepartureTimesByRoute(idTravelRoute: number): Observable<DepartureTime[]> {
         return this.http.get<DepartureTime[]>(`${this.departureTimeUrl}/route/${idTravelRoute}`);
