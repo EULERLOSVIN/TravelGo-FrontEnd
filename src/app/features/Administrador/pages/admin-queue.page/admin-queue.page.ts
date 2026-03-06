@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { QueueManagement } from '../../services/queue-management';
+import { QueueManagementService } from '../../services/queue-management.service';
 import { HeadquarterContext, QueueItem, RouteFilter } from '../../models/queue.model';
 import { RegisterQueue } from '../../components/register-queue/register-queue';
 import { EditQueue } from '../../components/edit-queue/edit-queue';
@@ -38,7 +38,7 @@ export class AdminQueuePage implements OnInit, OnDestroy {
 
   private timerInterval: any;
 
-  constructor(private queueService: QueueManagement, private cdr: ChangeDetectorRef) { }
+  constructor(private queueService: QueueManagementService, private cdr: ChangeDetectorRef) { }
 
   get filteredQueue(): QueueItem[] {
     if (!this.searchTerm.trim()) return this.queue;

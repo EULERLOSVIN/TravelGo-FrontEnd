@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouteFilter } from '../../models/queue.model';
-import { QueueManagement } from '../../services/queue-management';
+import { QueueManagementService } from '../../services/queue-management.service';
 
 @Component({
   selector: 'app-register-queue',
@@ -20,7 +20,7 @@ export class RegisterQueue implements OnChanges {
   isLoading: boolean = false;
   searchError: string | null = null;
 
-  constructor(private queueService: QueueManagement) { }
+  constructor(private queueService: QueueManagementService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
   }
