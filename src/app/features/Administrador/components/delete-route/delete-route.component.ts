@@ -23,8 +23,8 @@ export class DeleteRouteComponent {
         this.isLoading = true;
 
         this.routesService.delete(this.route.idTravelRoute).subscribe({
-            next: (success) => {
-                if (success) {
+            next: (result) => {
+                if (result.value) {
                     alert('Ruta eliminada (desactivada) correctamente.');
                     this.close.emit();
                     window.location.reload();

@@ -65,7 +65,8 @@
       <button class="btn btn-secondary avatar" id="sesion" data-bs-toggle="dropdown" aria-expanded="false"><i
           class="bi bi-person-circle"></i></button>
       <ul class="dropdown-menu" aria-labelledby="sesion">
-        <li><a class="dropdown-item clickable">Perfil</a></li>
+        <li><a class="dropdown-item clickable" routerLink="/administrator/profile" routerLinkActive="active">Perfil</a>
+        </li>
         <li><a class="dropdown-item clickable" (click)="onLogout()">Cerrar Sesión</a></li>
       </ul>
     </div>

@@ -1,0 +1,28 @@
+<div class="modal fade" id="deleteDriverModal" tabindex="-1" aria-labelledby="deleteDriverModalLabel" aria-hidden="true"
+    *ngIf="item">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-header bg-danger text-white border-0 py-3">
+                <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="deleteDriverModalLabel">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Confirmar Eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-light text-center">
+                <i class="bi bi-trash3 text-danger mb-3" style="font-size: 3rem;"></i>
+                <h5 class="fw-bold text-dark">¿Quitar a este chofer de la cola?</h5>
+                <p class="text-secondary mb-0">Esta acción removerá a <strong class="text-dark">{{
+                        item.driverFullName }}</strong> de la lista de espera actual.</p>
+            </div>
+            <div class="modal-footer border-0 p-3 bg-light d-flex gap-2">
+                <button type="button" class="btn btn-light border fw-semibold flex-grow-1"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger fw-bold flex-grow-1 shadow-sm" (click)="submit()"
+                    data-bs-dismiss="modal">
+                    <i class="bi bi-trash me-1"></i> Quitar de Cola
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

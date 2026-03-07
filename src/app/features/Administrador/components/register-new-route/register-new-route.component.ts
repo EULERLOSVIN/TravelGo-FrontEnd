@@ -2,7 +2,7 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RoutesService} from '../../services/routes.service';
+import { RoutesService } from '../../services/routes.service';
 import { PlacesService } from '../../services/places.service';
 import { TravelRouteModel } from '../../models/TravelRoute.model';
 
@@ -65,7 +65,8 @@ export class RegisterNewRouteComponent {
     this.formData.nameRoute = 'GENERANDO...';
 
     this.routesService.create(this.formData).subscribe({
-      next: (createdRouteId) => {
+      next: (result) => {
+        const createdRouteId = result.value;
         // Si hay horarios, guardarlos 1 por 1
         if (this.departureTimes.length > 0) {
           const timePromises = this.departureTimes.map(time => {

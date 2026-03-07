@@ -1,7 +1,6 @@
-// models/login-response.model.ts
 export interface LoginResponse {
+  idAccount: number;
   token: string;
   email: string;
   rol: string;
-  idAccount: number;
 }

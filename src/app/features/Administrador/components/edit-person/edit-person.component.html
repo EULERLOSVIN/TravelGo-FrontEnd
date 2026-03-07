@@ -8,13 +8,8 @@
             <strong class="fs-2">Editar Datos del Personal</strong>
           </h5>
         </div>
-        <button
-          type="button"
-          class="btn-close position-absolute top-0 end-0 m-3"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-          (click)="close()"
-        ></button>
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"
+          aria-label="Close" (click)="close()"></button>
       </div>
 
       <div class="modal-body">
@@ -30,22 +25,14 @@
 
                 <div class="col-6">
                   <label class="form-label fw-semibold">Nombres:</label>
-                  <input
-                    type="text"
-                    formControlName="firstName"
-                    class="form-control rounded-pill"
-                    placeholder="Ej. Ana Lucía"
-                  />
+                  <input type="text" formControlName="firstName" class="form-control rounded-pill"
+                    placeholder="Ej. Ana Lucía" />
                 </div>
 
                 <div class="col-6">
                   <label class="form-label fw-semibold">Apellidos:</label>
-                  <input
-                    type="text"
-                    formControlName="lastName"
-                    class="form-control rounded-pill"
-                    placeholder="Ej. Vasquez Gómez"
-                  />
+                  <input type="text" formControlName="lastName" class="form-control rounded-pill"
+                    placeholder="Ej. Vasquez Gómez" />
                 </div>
 
                 <div class="col-6">
@@ -53,29 +40,26 @@
                   <select formControlName="idTypeDocument" class="form-select rounded-pill">
                     <option [value]="null" disabled>Seleccionar...</option>
                     @for (type of requiredLists.documentTypes; track type.id) {
-                      <option [value]="type.id">{{ type.name }}</option>
+                    <option [value]="type.id">{{ type.name }}</option>
                     }
                   </select>
                 </div>
 
                 <div class="col-6">
                   <label class="form-label fw-semibold">Número de Documento:</label>
-                  <input
-                    type="text"
-                    formControlName="numberDocument"
-                    class="form-control rounded-pill"
-                    placeholder="Número"
-                  />
+                  <input type="text" formControlName="numberDocument" class="form-control rounded-pill bg-light"
+                    placeholder="Número" />
                 </div>
 
                 <div class="col-6">
                   <label class="form-label fw-semibold">Celular:</label>
-                  <input
-                    type="tel"
-                    formControlName="phoneNumber"
-                    class="form-control rounded-pill"
-                    placeholder="987 654 321"
-                  />
+                  <input type="tel" formControlName="phoneNumber" class="form-control rounded-pill"
+                    placeholder="987 654 321" />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Correo Corporativo:</label>
+                  <input type="email" class="form-control rounded-pill bg-light" [value]="simulatedEmail" disabled />
                 </div>
               </div>
             </div>
@@ -93,67 +77,44 @@
                   <select formControlName="idRole" class="form-select rounded-pill">
                     <option disabled>Selecciona un rol</option>
                     @for (role of requiredLists.roles; track $index) {
-                      <option [value]="role.id">{{ role.name }}</option>
+                    <option [value]="role.id">{{ role.name }}</option>
                     }
                   </select>
                 </div>
 
                 <div class="col-6">
                   <label class="form-label fw-semibold">Nueva Contraseña:</label>
-                  <input
-                    type="password"
-                    formControlName="newPassword"
-                    class="form-control rounded-pill"
-                    placeholder="••••••••"
-                  />
+                  <input type="password" formControlName="newPassword" class="form-control rounded-pill"
+                    placeholder="••••••••" />
                 </div>
 
                 <div class="col-6">
                   <label class="form-label fw-semibold">Confirmar Contraseña:</label>
-                  <input
-                    type="password"
-                    formControlName="confirmPassword"
-                    class="form-control rounded-pill"
-                    placeholder="••••••••"
-                    [class.is-invalid]="
+                  <input type="password" formControlName="confirmPassword" class="form-control rounded-pill"
+                    placeholder="••••••••" [class.is-invalid]="
                       editForm.hasError('mismatch') && editForm.get('confirmPassword')?.touched
-                    "
-                  />
+                    " />
                 </div>
 
-                <div
-                  class="col-12 d-flex align-items-center justify-content-between gap-3 p-3 bg-light rounded-4 mt-3"
-                >
+                <div class="col-12 d-flex align-items-center justify-content-between gap-3 p-3 bg-light rounded-4 mt-3">
                   <div class="d-flex justify-content-center align-items-center gap-3">
                     <i class="bi bi-shield-check text-success fs-3"></i>
                     <div>
                       <h6 class="fw-bold text-dark mb-0">Estado de Cuenta</h6>
-                      <span class="text-secondary text-opacity-75 small"
-                        >Permitir acceso al sistema</span
-                      >
+                      <span class="text-secondary text-opacity-75 small">Permitir acceso al sistema</span>
                     </div>
                   </div>
 
                   <div class="form-check form-switch d-flex align-items-center gap-2">
-                    <input
-                      class="form-check-input custom-switch shadow-none"
-                      [ngClass]="getStileSwitch()"
-                      type="checkbox"
-                      role="switch"
-                      id="swEstado"
-                      [checked]="editForm.get('idStateOfAccount')?.value === 1"
-                      (change)="
+                    <input class="form-check-input custom-switch shadow-none" [ngClass]="getStileSwitch()"
+                      type="checkbox" role="switch" id="swEstado"
+                      [checked]="editForm.get('idStateOfAccount')?.value === 1" (change)="
                         editForm.patchValue({
                           idStateOfAccount: $any($event.target).checked ? 1 : 2,
                         })
-                      "
-                    />
+                      " />
 
-                    <label
-                      class="form-check-label fw-bold"
-                      [ngClass]="getLabelStyle()"
-                      for="swEstado"
-                    >
+                    <label class="form-check-label fw-bold" [ngClass]="getLabelStyle()" for="swEstado">
                       {{ editForm.get('idStateOfAccount')?.value === 1 ? 'ACTIVO' : 'INACTIVO' }}
                     </label>
                   </div>
@@ -166,11 +127,7 @@
             <button type="button" class="btn btn-outline-secondary rounded-pill" (click)="close()">
               Cancelar
             </button>
-            <button
-              type="submit"
-              class="btn btn-success rounded-pill px-4"
-              [disabled]="editForm.invalid"
-            >
+            <button type="submit" class="btn btn-success rounded-pill px-4" [disabled]="editForm.invalid">
               Guardar Cambios
             </button>
           </div>

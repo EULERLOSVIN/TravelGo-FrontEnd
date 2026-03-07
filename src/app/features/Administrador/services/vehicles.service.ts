@@ -20,7 +20,7 @@ export class VehiclesService {
 
   private baseUrl = `${environment.apiUrl}/vehicles`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // OBTENER VEHICULOS
   getVehiclesByFilters(searchTerm: string, pageNumber: number): Observable<Result<DetailVehicleModel[]>> {
