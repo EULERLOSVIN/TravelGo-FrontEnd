@@ -1,191 +1,145 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { VehiclesService } from '../../services/vehicles.service';
-import { Subject, takeUntil, finalize } from 'rxjs';
-
-interface Result<T> {
-  isSuccess: boolean;
-  value: T;
-  message?: string;
-}
-
-interface DriverModel {
-  idPerson: number;
-  name: string;
-}
+import { DriverModel } from '../../models/Driver.model';
+import { RoutesService } from '../../services/routes.service';
+import { TravelRouteModel } from '../../models/TravelRoute.model';
+import { CreateVehicleModel } from '../../models/CreateVehicle.model';
+import { StateVehicleModel } from '../../models/StateVehicle.model';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-register-new-vehicle',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './register-new-vehicle.component.html',
-  styleUrl: './register-new-vehicle.component.scss'
+    selector: 'app-register-new-vehicle',
+    standalone: true,
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    templateUrl: './register-new-vehicle.component.html',
+    styleUrl: './register-new-vehicle.component.scss'
 })
-export class RegisterNewVehicleComponent implements OnChanges, OnDestroy {
+export class RegisterNewVehicleComponent implements OnInit {
 
-  @Input() isOpen = false;
-  @Output() close = new EventEmitter<void>();
+    isVisible = false;
+    vehicleForm!: FormGroup;
 
-  drivers: DriverModel[] = [];
-  loadingDrivers = false;
-  saving = false;
+    listDrivers: DriverModel[] = []
+    listRoutes: TravelRouteModel[] = [];
+    listStateVehicle: StateVehicleModel[] = [];
 
-  // cache simple para evitar pedir drivers siempre
-  private driversLoadedOnce = false;
+    constructor(
+        private fb: FormBuilder,
+        private vehicleService: VehiclesService,
+        private routeServece: RoutesService,
+        private cdr: ChangeDetectorRef
+    ) { }
 
-  // para cancelar subs al cerrar / destruir
-  private destroy$ = new Subject<void>();
-
-  mainPhotoBase64: string | null = null;
-
-  vehicleData = {
-    unitCode: 'U-013',
-    plate: '',
-    type: '',
-    seats: null as number | null,
-    model: '',
-    driverId: null as number | null,
-    statusId: 1,
-    soatExpiry: '',
-  };
-
-  constructor(private vehiclesService: VehiclesService) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // Carga drivers solo cuando se abre
-    if (changes['isOpen']?.currentValue === true) {
-      this.loadDriversIfNeeded();
+    ngOnInit(): void {
+        this.getDriver();
+        this.getAllRoutes();
+        this.getStatesVehicle();
+        this.initForm();
     }
 
-    // Si el modal se cierra, opcional: cancelar requests en vuelo
-    if (changes['isOpen']?.currentValue === false) {
-      // No reseteo destroy$ porque también se usa para OnDestroy.
-      // Si quieres cancelar al cerrar sin destruir, usa otro Subject "close$".
+    open() { this.isVisible = true }
+    close() { this.isVisible = false }
+
+    initForm(): void {
+        this.vehicleForm = this.fb.group({
+            mainPhoto: [null],
+            plate: ['', [Validators.required, Validators.pattern(/^[A-Z0-9-]{6,10}$/)]],
+            vehicleType: ['', Validators.required],
+            seatNumber: [null, [Validators.required, Validators.min(1)]],
+            model: [''],
+            idDriver: [null, Validators.required],
+            idState: [null, Validators.required],
+            soatExpirationDate: ['', Validators.required],
+            idRoute: [null, Validators.required]
+        })
     }
-  }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  closeModal() {
-    this.close.emit();
-  }
-
-  // ===============================
-  // DRIVERS (optimizado)
-  // ===============================
-  private loadDriversIfNeeded() {
-    // Si ya cargaste antes y tienes data, no vuelvas a llamar
-    if (this.driversLoadedOnce && this.drivers.length > 0) return;
-
-    this.loadingDrivers = true;
-
-    this.vehiclesService.getDrivers()
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => (this.loadingDrivers = false))
-      )
-      .subscribe({
-        next: (res: Result<DriverModel[]>) => {
-          if (res?.isSuccess) {
-            this.drivers = res.value ?? [];
-            this.driversLoadedOnce = true;
-          } else {
-            this.drivers = [];
-            console.error('GetDrivers no success:', res?.message);
-          }
-        },
-        error: (err: any) => {
-          console.error('Error GetDrivers:', err);
-          this.drivers = [];
+    // En tu método onFileSelected
+    onFileSelected(event: any): void {
+        const file: File = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                // Guardamos el string completo con el prefijo
+                this.vehicleForm.patchValue({ mainPhoto: reader.result as string });
+                this.cdr.detectChanges();
+            };
+            reader.readAsDataURL(file);
         }
-      });
-  }
-
-  driverFullName(d: DriverModel): string {
-    return d?.name ?? 'Conductor';
-  }
-
-  // ===============================
-  // IMAGEN -> BASE64 (mejorado)
-  // ===============================
-  onMainPhotoSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (!input.files?.length) return;
-
-    const file = input.files[0];
-
-    // mini protección: si el archivo es enorme, te va a volver lenta la request
-    // ajusta el límite según tu caso (ej. 2MB)
-    const MAX_MB = 2;
-    if (file.size > MAX_MB * 1024 * 1024) {
-      alert(`La imagen supera ${MAX_MB}MB. Reduce el tamaño para que cargue más rápido.`);
-      input.value = '';
-      this.mainPhotoBase64 = null;
-      return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      this.mainPhotoBase64 = result.includes(',')
-        ? result.split(',')[1]
-        : result;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // ===============================
-  // GUARDAR (optimizado)
-  // ===============================
-  saveVehicle() {
-    if (this.saving) return;
-
-    const plate = this.vehicleData.plate.trim();
-    const type = this.vehicleData.type.trim();
-
-    if (!plate) return alert('Ingrese la placa');
-    if (!type) return alert('Seleccione el tipo de vehículo');
-    if (!this.vehicleData.seats || this.vehicleData.seats <= 0) return alert('Ingrese el número de asientos');
-    if (!this.vehicleData.soatExpiry) return alert('Ingrese fecha vencimiento SOAT');
-
-    this.saving = true;
-
-    const payload = {
-      plate,
-      model: this.tryParseInt(this.vehicleData.model),
-      idVehicleState: Number(this.vehicleData.statusId),
-      idPerson: this.vehicleData.driverId != null ? Number(this.vehicleData.driverId) : null,
-      vehicleType: type,
-      seatNumber: Number(this.vehicleData.seats),
-      soatExpiry: this.vehicleData.soatExpiry,
-      mainPhoto: this.mainPhotoBase64
-    };
-
-    this.vehiclesService.createVehicle(payload)
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => (this.saving = false))
-      )
-      .subscribe({
-        next: () => {
-          alert('Vehículo creado ✅');
-          this.closeModal();
-        },
-        error: (err: any) => {
-          console.error('Error createVehicle:', err);
-          alert('Error al crear vehículo ❌ (mira consola)');
+    onSubmit(): void {
+        if (this.vehicleForm.invalid) {
+            this.vehicleForm.markAllAsTouched();
+            return;
         }
-      });
-  }
 
-  private tryParseInt(value: string): number | null {
-    const v = (value ?? '').trim();
-    if (!v) return null;
-    const n = Number.parseInt(v, 10);
-    return Number.isFinite(n) ? n : null;
-  }
+        const vehicleData: CreateVehicleModel = { ...this.vehicleForm.value };
+
+        if (vehicleData.mainPhoto && vehicleData.mainPhoto.includes(',')) {
+            vehicleData.mainPhoto = vehicleData.mainPhoto.split(',')[1];
+        }
+
+        this.vehicleService.RegisterVehicle(vehicleData).subscribe({
+            next: (result) => {
+                if (result.isSuccess) {
+                    console.log('Vehículo registrado exitosamente');
+                    this.close();
+                    this.vehicleForm.reset();
+                }
+            },
+            error: (err) => {
+                console.error('Error al registrar:', err);
+            }
+        });
+    }
+
+    getDriver(): void {
+        this.vehicleService.getDrivers().subscribe(
+            {
+                next: (response) => {
+                    if (response.isSuccess) {
+                        this.listDrivers = response.value;
+                        console.log(this.listDrivers);
+                    }
+                },
+                error: (err) => {
+                    console.log(err);
+                }
+            });
+    }
+
+    getAllRoutes(): void {
+        this.routeServece.getAll().subscribe(
+            {
+                next: (response) => {
+                    if (response != null) {
+                        this.listRoutes = response;
+                        console.log(response);
+                    }
+                },
+                error: (err) => {
+                    console.log(err);
+                }
+            }
+        );
+    }
+
+    getStatesVehicle(): void {
+        this.vehicleService.getAllStateVehicle().subscribe({
+            next: (response) => {
+                if (response.isSuccess) {
+                    this.listStateVehicle = response.value;
+                    console.log(response);
+                } else {
+                    console.log(response.errorMessage);
+                }
+            },
+            error: (err) => {
+                console.log(err);
+            }
+        });
+    }
 }

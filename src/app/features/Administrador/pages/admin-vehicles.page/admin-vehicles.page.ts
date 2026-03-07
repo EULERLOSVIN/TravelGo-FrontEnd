@@ -1,23 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { RegisterNewVehicleComponent } from '../../components/register-new-vehicle/register-new-vehicle.component';
 import { EditVehicleComponent } from '../../components/edit-vehicle/edit-vehicle.component';
-
-import {
-  VehiclesService,
-  VehicleListItemDto,
-  VehicleSummaryDto
-} from '../../services/vehicles.service';
+import {VehiclesService, VehicleSummaryDto} from '../../services/vehicles.service';
+import { DetailVehicleModel } from '../../models/DetailVehicle.model';
 
 @Component({
   selector: 'app-admin-vehicles',
   standalone: true,
   imports: [
     CommonModule,
-    HttpClientModule,
     FormsModule,
     RegisterNewVehicleComponent,
     EditVehicleComponent
@@ -26,117 +20,75 @@ import {
   styleUrl: './admin-vehicles.page.scss',
 })
 export class AdminVehiclesComponent implements OnInit {
+  @ViewChild('miModal') modal !: RegisterNewVehicleComponent;
 
   // MODAL STATES
-  isRegisterModalOpen = false;
   isEditModalOpen = false;
-
-  // DATA STATES
-  selectedVehicle: VehicleListItemDto | null = null;
-
-  vehicles: VehicleListItemDto[] = [];
-
-  totalUnits = 0;
-  active = 0;
-  inactive = 0;
-
-  // SEARCH
+  selectedVehicle: DetailVehicleModel | null = null;
+  vehiclesList: DetailVehicleModel[] = [];
   searchTerm = '';
+  isLoading: boolean = false;
+  isLastPage: boolean = false;
+  pageNumber: number = 1;
 
-  constructor(private vehiclesService: VehiclesService) {}
+  constructor(
+    private vehiclesService: VehiclesService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.refreshAll();
+    this.loadVehicles();
   }
 
-  refreshAll(): void {
-    this.loadVehicles();
-    this.loadSummary();
+  openModalRegisterVehicle(){
+    this.modal.open();
   }
 
   loadVehicles(): void {
-    this.vehiclesService.getVehicles().subscribe({
-      next: (data: VehicleListItemDto[]) => {
-        this.vehicles = data ?? [];
+    this.isLoading = true;
+    const term = this.searchTerm?.trim() || '';
+    const page = this.pageNumber || 1;
+
+    this.vehiclesService.getVehiclesByFilters(this.searchTerm, this.pageNumber).subscribe({
+      next: (response) => {
+        this.vehiclesList = response.value;
+        this.isLastPage = this.vehiclesList.length === 0;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+
+        console.log(response.value);
       },
-      error: (err: unknown) => console.error('Error getVehicles:', err)
-    });
-  }
-
-  loadSummary(): void {
-    this.vehiclesService.getSummary().subscribe({
-      next: (data: VehicleSummaryDto) => {
-        this.totalUnits = data?.totalUnits ?? 0;
-        this.active = data?.active ?? 0;
-        this.inactive = data?.inactive ?? 0;
-      },
-      error: (err: unknown) => console.error('Error getSummary:', err)
-    });
-  }
-
-  /* ===============================
-     MODAL METHODS
-  ================================ */
-
-  openRegisterModal(): void {
-    this.isRegisterModalOpen = true;
-  }
-
-  closeRegisterModal(): void {
-    this.isRegisterModalOpen = false;
-    this.refreshAll();
-  }
-
-  openEditModal(vehicle: VehicleListItemDto): void {
-    this.selectedVehicle = vehicle;
-    this.isEditModalOpen = true;
-  }
-
-  closeEditModal(): void {
-    this.isEditModalOpen = false;
-    this.selectedVehicle = null;
-    this.refreshAll();
-  }
-
-  /* ===============================
-     DELETE (REAL)
-  ================================ */
-  confirmDelete(v: VehicleListItemDto): void {
-    const ok = confirm(`¿Eliminar ${v.unitId} - ${v.plate}?`);
-    if (!ok) return;
-
-    this.vehiclesService.deleteVehicle(v.unitId).subscribe({
-      next: () => {
-        alert('Vehículo eliminado ✅');
-        this.refreshAll();
-      },
-      error: (err) => {
-        console.error('Error deleteVehicle:', err);
-        alert('No se pudo eliminar ❌');
+      error:(err) =>{
+        console.error('Error al cargar personal:', err);
+        this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  /* ===============================
-     HELPERS
-  ================================ */
-
-  filteredVehicles(): VehicleListItemDto[] {
-    const term = (this.searchTerm ?? '').trim().toLowerCase();
-    if (!term) return this.vehicles;
-
-    return this.vehicles.filter(v =>
-      (v.unitId ?? '').toLowerCase().includes(term) ||
-      (v.plate ?? '').toLowerCase().includes(term)
-    );
+  onSearch(value: string): void {
+    this.searchTerm = value;
+    this.pageNumber = 1;
+    this.loadVehicles();
   }
 
-  trackByVehicle(index: number, v: VehicleListItemDto): string {
-    return v.unitId;
+  changePage(newPage: number): void {
+    if (newPage < 1) return;
+    if (newPage > this.pageNumber && this.isLastPage) return;
+
+    this.pageNumber = newPage;
+    this.loadVehicles();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  getDriverInitials(driver?: string | null): string {
-    const name = (driver ?? '').trim();
-    return name ? name.substring(0, 2).toUpperCase() : 'SA';
+  getBadgeColor(state: string): string{
+    switch(state.toLowerCase()){
+      case 'activo':
+        return 'bg-success';
+      case 'inactivo':
+        return 'bg-danger';
+      default:
+        return 'bg-secondary'
+    }
   }
 }

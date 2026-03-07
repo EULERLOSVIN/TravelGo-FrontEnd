@@ -7,13 +7,8 @@
       </div>
     </div>
     <div
-      class="col-12 col-md-4 col-xl-3 col-xxl-2 order-lg-2 order-xxl-3 d-flex align-items-center justify-content-end"
-    >
-      <button
-        class="btn btn-success btn-register-user"
-        data-bs-toggle="modal"
-        data-bs-target="#registerNewPersonModal"
-      >
+      class="col-12 col-md-4 col-xl-3 col-xxl-2 order-lg-2 order-xxl-3 d-flex align-items-center justify-content-end">
+      <button class="btn btn-success btn-register-user" data-bs-toggle="modal" data-bs-target="#registerNewPersonModal">
         <i class="bi bi-plus-lg"></i>
         Nuevo Personal
       </button>
@@ -56,32 +51,23 @@
     <div class="table-header p-3 bg-light border-bottom">
       <div class="row g-3">
         <div
-          class="col-12 col-md-6 col-xl-3 col-xxl-3 order-1 order-xl-1 d-flex align-items-center justify-content-start"
-        >
+          class="col-12 col-md-6 col-xl-3 col-xxl-3 order-1 order-xl-1 d-flex align-items-center justify-content-start">
           <h5 class="mb-0">Lista de Personal</h5>
         </div>
 
         <div
-          class="col-12 col-md-12 col-xl-6 col-xxl-7 order-3 order-xl-2 d-flex align-items-center justify-content-end"
-        >
+          class="col-12 col-md-12 col-xl-6 col-xxl-7 order-3 order-xl-2 d-flex align-items-center justify-content-end">
           <div class="input-group search-container">
             <span class="input-group-text rounded-start-pill bg-danger">
               <i class="bi bi-search text-white fw-bolder"></i>
             </span>
-            <input
-              #txtSearch
-              type="search"
-              class="custom-search form-control rounded-end-pill"
-              placeholder="Buscar personal por DNI..."
-              (input)="onSearch(txtSearch.value)"
-              autocomplete="off"
-            />
+            <input #txtSearch type="search" class="custom-search form-control rounded-end-pill"
+              placeholder="Buscar personal por DNI..." (input)="onSearch(txtSearch.value)" autocomplete="off" />
           </div>
         </div>
 
         <div
-          class="col-12 col-md-6 col-xl-3 col-xxl-2 order-2 order-xl-3 d-flex align-items-center justify-content-start justify-content-md-end"
-        >
+          class="col-12 col-md-6 col-xl-3 col-xxl-2 order-2 order-xl-3 d-flex align-items-center justify-content-start justify-content-md-end">
           <div class="pagination-header">
             <div class="pagination">
               <button [disabled]="pageNumber === 1" (click)="changePage(pageNumber - 1)">
@@ -114,44 +100,43 @@
         </thead>
         <tbody>
           @for (personnel of personnelList; track personnel.id) {
-            <tr>
-              <td>
-                <div class="user-info">
-                  <span class="name">{{ personnel.firstName }} {{ personnel.lastName }}</span>
-                </div>
-              </td>
+          <tr>
+            <td>
+              <div class="user-info">
+                <span class="name">{{ personnel.firstName }} {{ personnel.lastName }}</span>
+              </div>
+            </td>
 
-              <td>
-                <span class="badge-role">{{ personnel.role }}</span>
-              </td>
+            <td>
+              <span class="badge-role">{{ personnel.role }}</span>
+            </td>
 
-              <td class="font-mono">{{ personnel.dni }}</td>
-              <td>{{ personnel.phoneNumber }}</td>
-              <td class="text-muted">{{ personnel.email }}</td>
-              <td>
-                <span class="badge bg-success" [ngClass]="getBadgeColor(personnel.state)">{{
-                  personnel.state
+            <td class="font-mono">{{ personnel.dni }}</td>
+            <td>{{ personnel.phoneNumber }}</td>
+            <td class="text-muted">{{ personnel.email }}</td>
+            <td>
+              <span class="badge bg-success" [ngClass]="getBadgeColor(personnel.state)">{{
+                personnel.state
                 }}</span>
-              </td>
+            </td>
 
-              <td class="text-right">
-                <div class="actions">
-                  <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" (click)="editModalChild.open(personnel)">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button
-                    class="btn btn-outline-danger btn-sm rounded-circle shadow-sm"
-                    (click)="deleteModalChild.openDeleteModal(personnel)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
+            <td class="text-right">
+              <div class="actions">
+                <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm"
+                  (click)="editModalChild.open(personnel)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-danger btn-sm rounded-circle shadow-sm"
+                  (click)="deleteModalChild.openDeleteModal(personnel)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
           } @empty {
-            <tr>
-              <td colspan="6" class="text-center py-4 text-muted">No hay personal registrado</td>
-            </tr>
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">No hay personal registrado</td>
+          </tr>
           }
         </tbody>
       </table>

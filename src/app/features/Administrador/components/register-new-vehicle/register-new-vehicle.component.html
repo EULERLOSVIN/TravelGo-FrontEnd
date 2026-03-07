@@ -1,147 +1,128 @@
-<!-- ==================================================
-     MODAL OVERLAY
-================================================== -->
-<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+<div class="modal-overlay" [class.d-none]="!isVisible" [attr.aria-hidden]="!isVisible ? 'true' : 'false'">
+    <div class="modal-container p-4 rounded-3 shadow-lg">
 
-    <div class="modal-container" (click)="$event.stopPropagation()">
-
-        <!-- HEADER -->
-        <header class="modal-header">
-            <div class="header-content">
-                <h2>Nuevo Vehículo</h2>
-                <p>Complete la información para registrar la unidad.</p>
+        <header class="modal-header d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+            <div>
+                <h2 class="h4 mb-1 fw-bold text-dark">Nuevo Vehículo</h2>
+                <p class="text-muted small mb-0">Complete la información para registrar la unidad.</p>
             </div>
-
-            <button class="btn-close" type="button" (click)="closeModal()">
-                <i class="bi bi-x-lg"></i>
-            </button>
+            <button class="btn-close shadow-none" type="button" (click)="close()" aria-label="Close"></button>
         </header>
 
-        <!-- CONTENT -->
-        <div class="modal-body">
-            <form class="vehicle-form" (ngSubmit)="saveVehicle()">
+        <div class="modal-body ">
+            <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" class="vehicle-form">
+                <div class="row mb-4">
+                    <div class="col-lg-4">
+                        <h3 class="h6 fw-bold text-secondary mb-3">
+                            <i class="bi bi-camera me-2"></i>Imagen Principal del Vehículo
+                        </h3>
 
-                <!-- SECTION: PHOTOS -->
-                <div class="section-photos">
-                    <h3 class="section-title">
-                        <i class="bi bi-camera"></i> Imágenes del Vehículo
-                    </h3>
+                        <label
+                            class="photo-upload-main w-100 p-4 border rounded-3 text-center bg-light d-block cursor-pointer transition-all">
 
-                    <div class="photos-grid">
-                        <!-- Main Photo -->
-                        <label class="photo-upload main">
-                            <div class="upload-content">
-                                <i class="bi bi-cloud-arrow-up icon-large"></i>
-                                <p class="text-bold">Subir Foto Principal</p>
-                                <p class="text-small">Vista frontal o lateral (JPG, PNG)</p>
+                            @if (vehicleForm.get('mainPhoto')?.value) {
+                            <div class="preview-container">
+                                <img [src]="vehicleForm.get('mainPhoto')?.value" class="img-preview" alt="Vista previa">
+                                <span
+                                    class="badge bg-success-subtle text-success rounded-pill px-3 py-1 small d-inline-flex align-items-center gap-1 mt-2">
+                                    <i class="bi bi-check-circle-fill"></i> Foto cargada
+                                </span>
+                            </div>
+                            } @else {
+                            <div class="upload-placeholder">
+                                <i class="bi bi-cloud-arrow-up fs-1 text-primary mb-2 d-block"></i>
+                                <p class="mb-1 fw-bold text-dark">Subir Foto Principal</p>
+                                <p class="text-muted small mb-2">Vista frontal o lateral (JPG, PNG)</p>
+                            </div>
+                            }
 
-                                <!-- Opcional: indicador simple si ya cargó foto -->
-                                <p class="text-small" *ngIf="mainPhotoBase64">✅ Foto cargada</p>
+                            <input type="file" (change)="onFileSelected($event)" accept="image/png,image/jpeg" hidden>
+                        </label>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-dark">Placa</label>
+                                <input type="text" formControlName="plate"
+                                    class="form-control form-control-sm shadow-none border-secondary-subtle"
+                                    placeholder="ABC-123">
                             </div>
 
-                            <input type="file" accept="image/png,image/jpeg" hidden
-                                (change)="onMainPhotoSelected($event)">
-                        </label>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-dark">Tipo de Vehículo</label>
+                                <input type="text" formControlName="vehicleType"
+                                    class="form-control form-control-sm shadow-none border-secondary-subtle"
+                                    placeholder="Mini van">
+                            </div>
 
-                        <!-- Extra Photos (no implementadas aún) -->
-                        <div class="photos-extras">
-                            <label class="photo-upload extra">
-                                <i class="bi bi-image"></i>
-                                <span>Foto Extra 1</span>
-                                <input type="file" hidden>
-                            </label>
-                            <label class="photo-upload extra">
-                                <i class="bi bi-image"></i>
-                                <span>Foto Extra 2</span>
-                                <input type="file" hidden>
-                            </label>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-dark">Número de Asientos</label>
+                                <input type="number" formControlName="seatNumber"
+                                    class="form-control form-control-sm shadow-none border-secondary-subtle"
+                                    placeholder="Ej: 5">
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-dark">Modelo (Año)</label>
+                                <input type="text" formControlName="model"
+                                    class="form-control form-control-sm shadow-none border-secondary-subtle"
+                                    placeholder="Ej: 2024">
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-dark">Asignar Conductor</label>
+                                <select formControlName="idDriver"
+                                    class="form-select form-select-sm shadow-none border-secondary-subtle">
+                                    <option [ngValue]="null" selected disabled>Seleccionar</option>
+                                    @for(driver of listDrivers; track driver.idPerson){
+                                    <option [value]="driver.idPerson">{{driver.firstName}} {{driver.lastName}}</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-dark">Estado de Vehiculo</label>
+                                <select formControlName="idState"
+                                    class="form-select form-select-sm shadow-none border-secondary-subtle">
+                                    <option [ngValue]="null" selected disabled>Seleccionar</option>
+                                    @for(sv of listStateVehicle; track sv.idState){
+                                    <option [value]="sv.idState">{{sv.nameState}} </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-dark">Fecha Vencimiento SOAT</label>
+                                <input type="date" formControlName="soatExpirationDate"
+                                    class="form-control form-control-sm shadow-none border-secondary-subtle">
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-dark">Asignar Ruta</label>
+                                <select formControlName="idRoute"
+                                    class="form-select form-select-sm shadow-none border-secondary-subtle">
+                                    <option [ngValue]="null" selected disabled>Seleccionar</option>
+                                    @for(route of listRoutes; track route.idTravelRoute){
+                                    <option [value]="route.idTravelRoute">{{route.nameRoute}}</option>
+                                    }
+                                </select>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
 
-                <!-- SECTION: FIELDS -->
-                <div class="fields-grid">
 
-                    <!-- Unit (solo visual) -->
-                    <div class="form-group">
-                        <label>Unidad (ID Auto-increment)</label>
-                        <input type="text" [(ngModel)]="vehicleData.unitCode" name="unitCode" disabled
-                            class="input-disabled">
-                    </div>
 
-                    <!-- Plate -->
-                    <div class="form-group">
-                        <label>Placa</label>
-                        <input type="text" [(ngModel)]="vehicleData.plate" name="plate" placeholder="ABC-123"
-                            class="input-default">
-                    </div>
-
-                    <!-- Type -->
-                    <div class="form-group">
-                        <label>Tipo de Vehículo</label>
-                        <select [(ngModel)]="vehicleData.type" name="type" class="input-default">
-                            <option value="">Seleccionar tipo...</option>
-                            <option value="Auto 5 pax">Auto de 5 pasajeros</option>
-                            <option value="Mini Van 7 pax">Mini Van 7 pasajeros</option>
-                            <option value="Mini Van 15 pax">Mini Van 15 pasajeros</option>
-                        </select>
-                    </div>
-
-                    <!-- Seats -->
-                    <div class="form-group">
-                        <label>Número de Asientos</label>
-                        <input type="number" [(ngModel)]="vehicleData.seats" name="seats" placeholder="Ej: 5"
-                            class="input-default">
-                    </div>
-
-                    <!-- Model (tu backend es int?; si pones texto se enviará null) -->
-                    <div class="form-group">
-                        <label>Modelo (número)</label>
-                        <input type="text" [(ngModel)]="vehicleData.model" name="model"
-                            placeholder="Ej: 2024 (si no, dejar vacío)" class="input-default">
-                    </div>
-
-                    <!-- Driver dinámico -->
-                    <div class="form-group">
-                        <label>Conductor Asignado</label>
-
-                        <select [(ngModel)]="vehicleData.driverId" name="driverId" class="input-default"
-                            [disabled]="loadingDrivers">
-                            <option [ngValue]="null">Sin asignar</option>
-
-                            <option *ngFor="let d of drivers" [ngValue]="d.idPerson">
-                                {{ d.name }}
-                            </option>
-                        </select>
-
-                        <small *ngIf="loadingDrivers">Cargando conductores...</small>
-                    </div>
-
-                    <!-- Status (1 ACTIVO / 2 INACTIVO) -->
-                    <div class="form-group">
-                        <label>Estado Operativo</label>
-                        <select [(ngModel)]="vehicleData.statusId" name="statusId" class="input-default">
-                            <option [ngValue]="1">ACTIVO</option>
-                            <option [ngValue]="2">INACTIVO</option>
-                        </select>
-                    </div>
-
-                    <!-- SOAT -->
-                    <div class="form-group">
-                        <label>Fecha Vencimiento SOAT</label>
-                        <input type="date" [(ngModel)]="vehicleData.soatExpiry" name="soatExpiry" class="input-default">
-                    </div>
-
-                </div>
-
-                <!-- FOOTER -->
-                <footer class="modal-footer">
-                    <button class="btn-cancel" type="button" (click)="closeModal()">Cancelar</button>
-                    <button class="btn-save" type="submit">Guardar Vehículo</button>
+                <footer class="modal-footer mt-5 pt-4 border-top d-flex justify-content-end gap-2">
+                    <button class="btn btn-sm btn-outline-secondary px-4 shadow-none" type="button"
+                        (click)="close()">Cancelar</button>
+                    <button class="btn btn-sm btn-primary px-4 shadow-none" type="submit"
+                        [disabled]="vehicleForm.invalid">Guardar Vehículo</button>
                 </footer>
 
             </form>
         </div>
-
     </div>
 </div>

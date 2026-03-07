@@ -1,4 +1,5 @@
 export interface DriverModel{
     idPerson: number;
-    name: string;
+    lastName: string;
+    firstName: string;
 }
