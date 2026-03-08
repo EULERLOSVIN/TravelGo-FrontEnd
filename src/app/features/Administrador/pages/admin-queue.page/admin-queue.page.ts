@@ -6,11 +6,12 @@ import { HeadquarterContext, QueueItem, RouteFilter } from '../../models/queue.m
 import { RegisterQueue } from '../../components/register-queue/register-queue';
 import { EditQueue } from '../../components/edit-queue/edit-queue';
 import { DeleteQueue } from '../../components/delete-queue/delete-queue';
+import { RegisterArrival } from '../../components/register-arrival/register-arrival';
 
 @Component({
   selector: 'app-admin-queue-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RegisterQueue, EditQueue, DeleteQueue],
+  imports: [CommonModule, FormsModule, RegisterQueue, EditQueue, DeleteQueue, RegisterArrival],
   templateUrl: './admin-queue.page.html',
   styleUrl: './admin-queue.page.scss'
 })
@@ -36,6 +37,12 @@ export class AdminQueuePage implements OnInit, OnDestroy {
 
   itemToDelete: QueueItem | null = null;
 
+  // Arrival Modal State
+  modalArrivalOpen: boolean = false;
+
+  // Tab State: 'departure' | 'arrival'
+  viewType: 'departure' | 'arrival' = 'departure';
+
   private timerInterval: any;
 
   constructor(private queueService: QueueManagementService, private cdr: ChangeDetectorRef) { }
@@ -52,7 +59,7 @@ export class AdminQueuePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadInitialData();
+    this.loadHeadquarters();
 
     // Update countdown timers every 30 seconds
     this.timerInterval = setInterval(() => {
@@ -76,30 +83,44 @@ export class AdminQueuePage implements OnInit, OnDestroy {
     });
   }
 
-  loadInitialData(): void {
-    this.queueService.getHeadquarters().subscribe(hqs => {
-      this.headquarters = hqs;
-      if (hqs.length > 0) {
-        this.selectedHeadquarterId = hqs[0].idHeadquarter;
-        this.loadRoutesForHeadquarter();
-      }
-      this.cdr.detectChanges();
+  loadHeadquarters(): void {
+    this.queueService.getHeadquarters().subscribe({
+      next: (hqs) => {
+        this.headquarters = hqs;
+        if (this.headquarters.length > 0) {
+          this.selectedHeadquarterId = this.headquarters[0].idHeadquarter;
+          this.loadRoutesForHeadquarter();
+        }
+      },
+      error: (err) => console.error('Error fetching headquarters', err)
     });
   }
 
   loadRoutesForHeadquarter(): void {
     if (!this.selectedHeadquarterId) return;
-    this.queueService.getRoutesByHeadquarter(this.selectedHeadquarterId).subscribe(rts => {
+    this.queueService.getRoutesByHeadquarter(this.selectedHeadquarterId, this.viewType).subscribe(rts => {
       this.routes = rts;
       if (rts.length > 0) {
-        this.selectedRouteId = rts[0].idRoute;
-        this.modalSelectedRouteId = rts[0].idRoute; // Default for modal
+        // If a route was already selected and still belongs to this HQ/view, keep it. Otherwise, default to the first one.
+        const currentRouteExists = rts.some(r => r.idRoute === this.selectedRouteId);
+        if (!currentRouteExists) {
+          this.selectedRouteId = rts[0].idRoute;
+        }
+        this.modalSelectedRouteId = this.selectedRouteId; // Sync modal default
+
         this.loadQueue();
       } else {
         this.queue = [];
       }
       this.cdr.detectChanges();
     });
+  }
+
+  setViewType(type: 'departure' | 'arrival'): void {
+    if (this.viewType !== type) {
+      this.viewType = type;
+      this.loadRoutesForHeadquarter();
+    }
   }
 
   onHeadquarterChange(): void {
@@ -124,7 +145,28 @@ export class AdminQueuePage implements OnInit, OnDestroy {
   openAddDriverModal(): void {
     this.modalNewDriverDni = '';
     this.modalSelectedRouteId = this.selectedRouteId;
-    // Usually triggered via data-bs-toggle="modal", but kept here for programmatic expanding later if needed
+  }
+
+  openArrivalModal(): void {
+    this.modalArrivalOpen = true;
+  }
+
+  confirmArrivalFromComponent(dni: string): void {
+    this.queueService.registerArrival(dni).subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          alert('Llegada registrada exitosamente.');
+          this.modalArrivalOpen = false;
+          // Refresh the queue since the trip finished
+          this.loadQueue();
+        } else {
+          alert(res.errorMessage || 'Error al registrar llegada.');
+        }
+      },
+      error: (err) => {
+        alert(err.error?.errorMessage || err.error || 'Error de conexión al registrar llegada.');
+      }
+    });
   }
 
   confirmAddDriverFromComponent(data: { dni: string, idTravelRoute: number }): void {
@@ -135,8 +177,9 @@ export class AdminQueuePage implements OnInit, OnDestroy {
 
     this.queueService.addDriverToQueue(data.dni, data.idTravelRoute, null).subscribe({
       next: () => {
-        this.loadQueue();
-        this.loadRoutesForHeadquarter();
+        // Automatically switch the view to the route the driver was just added to
+        this.selectedRouteId = data.idTravelRoute;
+        this.loadRoutesForHeadquarter(); // This will preserve selectedRouteId and call loadQueue()
       },
       error: (err) => {
         alert(err.error || 'Error al agregar chofer a la cola. Verifique que tenga un vehículo y ruta asignados.');
