@@ -1,163 +1,160 @@
-<!-- ===============================
-     HEADER
-================================ -->
-<header class="vehicles-header">
-  <div class="header-group">
-    <div class="brand-logo lg:hidden">
-      <span class="brand-red">SEIS</span>
-      <span class="brand-green">Especial</span>
+<div class="container-fluid p-4">
+  <header class="vehicles-header row align-items-center mb-4 p-3 rounded">
+    <div class="col-12 col-md-8">
+      <h2 class="header-title">Gestión de Flota de Vehículos</h2>
+      <p class="header-subtitle">Supervisión y actualización de tipos de vehículo y capacidades de la flota.</p>
     </div>
-
-    <div class="header-text">
-      <h2>Gestión de Flota de Vehículos</h2>
-      <p>Supervisión y actualización de tipos de vehículo y capacidades de la flota.</p>
+    <div class="col-12 col-md-4 d-flex justify-content-end">
+      <button class="btn-new" type="button" (click)="openModalRegisterVehicle()">
+        <i class="bi bi-plus-lg"></i> Nuevo Vehículo
+      </button>
     </div>
-  </div>
+  </header>
 
-  <div class="header-actions">
-    <div class="search-box">
-      <i class="bi bi-search"></i>
-      <input
-        type="text"
-        placeholder="Buscar unidad o placa..."
-        [(ngModel)]="searchTerm"
-      />
-    </div>
+  <section class="row g-3 mb-4">
+    <article class="col-12 col-md-4">
+      <div class="stat-card">
+        <small>TOTAL UNIDADES</small>
+        <p class="stat-value"></p>
+        <div class="progress-bar-container">
+          <div class="fill-total"></div>
+        </div>
+      </div>
+    </article>
+    <article class="col-12 col-md-4">
+      <div class="stat-card">
+        <small>ACTIVO</small>
+        <p class="stat-value text-green"></p>
+        <div class="progress-bar-container">
+          <div class="fill-green"></div>
+        </div>
+      </div>
+    </article>
+    <article class="col-12 col-md-4">
+      <div class="stat-card">
+        <small>INACTIVO</small>
+        <p class="stat-value text-red"></p>
+        <div class="progress-bar-container">
+          <div class="fill-red"></div>
+        </div>
+      </div>
+    </article>
+  </section>
 
-    <button class="btn-notification" type="button">
-      <i class="bi bi-bell"></i>
-      <span class="badge-dot"></span>
-    </button>
+  <section class="table-card">
+    <div class="p-3 bg-light border-bottom">
+      <div class="row g-3">
+        <div
+          class="col-12 col-md-6 col-xl-3 col-xxl-3 order-1 order-xl-1 d-flex align-items-center justify-content-start">
+          <h5 class="mb-0">Lista de Vehiculos</h5>
+        </div>
 
-    <button class="btn-new" type="button" (click)="openRegisterModal()">
-      <i class="bi bi-plus-lg"></i>
-      Nuevo Vehículo
-    </button>
-  </div>
-</header>
-
-<!-- ===============================
-     STATS / KPIs
-================================ -->
-<section class="vehicles-stats">
-  <article class="stat-card">
-    <small>TOTAL UNIDADES</small>
-    <p class="stat-value">{{ totalUnits }}</p>
-    <div class="progress-bar"><div class="fill total"></div></div>
-  </article>
-
-  <article class="stat-card">
-    <small>ACTIVO</small>
-    <p class="stat-value text-green">{{ active }}</p>
-    <div class="progress-bar"><div class="fill green"></div></div>
-  </article>
-
-  <article class="stat-card">
-    <small>INACTIVO</small>
-    <p class="stat-value text-red">{{ inactive }}</p>
-    <div class="progress-bar"><div class="fill red"></div></div>
-  </article>
-</section>
-
-<!-- ===============================
-     TABLE
-================================ -->
-<section class="table-card">
-  <div class="table-responsive">
-    <table class="vehicles-table">
-      <thead>
-        <tr>
-          <th>Unidad (ID)</th>
-          <th>Foto</th>
-          <th>TIPO</th>
-          <th>Placa</th>
-          <th>Modelo</th>
-          <th>Conductor Asignado</th>
-          <th>Estado</th>
-          <th class="text-center">SOAT/Lic.</th>
-          <th class="text-right">Acciones</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let v of filteredVehicles(); trackBy: trackByVehicle">
-          <td><span class="unit-id">{{ v.unitId }}</span></td>
-
-          <td>
-            <div class="vehicle-thumb placeholder">
-              <i class="bi bi-image"></i>
-            </div>
-          </td>
-
-          <td><span class="badge-type">Mini Van 15 pax</span></td>
-
-          <td class="font-semibold">{{ v.plate }}</td>
-          <td class="font-semibold">{{ v.model }}</td>
-
-          <td>
-            <div class="driver-info">
-              <div class="avatar">
-                {{ getDriverInitials(v.driver) }}
-              </div>
-              <span>{{ v.driver || 'Sin asignar' }}</span>
-            </div>
-          </td>
-
-          <td>
-            <span class="badge" [ngClass]="v.isActive ? 'status-blue' : 'status-red'">
-              {{ v.isActive ? 'ACTIVO' : 'INACTIVO' }}
+        <div
+          class="col-12 col-md-12 col-xl-6 col-xxl-7 order-3 order-xl-2 d-flex align-items-center justify-content-end">
+          <div class="input-group search-container">
+            <span class="input-group-text rounded-start-pill bg-danger">
+              <i class="bi bi-search text-white fw-bolder"></i>
             </span>
-          </td>
+            <input #txtSearch type="search" class="custom-search form-control rounded-end-pill"
+              placeholder="Buscar personal por Placa o Conductor..." (input)="onSearch(txtSearch.value)"
+              autocomplete="off" />
+          </div>
+        </div>
 
-          <td class="text-center">
-            <i *ngIf="v.soatOk" class="bi bi-patch-check-fill text-green text-xl" title="Vigente"></i>
-            <i *ngIf="!v.soatOk" class="bi bi-exclamation-triangle-fill text-amber text-xl" title="No vigente"></i>
-          </td>
-
-          <td class="text-right">
-            <div class="actions">
-              <!-- EDIT -->
-              <button class="btn-icon" type="button" (click)="openEditModal(v)">
-                <i class="bi bi-pencil"></i>
+        <div
+          class="col-12 col-md-6 col-xl-3 col-xxl-2 order-2 order-xl-3 d-flex align-items-center justify-content-start justify-content-md-end">
+          <div class="pagination-header">
+            <div class="pagination">
+              <button [disabled]="pageNumber === 1" (click)="changePage(pageNumber - 1)">
+                <i class="bi bi-chevron-left"></i>
               </button>
 
-              <!-- DELETE (REAL) -->
-              <button class="btn-icon hover-red" type="button" (click)="confirmDelete(v)">
-                <i class="bi bi-trash"></i>
+              <button class="active">{{ pageNumber }}</button>
+
+              <button [disabled]="isLastPage" (click)="changePage(pageNumber + 1)">
+                <i class="bi bi-chevron-right"></i>
               </button>
             </div>
-          </td>
-        </tr>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <tr *ngIf="filteredVehicles().length === 0">
-          <td colspan="9" class="text-center text-muted" style="padding: 20px;">
-            No hay vehículos para mostrar.
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="table-footer">
-    <span class="text-muted">
-      Mostrando {{ filteredVehicles().length }} de {{ totalUnits }} unidades
-    </span>
-  </div>
-</section>
-
-<!-- ===============================
-     MODALS
-================================ -->
+    <div class="table-responsive">
+      <table class="vehicles-table table table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Foto</th>
+            <th>Tipo</th>
+            <th>Placa</th>
+            <th>Ruta Asignada</th>
+            <th>Conductor</th>
+            <th>Estado</th>
+            <th class="text-center">Expiración SOAT</th>
+            <th class="text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (isLoading) {
+          <tr>
+            <td colspan="8" class="text-center p-5">
+              <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+              <p class="mt-2 text-muted">Cargando vehículos...</p>
+            </td>
+          </tr>
+          } @else if (vehiclesList.length === 0) {
+          <tr>
+            <td colspan="8" class="text-center p-4 text-muted">
+              No se encontraron vehículos.
+            </td>
+          </tr>
+          } @else {
+          @for(vehicle of vehiclesList; track vehicle.idVehicle){
+          <tr>
+            <td class="col-photo">
+              <div class="photo-container">
+                @if(vehicle.photoBase64) {
+                <img [src]="'data:image/png;base64,' + vehicle.photoBase64" alt="Vehículo" class="vehicle-img">
+                } @else {
+                <i class="bi bi-image text-muted"></i>
+                }
+              </div>
+            </td>
+            <td><span class="badge-type">{{vehicle.type}}</span></td>
+            <td class="font-semibold">{{vehicle.plate}}</td>
+            <td class="font-semibold">{{vehicle.route}}</td>
+            <td>
+              <div class="driver-info">
+                <span>{{vehicle.driver}}</span>
+              </div>
+            </td>
+            <td>
+              <span class="badge text-white" [ngClass]="getBadgeColor(vehicle.state)">{{vehicle.state}}</span>
+            </td>
+            <td class="text-center">
+              <span>{{vehicle.expirationSoatDate}}</span>
+            </td>
+            <td class="text-right">
+              <div class="actions">
+                <button class="btn-icon"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon hover-red"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          }
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
 
 <!-- REGISTER -->
-<app-register-new-vehicle
-  [isOpen]="isRegisterModalOpen"
-  (close)="closeRegisterModal()">
+<app-register-new-vehicle #miModal>
 </app-register-new-vehicle>
 
 <!-- EDIT -->
-<app-edit-vehicle
-  [isOpen]="isEditModalOpen"
-  [vehicleToEdit]="selectedVehicle"
-  (close)="closeEditModal()">
+<app-edit-vehicle [isOpen]="isEditModalOpen" [vehicleToEdit]="selectedVehicle">
 </app-edit-vehicle>
