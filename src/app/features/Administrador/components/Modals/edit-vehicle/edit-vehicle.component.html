@@ -1,0 +1,191 @@
+<div
+  class="modal-overlay"
+  [class.d-none]="!isVisible"
+  [attr.aria-hidden]="!isVisible ? 'true' : 'false'"
+>
+  <div class="modal-container p-4 rounded-3 shadow-lg">
+    <header
+      class="modal-header d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom"
+    >
+      <div>
+        <h2 class="h4 mb-1 fw-bold text-dark">Editar Vehículo</h2>
+      </div>
+      <button class="btn-close shadow-none" type="button" (click)="close()"></button>
+    </header>
+
+    <div class="modal-body">
+      <form [formGroup]="editForm" (ngSubmit)="onSave()" class="vehicle-form">
+        <div class="row mb-4">
+
+          <!-- FOTO -->
+          <div class="col-lg-4">
+            <h3 class="h6 fw-bold text-secondary mb-3">
+              <i class="bi bi-camera me-2"></i>Imagen
+            </h3>
+
+            <label
+              class="photo-upload-main w-100 p-4 border rounded-3 text-center bg-light d-block cursor-pointer transition-all"
+            >
+
+              @if (editForm.get('mainPhoto')?.value) {
+                <div class="preview-container">
+                  <img
+                    [src]="editForm.get('mainPhoto')?.value"
+                    class="img-preview"
+                    alt="Vista previa"
+                  />
+
+                  <span
+                    class="badge bg-success-subtle text-success rounded-pill px-3 py-1 small d-inline-flex align-items-center gap-1 mt-2"
+                  >
+                    <i class="bi bi-check-circle-fill"></i> Foto cargada
+                  </span>
+                </div>
+              } @else {
+                <div class="upload-placeholder">
+                  <i class="bi bi-cloud-arrow-up fs-1 text-primary mb-2 d-block"></i>
+                  <p class="mb-1 fw-bold text-dark">Subir Foto Principal</p>
+                  <p class="text-muted small mb-2">
+                    Vista frontal o lateral (JPG, PNG)
+                  </p>
+                </div>
+              }
+
+              <input
+                type="file"
+                (change)="onFileSelected($event)"
+                accept="image/png,image/jpeg"
+                hidden
+              />
+            </label>
+          </div>
+
+          <!-- FORMULARIO -->
+          <div class="col-lg-8">
+            <div class="row g-3">
+
+              <div class="col-12 col-md-6">
+                <label class="form-label">Placa</label>
+                <input
+                  type="text"
+                  formControlName="plate"
+                  class="form-control form-control-sm"
+                />
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label">Tipo de Vehículo</label>
+                <input
+                  type="text"
+                  formControlName="vehicleType"
+                  class="form-control form-control-sm"
+                />
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label">Modelo</label>
+                <input
+                  type="text"
+                  formControlName="model"
+                  class="form-control form-control-sm"
+                />
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label">Nº Asientos</label>
+                <input
+                  type="number"
+                  formControlName="seatNumber"
+                  class="form-control form-control-sm"
+                />
+              </div>
+
+              <!-- CONDUCTOR -->
+              <div class="col-12 col-md-6">
+                <label class="form-label">Conductor</label>
+                <select formControlName="idDriver" class="form-select form-select-sm">
+                  <option [value]="null" disabled>Seleccionar</option>
+
+                  @for (driver of listDrivers; track driver.idPerson) {
+                    <option [value]="driver.idPerson">
+                      {{ driver.firstName }} {{ driver.lastName }}
+                    </option>
+                  }
+
+                </select>
+              </div>
+
+              <!-- ESTADO -->
+              <div class="col-12 col-md-6">
+                <label class="form-label">Estado</label>
+                <select formControlName="idState" class="form-select form-select-sm">
+
+                  <option [value]="null" disabled>Seleccionar</option>
+
+                  @for (sv of listStateVehicle; track sv.idState) {
+                    <option [value]="sv.idState">
+                      {{ sv.nameState }}
+                    </option>
+                  }
+
+                </select>
+              </div>
+
+              <!-- RUTA -->
+              <div class="col-12 col-md-6">
+                <label class="form-label">Ruta</label>
+
+                <select formControlName="idRoute" class="form-select form-select-sm">
+
+                  <option [value]="null" disabled>Seleccionar</option>
+
+                  @for (route of listRoutes; track route.idTravelRoute) {
+                    <option [value]="route.idTravelRoute">
+                      {{ route.nameRoute }}
+                    </option>
+                  }
+
+                </select>
+
+              </div>
+
+              <!-- SOAT -->
+              <div class="col-12 col-md-6">
+                <label class="form-label">Vencimiento SOAT</label>
+
+                <input
+                  type="date"
+                  formControlName="soatExpirationDate"
+                  class="form-control form-control-sm"
+                />
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTONES -->
+        <footer
+          class="modal-footer mt-5 pt-4 border-top d-flex justify-content-end gap-2"
+        >
+          <button
+            class="btn btn-sm btn-outline-secondary px-4"
+            type="button"
+            (click)="close()"
+          >
+            Cancelar
+          </button>
+
+          <button
+            class="btn btn-sm btn-primary px-4"
+            type="submit"
+            [disabled]="editForm.invalid"
+          >
+            Guardar
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+</div>
