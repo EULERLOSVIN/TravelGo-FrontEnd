@@ -1,128 +1,290 @@
-<div class="container-fluid py-4">
-
-    <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h4 class="fw-bold mb-0">Alertas de Seguridad</h4>
-            <small class="text-muted">
-                Gestión de documentación crítica para operaciones
-            </small>
+<div class="alerts-wrapper py-4 px-3 px-lg-5">
+    <!-- Final Features & Refinements -->
+   
+    <!-- Header Section (Dashboard Twin) -->
+    <header class="dashboard-header d-flex justify-content-between align-items-center mb-5 animate-in">
+        <div class="title-meta">
+            <h1 class="display-5 fw-bold text-slate-900 mb-1">Alertas de Seguridad</h1>
+            <p class="text-slate-500 mb-0 fw-medium ls-1">
+                <i class="bi bi-calendar3 me-2 text-primary"></i>{{ currentDate }}
+            </p>
         </div>
-
-        <div class="d-flex gap-3">
-            <input type="text" class="form-control" placeholder="Buscar unidad o chofer..." style="width: 260px"
-                [(ngModel)]="searchTerm" (input)="onSearch()" />
-            <button class="btn btn-danger fw-semibold">
-                Protocolo Emergencia
+        <div class="header-actions d-flex gap-3 align-items-center">
+            <div class="live-indicator px-4 py-2 rounded-pill d-flex align-items-center gap-2 glass-dark shadow-sm">
+                <span class="pulse-dot"></span>
+                <span class="fw-bold small text-success">SISTEMA EN VIVO</span>
+            </div>
+            <button class="btn btn-primary-gradient d-flex align-items-center gap-2 px-4 shadow-sm"
+                (click)="loadAlerts()" [disabled]="loading">
+                <i class="bi bi-arrow-clockwise" [class.spin]="loading"></i>
+                <span>Sincronizar</span>
             </button>
         </div>
+    </header>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state d-flex flex-column align-items-center justify-content-center py-5">
+        <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;" role="status"></div>
+        <p class="mt-4 text-slate-500 fw-bold animate-pulse">Auditando registros operacionales...</p>
     </div>
 
-    <!-- LOADING STATE -->
-    <div *ngIf="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-2">Cargando alertas...</p>
-    </div>
+    <!-- Main Grid Container -->
+    <div *ngIf="!loading" class="animate-in">
 
-    <div *ngIf="!loading">
-        <!-- TARJETAS RESUMEN -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card summary-card danger">
-                    <div>
-                        <small class="text-uppercase">Alertas de Vehículos (SOAT)</small>
-                        <h2 class="fw-bold mb-0">{{alertsData.totalSoatAlerts}}</h2>
-                        <small>Documentos por vencer</small>
-                    </div>
-                    <div class="icon-circle bg-danger">
-                        🚗
-                    </div>
-                </div>
-            </div>
+        <!-- Tier 1: Key Performance Indicators (Mirrored Architecture) -->
+        <section class="grid-tier-1 mb-5">
+            <div class="kpi-card business-card shadow-sm border-0 p-4" *ngFor="let kpi of kpiCards">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div class="kpi-content">
+                        <span class="text-uppercase text-slate-400 fw-bold x-small mb-1 d-block">{{ kpi.label }}</span>
+                        <h2 class="fw-bold text-slate-800 mb-2">{{ kpi.value }}</h2>
 
-            <div class="col-md-6">
-                <div class="card summary-card warning">
-                    <div>
-                        <small class="text-uppercase">Alertas de Personal (Licencias)</small>
-                        <h2 class="fw-bold mb-0">{{alertsData.totalLicenseAlerts}}</h2>
-                        <small>Licencias críticas</small>
-                    </div>
-                    <div class="icon-circle bg-warning">
-                        🪪
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- LISTAS -->
-        <div class="row">
-
-            <!-- SOAT -->
-            <div class="col-md-6">
-                <h6 class="fw-bold mb-3">
-                    Próximos Vencimientos: SOAT
-                    <span class="badge bg-danger ms-2">PRIORIDAD: ALTA</span>
-                </h6>
-
-                <div *ngIf="filteredSoat.length === 0" class="empty-state-card py-4 text-center">
-                    <div class="fs-1 text-success mb-2">✅</div>
-                    <h6 class="fw-bold mb-1">Todo al día</h6>
-                    <small class="text-muted">Todos los SOATs están actualizados.</small>
-                </div>
-
-                <div *ngFor="let soat of filteredSoat" class="alert-card mb-3 animate-in">
-                    <div>
-                        <h6 class="fw-bold mb-1">Unidad {{soat.unitNumber}}</h6>
-                        <small class="text-muted">Placa: {{soat.plateNumber}}</small>
-                    </div>
-
-                    <span class="badge" [ngClass]="soat.daysToExpiration <= 0 ? 'bg-danger' : 'bg-danger'">
-                        {{soat.daysToExpiration <= 0 ? 'VENCE HOY' : 'VENCE EN ' + soat.daysToExpiration + ' DÍAS' }}
-                            </span>
-
-                            <div class="mt-3 d-flex gap-2">
-                                <button class="btn btn-dark w-50" (click)="notificar(soat)">Notificar</button>
-                                <button class="btn btn-outline-success w-50" (click)="actualizarDocumento(soat)">
-                                    Actualizar Documento
-                                </button>
+                        <div *ngIf="kpi.trend !== undefined" class="trend-indicator">
+                            <div class="trend-chip d-flex align-items-center gap-1"
+                                [ngClass]="getTrendClass(kpi.trend)">
+                                <i class="bi" [ngClass]="getTrendIcon(kpi.trend)"></i>
+                                <span>{{ kpi.trend }}%</span>
                             </div>
+                            <span class="text-slate-400 x-small ms-2">vs semana ant.</span>
+                        </div>
+
+                        <div *ngIf="kpi.isProgress" class="kpi-progress-container mt-3">
+                            <div class="progress" style="height: 6px; background: rgba(0,0,0,0.05);">
+                                <div class="progress-bar bg-success shadow-none" style="width: 92.4%"></div>
+                            </div>
+                        </div>
+
+                        <p class="text-slate-500 x-small mt-2 mb-0 fw-medium">{{ kpi.sub }}</p>
+                    </div>
+                    <div class="kpi-icon-box shadow-sm" [ngClass]="'bg-' + kpi.color + '-subtle text-' + kpi.color">
+                        <i class="bi {{ kpi.icon }} fs-3"></i>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- LICENCIAS -->
-            <div class="col-md-6">
-                <h6 class="fw-bold mb-3">
-                    Próximos Vencimientos: Licencias
-                    <span class="badge bg-warning text-dark ms-2">PRIORIDAD: MEDIA</span>
-                </h6>
+        <!-- Tier 2: Unified Asymmetric HUD (8/4 Split) -->
+        <div class="main-content-grid-v2 mb-5">
 
-                <div *ngIf="filteredLicenses.length === 0" class="empty-state-card py-4 text-center">
-                    <div class="fs-1 text-success mb-2">✅</div>
-                    <h6 class="fw-bold mb-1">Personal vigente</h6>
-                    <small class="text-muted">No se encontraron licencias por vencer.</small>
+            <!-- Primary Region: Security Feed (Span 8) -->
+            <div class="primary-region">
+
+                <!-- Search & Control Header -->
+                <div class="business-card p-4 d-flex gap-4 align-items-center bg-white border-0 shadow-sm mb-4">
+                    <div class="search-box position-relative flex-grow-1">
+                        <i
+                            class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-slate-400"></i>
+                        <input type="text" class="form-control rounded-pill border shadow-sm px-5 py-2"
+                            placeholder="Filtrar por unidad, placa o conductor..." [(ngModel)]="searchTerm"
+                            (input)="onSearch()">
+                    </div>
+                    <button
+                        class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-2"
+                        (click)="downloadReport()">
+                        <i class="bi bi-file-earmark-pdf"></i> Reporte Diario
+                    </button>
                 </div>
 
-                <div *ngFor="let license of filteredLicenses" class="alert-card mb-3 animate-in">
-                    <div>
-                        <h6 class="fw-bold mb-1">Chofer: {{license.driverName}}</h6>
-                        <small class="text-muted">Categoría: {{license.licenseCategory}}</small>
+                <!-- Dashboard-style Analytics Row (Charts) -->
+                <div class="row g-4">
+                    <!-- Documentation by Headquarter (Equivalent to "Route Performance") -->
+                    <div class="col-md-6">
+                        <section class="analysis-card business-card p-4">
+                            <div class="card-header-business d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <h6 class="fw-bold text-slate-800 mb-0">Alertas por Sede</h6>
+                                    <p class="text-slate-400 x-small mb-0 mt-1">Concentración geográfica</p>
+                                </div>
+                                <i class="bi bi-geo-alt text-danger fs-5"></i>
+                            </div>
+
+                            <div class="route-performance">
+                                <div class="route-item mb-4"
+                                    *ngFor="let hq of alertsData.alertsByHeadquarter; let i = index">
+                                    <div class="d-flex justify-content-between align-items-end mb-2">
+                                        <span class="fw-bold text-slate-700 x-small d-block">{{ hq.headquarterName
+                                            }}</span>
+                                        <h6 class="fw-bold text-slate-900 mb-0 small">{{ hq.alertCount }} docs</h6>
+                                    </div>
+                                    <div class="progress" style="height: 6px; background-color: #f1f5f9;">
+                                        <div class="progress-bar" [style.width]="hq.percentageOfTotal + '%'"
+                                            [ngClass]="i === 0 ? 'bg-danger' : (i === 1 ? 'bg-warning' : 'bg-primary')">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
 
-                    <span class="badge bg-warning text-dark">
-                        {{license.daysToExpiration <= 0 ? 'VENCE HOY' : 'VENCE EN ' + license.daysToExpiration + ' DÍAS'
-                            }} </span>
-
-                            <div class="mt-3 d-flex gap-2">
-                                <button class="btn btn-dark w-50" (click)="notificar(license)">Notificar</button>
-                                <button class="btn btn-outline-success w-50" (click)="actualizarDocumento(license)">
-                                    Actualizar Documento
-                                </button>
+                    <!-- Documentation Status Trend (Equivalent to "Hourly Demand") -->
+                    <div class="col-md-6">
+                        <section class="analysis-card business-card p-4">
+                            <div class="card-header-business d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <h6 class="fw-bold text-slate-800 mb-0">Vencimientos Próximos</h6>
+                                    <p class="text-slate-400 x-small mb-0 mt-1">Proyección 60 días</p>
+                                </div>
+                                <i class="bi bi-clock-history text-warning fs-5"></i>
                             </div>
+
+                            <div class="modern-bar-chart d-flex align-items-end justify-content-around mt-4"
+                                style="height: 120px;">
+                                <div class="chart-column" *ngFor="let i of [1,2,3,4,5,6]">
+                                    <div class="column-bar" [style.height]="(i * 15) + 'px'" [class.bg-primary]="i < 4"
+                                        [class.bg-accent]="i >= 4">
+                                        <div class="column-tooltip">{{ i * 2 }} alertas</div>
+                                    </div>
+                                    <span class="column-time x-small">W{{ i }}</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
                 </div>
+
+                <!-- Operational Documentation Table (Equivalent to "Upcoming Departures") -->
+                <section class="operational-command business-card overflow-hidden mt-4">
+                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center bg-slate-50">
+                        <div>
+                            <h6 class="fw-bold text-slate-800 mb-0">Protocolo Crítico de Documentación</h6>
+                            <p class="text-slate-400 x-small mb-0 mt-1">Prioridad inmediata de renovación</p>
+                        </div>
+                        <div class="search-box position-relative" style="max-width: 250px;">
+                            <i
+                                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-slate-400 x-small"></i>
+                            <input type="text"
+                                class="form-control form-control-sm rounded-pill ps-5 border-0 bg-white shadow-sm"
+                                placeholder="Filtrar..." [(ngModel)]="searchTerm" (input)="onSearch()">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table executive-table align-middle mb-0">
+                            <thead>
+                                <tr class="x-small">
+                                    <th class="ps-4">TIPO</th>
+                                    <th>IDENTIFICADOR</th>
+                                    <th>VENCIMIENTO</th>
+                                    <th class="text-center">ESTADO</th>
+                                    <th class="text-end pe-4">ACCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="custom-scrollbar">
+                                <!-- SOAT Rows -->
+                                <tr *ngFor="let soat of filteredSoat | slice:0:3">
+                                    <td class="ps-4"><span class="badge bg-danger-subtle text-danger p-2 rounded-3"><i
+                                                class="bi bi-car-front-fill"></i> SOAT</span></td>
+                                    <td><span class="fw-bold text-slate-900">{{ soat.plateNumber }}</span><br><small
+                                            class="text-slate-400">Unidad {{ soat.unitNumber }}</small></td>
+                                    <td><span class="fw-bold text-slate-700">{{ soat.expirationDate }}</span></td>
+                                    <td class="text-center">
+                                        <span class="status-pill"
+                                            [ngClass]="soat.daysToExpiration <= 7 ? 'off' : 'loading'">
+                                            {{ soat.daysToExpiration <= 0 ? 'Vencido' : soat.daysToExpiration + ' d' }}
+                                                </span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-light rounded-circle shadow-sm"
+                                            (click)="notificar(soat)"><i class="bi bi-bell text-danger"></i></button>
+                                    </td>
+                                </tr>
+                                <!-- License Rows -->
+                                <tr *ngFor="let license of filteredLicenses | slice:0:2">
+                                    <td class="ps-4"><span class="badge bg-warning-subtle text-warning p-2 rounded-3"><i
+                                                class="bi bi-person-badge-fill"></i> LICENCIA</span></td>
+                                    <td><span class="fw-bold text-slate-900">{{ license.driverName }}</span><br><small
+                                            class="text-slate-400">Cat: {{ license.licenseCategory }}</small></td>
+                                    <td><span class="fw-bold text-slate-700">{{ license.expirationDate }}</span></td>
+                                    <td class="text-center">
+                                        <span class="status-pill loading">{{ license.daysToExpiration }} d</span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-light rounded-circle shadow-sm"
+                                            (click)="notificar(license)"><i
+                                                class="bi bi-chat-text text-warning"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
 
+            <!-- Side Region (Feeds & Summary) (Span 4) -->
+            <div class="side-feeds-region">
+
+                <!-- Live Security Feed (Equivalent to "Live Activity") -->
+                <section class="business-card p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="fw-bold text-slate-800 mb-0">Monitor de Seguridad</h6>
+                        <span class="badge bg-danger-subtle text-danger rounded-pill fw-bold x-small">
+                            {{ filteredSoat.length + filteredLicenses.length }} ALERTAS
+                        </span>
+                    </div>
+
+                    <div class="activity-feed custom-scrollbar"
+                        style="max-height: 480px; overflow-y: auto; padding-right: 5px;">
+                        <!-- SOAT Alerts -->
+                        <div class="feed-event d-flex gap-3 mb-4" *ngFor="let soat of filteredSoat">
+                            <div class="event-dot bg-danger-subtle text-danger"
+                                style="width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-shield-exclamation x-small"></i>
+                            </div>
+                            <div class="event-content">
+                                <p class="x-small fw-bold text-slate-700 mb-0">SOAT expirando: {{ soat.plateNumber }}
+                                </p>
+                                <small class="text-slate-400 x-small fw-medium">Unidad {{ soat.unitNumber }} • {{
+                                    soat.daysToExpiration }} días restantes</small>
+                            </div>
+                        </div>
+
+                        <!-- License Alerts -->
+                        <div class="feed-event d-flex gap-3 mb-4" *ngFor="let license of filteredLicenses">
+                            <div class="event-dot bg-warning-subtle text-warning"
+                                style="width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-person x-small"></i>
+                            </div>
+                            <div class="event-content">
+                                <p class="x-small fw-bold text-slate-700 mb-0">Licencia: {{ license.driverName }}</p>
+                                <small class="text-slate-400 x-small fw-medium">Cat: {{ license.licenseCategory }} •
+                                    Vence pronto</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Compliance Check (Executive Summary) -->
+                <section class="business-card p-4 bg-slate-900 text-white border-0 shadow-lg mt-1">
+                    <h6 class="fw-bold mb-4">Certificación de Seguridad</h6>
+                    <div class="compliance-gauge d-flex justify-content-center mb-4">
+                        <div class="risk-meter d-flex align-items-center justify-content-center"
+                            style="width: 100px; height: 100px; border: 10px solid #10b981; border-radius: 50%; border-right-color: rgba(255,255,255,0.1);">
+                            <div class="text-center">
+                                <span class="fw-bold h4 mb-0 d-block">92%</span>
+                                <span class="x-small text-slate-400 fw-bold">OK</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 x-small text-center px-2 mb-4">La operatividad se mantiene estable. Inicie
+                        renovaciones para evitar multas.</p>
+                    <button class="btn btn-primary-gradient w-100 py-2 rounded-pill fw-bold btn-sm shadow-sm"
+                        (click)="downloadReport()">
+                        DESCARGAR REPORTE TG-02
+                    </button>
+                </section>
+
+                <!-- Informative Meta -->
+                <section class="business-card p-4 border-dashed bg-slate-50 mt-1">
+                    <div class="d-flex gap-3 align-items-start">
+                        <i class="bi bi-info-circle text-primary"></i>
+                        <div>
+                            <h6 class="fw-bold x-small text-slate-800 mb-2">INFO SISTEMA</h6>
+                            <p class="text-slate-500 x-small mb-0 ls-1">Range: 60 DÍAS<br>Update: REAL-TIME<br>Zone:
+                                NATIONAL</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
+
     </div>
 </div>

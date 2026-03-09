@@ -1,53 +1,227 @@
-.summary-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem;
-    border-radius: 14px;
-    border: none;
+.alerts-wrapper {
+    background: #f8fafc;
+    min-height: 100vh;
+    color: #334155;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
 
-    &.danger {
-        background-color: #fff5f5;
-    }
+// Global tokens (Slate Palette - synced with dashboard)
+.text-slate-900 {
+    color: #0f172a;
+}
 
-    &.warning {
-        background-color: #fff9e6;
+.text-slate-800 {
+    color: #1e293b;
+}
+
+.text-slate-700 {
+    color: #334155;
+}
+
+.text-slate-500 {
+    color: #64748b;
+}
+
+.text-slate-400 {
+    color: #94a3b8;
+}
+
+.bg-slate-50 {
+    background-color: #f8fafc;
+}
+
+// Professional HUD Card (Mirrored from dashboard)
+.business-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+
+    &:hover {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        border-color: #cbd5e1;
     }
 }
 
-.icon-circle {
+// KPI Tier (Row of 4)
+.grid-tier-1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+.kpi-icon-box {
     width: 52px;
     height: 52px;
-    border-radius: 50%;
-    color: #fff;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 1.25rem;
 }
 
-.alert-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 1.2rem;
-    border: 1px solid #eee;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+// ASYMMETRIC COMMAND GRID (8/4 split - Mirrored from Dashboard)
+.main-content-grid-v2 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
 
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    .primary-region {
+        grid-column: span 8;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .side-feeds-region {
+        grid-column: span 4;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    @media (max-width: 1200px) {
+        display: flex;
+        flex-direction: column;
+
+        .primary-region,
+        .side-feeds-region {
+            width: 100%;
+        }
     }
 }
 
+// Charts (Dashboard Parity)
+.modern-bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+}
+
+.chart-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.column-bar {
+    width: 100%;
+    background: #f1f5f9;
+    border-radius: 6px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    &:hover {
+        background: #6366f1;
+
+        .column-tooltip {
+            opacity: 1;
+            transform: translate(-50%, -10px);
+        }
+    }
+
+    &.bg-primary {
+        background: #6366f1;
+    }
+
+    &.bg-accent {
+        background: #10b981;
+    }
+}
+
+.column-tooltip {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background: #0f172a;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: bold;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+// Executive Table (Dashboard Table Parity)
+.executive-table {
+    width: 100%;
+
+    th {
+        padding: 16px 20px;
+        background: #f8fafc;
+        color: #64748b;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border: none;
+    }
+
+    td {
+        padding: 18px 20px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    tr:last-child td {
+        border: none;
+    }
+}
+
+// Status Pills
+.status-pill {
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+
+    &.on {
+        background: #ecfdf5;
+        color: #10b981;
+    }
+
+    &.loading {
+        background: #fffbe3;
+        color: #f59e0b;
+    }
+
+    &.off {
+        background: #fff1f2;
+        color: #ef4444;
+    }
+}
+
+// Trend Chips
+.trend-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.trend-chip {
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.65rem;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+// Global Animate
 .animate-in {
-    animation: slideUp 0.4s ease-out forwards;
+    animation: fadeUp 0.6s ease-out forwards;
     opacity: 0;
 }
 
-@keyframes slideUp {
+@keyframes fadeUp {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
     }
 
     to {
@@ -56,9 +230,65 @@
     }
 }
 
-.empty-state-card {
-    background: #fdfdfd;
-    border: 2px dashed #eee;
-    border-radius: 14px;
-    color: #888;
+@keyframes pulse-green {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+.pulse-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    animation: pulse-green 2s infinite;
+}
+
+.btn-primary-gradient {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+        color: white;
+    }
+}
+
+.glass-dark {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.ls-1 {
+    letter-spacing: 0.5px;
+}
+
+.x-small {
+    font-size: 0.75rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
 }
