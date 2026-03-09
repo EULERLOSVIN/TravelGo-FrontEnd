@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DashboardService } from '../../services/dashboard.service';
+import { DashboardModel } from '../../models/Dashboard.model';
 
 @Component({
   selector: 'app-admin-summary',
@@ -8,30 +10,46 @@ import { CommonModule } from '@angular/common';
   templateUrl: './admin-summary.page.html',
   styleUrl: './admin-summary.page.scss',
 })
-export class AdminSummaryComponent {
-  currentMonth: string = 'Febrero 2024';
+export class AdminSummaryComponent implements OnInit {
+  currentDate: string = '';
+  dashboardData?: DashboardModel;
+  loading: boolean = true;
+  error: boolean = false;
 
-  // Métricas Financieras Corporativas
-  financialStats = [
-    { label: 'Egresos Planilla', value: 'S/ 18,500', trend: 'Secretaría/Limpieza', icon: 'bi-people-fill', color: '#10b981' },
-    { label: 'Impuestos (SUNAT)', value: 'S/ 4,200', trend: 'Pendiente Pago', icon: 'bi-bank', color: '#ef4444' },
-    { label: 'Salidas del Día', value: '32 Vehículos', trend: 'Carga Máxima', icon: 'bi-bus-front-fill', color: '#3b82f6' },
-    { label: 'Servicios Terceros', value: 'S/ 2,850', trend: 'Mantenimiento/Luz', icon: 'bi-box-seam', color: '#f59e0b' }
-  ];
+  constructor(private dashboardService: DashboardService) {
+    const today = new Date();
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    this.currentDate = today.toLocaleDateString('es-ES', options);
+  }
 
-  // Desglose de Pagos Administrativos
-  expenseBreakdown = [
-    { label: 'Planilla Secretarias', percentage: 40, amount: 'S/ 7,400', color: '#3b82f6' },
-    { label: 'Personal Limpieza', percentage: 25, amount: 'S/ 4,625', color: '#10b981' },
-    { label: 'Impuestos de Ley', percentage: 20, amount: 'S/ 3,700', color: '#ef4444' },
-    { label: 'Mantenimiento Sede', percentage: 15, amount: 'S/ 2,775', color: '#f59e0b' }
-  ];
+  ngOnInit(): void {
+    this.loadDashboardData();
+  }
 
-  // Rutas con Mayor Demanda y Tráfico
-  topRoutes = [
-    { name: 'Tingo María - Aucayacu', tickets: 580, growth: 'Ruta más saturada' },
-    { name: 'Huánuco - Tingo María', tickets: 420, growth: 'Alta demanda' },
-    { name: 'Tingo María - Monzón', tickets: 190, growth: 'Crecimiento +15%' },
-    { name: 'Salidas Locales', tickets: 120, growth: 'Estable' }
-  ];
+  loadDashboardData(): void {
+    this.loading = true;
+    this.error = false;
+    this.dashboardService.getSummary().subscribe({
+      next: (result) => {
+        if (result.isSuccess) {
+          this.dashboardData = result.value;
+        } else {
+          this.error = true;
+        }
+        this.loading = false;
+      },
+      error: () => {
+        this.error = true;
+        this.loading = false;
+      }
+    });
+  }
+
+  getTrendClass(percentage: number): string {
+    return percentage >= 0 ? 'positive' : 'negative';
+  }
+
+  getTrendIcon(percentage: number): string {
+    return percentage >= 0 ? 'bi-arrow-up-short' : 'bi-arrow-down-short';
+  }
 }

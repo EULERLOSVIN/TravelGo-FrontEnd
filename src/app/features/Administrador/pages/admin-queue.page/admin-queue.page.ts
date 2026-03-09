@@ -25,6 +25,10 @@ export class AdminQueuePage implements OnInit, OnDestroy {
 
   queue: QueueItem[] = [];
 
+  // Counters for the cards
+  departureCount: number = 0;
+  arrivalCount: number = 0;
+
   newDriverDni: string = '';
   searchTerm: string = '';
 
@@ -40,7 +44,7 @@ export class AdminQueuePage implements OnInit, OnDestroy {
   // Arrival Modal State
   modalArrivalOpen: boolean = false;
 
-  // Tab State: 'departure' | 'arrival'
+  // View type logic now handled within the table filter
   viewType: 'departure' | 'arrival' = 'departure';
 
   private timerInterval: any;
@@ -56,6 +60,10 @@ export class AdminQueuePage implements OnInit, OnDestroy {
       item.driverDni.includes(lowerTerm) ||
       (item.vehiclePlate && item.vehiclePlate.toLowerCase().includes(lowerTerm))
     );
+  }
+
+  getCurrentHeadquarter(): HeadquarterContext | undefined {
+    return this.headquarters.find(h => h.idHeadquarter == this.selectedHeadquarterId);
   }
 
   ngOnInit(): void {
@@ -87,10 +95,8 @@ export class AdminQueuePage implements OnInit, OnDestroy {
     this.queueService.getHeadquarters().subscribe({
       next: (hqs) => {
         this.headquarters = hqs;
-        if (this.headquarters.length > 0) {
-          this.selectedHeadquarterId = this.headquarters[0].idHeadquarter;
-          this.loadRoutesForHeadquarter();
-        }
+        // Auto-selection removed to allow "Seleccione una sede" state
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Error fetching headquarters', err)
     });
@@ -135,8 +141,28 @@ export class AdminQueuePage implements OnInit, OnDestroy {
 
   loadQueue(): void {
     if (this.selectedHeadquarterId && this.selectedRouteId) {
-      this.queueService.getQueue(Number(this.selectedHeadquarterId), Number(this.selectedRouteId)).subscribe(q => {
+      const isArrival = this.viewType === 'arrival';
+      this.queueService.getQueue(Number(this.selectedHeadquarterId), Number(this.selectedRouteId), isArrival).subscribe(q => {
         this.queue = q;
+
+        // Update the specific count for the current view
+        if (isArrival) {
+          this.arrivalCount = q.length;
+        } else {
+          this.departureCount = q.length;
+        }
+
+        this.cdr.detectChanges();
+      });
+
+      // Fetch the other count in the background for the "Total" card
+      const otherView = !isArrival;
+      this.queueService.getQueue(Number(this.selectedHeadquarterId), Number(this.selectedRouteId), otherView).subscribe(q => {
+        if (otherView) {
+          this.arrivalCount = q.length;
+        } else {
+          this.departureCount = q.length;
+        }
         this.cdr.detectChanges();
       });
     }
@@ -159,8 +185,10 @@ export class AdminQueuePage implements OnInit, OnDestroy {
           this.modalArrivalOpen = false;
           // Refresh the queue since the trip finished
           this.loadQueue();
+          this.cdr.detectChanges();
         } else {
           alert(res.errorMessage || 'Error al registrar llegada.');
+          this.cdr.detectChanges();
         }
       },
       error: (err) => {
@@ -176,13 +204,21 @@ export class AdminQueuePage implements OnInit, OnDestroy {
     }
 
     this.queueService.addDriverToQueue(data.dni, data.idTravelRoute, null).subscribe({
-      next: () => {
-        // Automatically switch the view to the route the driver was just added to
-        this.selectedRouteId = data.idTravelRoute;
-        this.loadRoutesForHeadquarter(); // This will preserve selectedRouteId and call loadQueue()
+      next: (res) => {
+        if (res.isSuccess) {
+          // Switch to "Salidas" view and the correct route to ensure visibility
+          this.viewType = 'departure';
+          this.selectedRouteId = data.idTravelRoute;
+          this.loadRoutesForHeadquarter();
+          this.cdr.detectChanges();
+        } else {
+          alert(res.errorMessage || 'Error al agregar chofer a la cola.');
+          this.cdr.detectChanges();
+        }
       },
       error: (err) => {
-        alert(err.error || 'Error al agregar chofer a la cola. Verifique que tenga un vehículo y ruta asignados.');
+        alert(err.error?.errorMessage || err.error || 'Error al agregar chofer a la cola. Verifique que tenga un vehículo y ruta asignados.');
+        this.cdr.detectChanges();
       }
     });
   }
@@ -198,6 +234,7 @@ export class AdminQueuePage implements OnInit, OnDestroy {
           this.itemToDelete = null;
           this.loadQueue();
           this.loadRoutesForHeadquarter();
+          this.cdr.detectChanges();
         },
         error: (err) => {
           alert(err.error || 'Error al quitar chofer de la cola.');
@@ -218,12 +255,35 @@ export class AdminQueuePage implements OnInit, OnDestroy {
             this.itemToEdit = null;
             this.loadQueue();
             this.loadRoutesForHeadquarter();
+            this.cdr.detectChanges();
           },
           error: (err) => {
             alert(err.error || 'Error al cambiar la ruta del chofer.');
           }
         });
       }
+    }
+  }
+
+  dispatchVehicle(item: QueueItem): void {
+    if (!item.idAssignQueue) return;
+
+    if (confirm(`¿Está seguro de despachar el vehículo ${item.vehiclePlate} de ${item.driverFullName}? Esto iniciará el viaje y lo moverá a la lista de llegadas.`)) {
+      this.queueService.dispatchVehicle(item.idAssignQueue).subscribe({
+        next: (res) => {
+          if (res.isSuccess) {
+            this.loadQueue();
+            this.loadRoutesForHeadquarter();
+            this.cdr.detectChanges();
+          } else {
+            alert(res.errorMessage || 'Error al despachar el vehículo.');
+            this.cdr.detectChanges();
+          }
+        },
+        error: (err) => {
+          alert('Error de conexión al despachar el vehículo.');
+        }
+      });
     }
   }
 }

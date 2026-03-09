@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouteFilter } from '../../models/queue.model';
@@ -19,23 +19,32 @@ export class RegisterQueue implements OnChanges {
   selectedRouteId: number = 0;
   isLoading: boolean = false;
   searchError: string | null = null;
+  private searchTimeout: any;
 
-  constructor(private queueService: QueueManagementService) { }
+  constructor(private queueService: QueueManagementService, private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
   }
 
   onDniInput(): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+
     if (this.driverDni.length >= 8) {
-      this.searchDriver();
+      this.searchTimeout = setTimeout(() => {
+        this.searchDriver();
+      }, 300);
     } else {
       this.resetSearch();
+      this.cdr.detectChanges();
     }
   }
 
   searchDriver(): void {
     this.isLoading = true;
     this.searchError = null;
+    this.cdr.detectChanges();
     this.queueService.getDriverQueueInfo(this.driverDni).subscribe({
       next: (res) => {
         this.driverInfo = res;
@@ -45,6 +54,7 @@ export class RegisterQueue implements OnChanges {
         } else {
           this.selectedRouteId = 0;
         }
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.driverInfo = null;
@@ -52,8 +62,11 @@ export class RegisterQueue implements OnChanges {
         if (err.status === 404) {
           this.searchError = 'Chofer no encontrado. Verifique el DNI ingresado.';
         } else {
-          this.searchError = 'Error al buscar el chofer. Inténtelo de nuevo.';
+          // If the error is a string (thrown from service map), show it. 
+          // Otherwise use fallback.
+          this.searchError = typeof err === 'string' ? err : 'Error al buscar el chofer. Inténtelo de nuevo.';
         }
+        this.cdr.detectChanges();
       }
     });
   }

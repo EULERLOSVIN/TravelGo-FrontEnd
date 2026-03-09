@@ -31,7 +31,8 @@ export class QueueManagementService {
         return this.http.get<any[]>(this.hqUrl).pipe(
             map(res => res.map(h => ({
                 idHeadquarter: h.idHeadquarter,
-                headquarterName: h.name || h.address // Use h.name directly as the Name property from DTO
+                headquarterName: h.name,
+                hasRoutes: h.hasRoutes
             })))
         );
     }
@@ -43,16 +44,16 @@ export class QueueManagementService {
                 return res.map((tr: any) => ({
                     idRoute: tr.idTravelRoute,
                     destinationName: tr.nameRoute,
-                    inQueueCount: 0
+                    inQueueCount: tr.inQueueCount || 0
                 }));
             })
         );
     }
 
-    getQueue(headquarterId: number, idRoute: number): Observable<QueueItem[]> {
+    getQueue(headquarterId: number, idRoute: number, isArrival: boolean = false): Observable<QueueItem[]> {
         // We leave headquarterId in the signature so we don't break existing calls wildly, 
-        // but we only pass idRoute to the backend.
-        return this.http.get<Result<any[]>>(`${this.apiUrl}/getActiveQueue/${idRoute}`).pipe(
+        // but we only pass idRoute and isArrival to the backend.
+        return this.http.get<Result<any[]>>(`${this.apiUrl}/getActiveQueue/${idRoute}?isArrival=${isArrival}`).pipe(
             map(response => {
                 if (!response.isSuccess || !response.value) return [];
                 return response.value.map(item => ({
@@ -68,10 +69,15 @@ export class QueueManagementService {
                     totalSeats: item.totalSeats,
                     scheduledDepartureTime: item.scheduledDepartureTime,
                     remainingMinutes: item.remainingMinutes,
-                    status: item.status
+                    status: item.status,
+                    isArrival: item.isArrival
                 }));
             })
         );
+    }
+
+    dispatchVehicle(idAssignQueue: number): Observable<Result<number>> {
+        return this.http.post<Result<number>>(`${this.apiUrl}/dispatch/${idAssignQueue}`, {});
     }
 
     getDriverQueueInfo(dni: string): Observable<any> {
