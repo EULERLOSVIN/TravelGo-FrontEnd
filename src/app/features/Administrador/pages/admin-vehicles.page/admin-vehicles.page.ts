@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { RegisterNewVehicleComponent } from '../../components/register-new-vehicle/register-new-vehicle.component';
-import { EditVehicleComponent } from '../../components/edit-vehicle/edit-vehicle.component';
-import {VehiclesService, VehicleSummaryDto} from '../../services/vehicles.service';
+import { VehiclesService } from '../../services/vehicles.service';
 import { DetailVehicleModel } from '../../models/DetailVehicle.model';
+import { SummaryStatisticalOfVehicleModel } from '../../models/SummaryStatisticalOfVehicle.model';
+import { EditVehicleComponent } from '../../components/Modals/edit-vehicle/edit-vehicle.component';
 
 @Component({
   selector: 'app-admin-vehicles',
@@ -19,13 +20,17 @@ import { DetailVehicleModel } from '../../models/DetailVehicle.model';
   templateUrl: './admin-vehicles.page.html',
   styleUrl: './admin-vehicles.page.scss',
 })
+
 export class AdminVehiclesComponent implements OnInit {
   @ViewChild('miModal') modal !: RegisterNewVehicleComponent;
+  @ViewChild('modalEditVehicle') modalEditVehicle !: EditVehicleComponent;
 
   // MODAL STATES
-  isEditModalOpen = false;
   selectedVehicle: DetailVehicleModel | null = null;
   vehiclesList: DetailVehicleModel[] = [];
+  summaryStatisticalVehicle: SummaryStatisticalOfVehicleModel | null = null;
+
+
   searchTerm = '';
   isLoading: boolean = false;
   isLastPage: boolean = false;
@@ -34,14 +39,20 @@ export class AdminVehiclesComponent implements OnInit {
   constructor(
     private vehiclesService: VehiclesService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadVehicles();
+    this.loadDataStatisticalOfVehicle();
   }
 
-  openModalRegisterVehicle(){
+  openModalRegisterVehicle() {
     this.modal.open();
+  }
+
+  openModalEditVehicle(vehicle: DetailVehicleModel) {
+    console.log('enviando vehiculo desde el padre:', vehicle);
+    this.modalEditVehicle.open(vehicle);
   }
 
   loadVehicles(): void {
@@ -58,7 +69,7 @@ export class AdminVehiclesComponent implements OnInit {
 
         console.log(response.value);
       },
-      error:(err) =>{
+      error: (err) => {
         console.error('Error al cargar personal:', err);
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -81,8 +92,8 @@ export class AdminVehiclesComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  getBadgeColor(state: string): string{
-    switch(state.toLowerCase()){
+  getBadgeColor(state: string): string {
+    switch (state.toLowerCase()) {
       case 'activo':
         return 'bg-success';
       case 'inactivo':
@@ -90,5 +101,20 @@ export class AdminVehiclesComponent implements OnInit {
       default:
         return 'bg-secondary'
     }
+  }
+
+  loadDataStatisticalOfVehicle(): void {
+    this.vehiclesService.getStatisticalSummaryOfVehicles().subscribe({
+      next: (response) => {
+        if (response.isSuccess) {
+          this.summaryStatisticalVehicle = response.value;
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        console.log(err);
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

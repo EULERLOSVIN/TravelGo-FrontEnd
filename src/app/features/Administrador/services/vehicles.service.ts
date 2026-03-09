@@ -7,12 +7,8 @@ import { environment } from '../../../../environment/environment.local';
 import { CreateVehicleModel } from '../models/CreateVehicle.model';
 import { StateVehicleModel } from '../models/StateVehicle.model';
 import { DetailVehicleModel } from '../models/DetailVehicle.model';
-
-export interface VehicleSummaryDto {
-  totalUnits: number;
-  active: number;
-  inactive: number;
-}
+import { SummaryStatisticalOfVehicleModel } from '../models/SummaryStatisticalOfVehicle.model';
+import { EditVehicleModel } from '../models/EditVehicle.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -34,26 +30,20 @@ export class VehiclesService {
   RegisterVehicle(dto: CreateVehicleModel): Observable<Result<boolean>> {
     return this.http.post<Result<boolean>>(`${this.baseUrl}/RegisterVehicle`, dto);
   }
-
-  getSummary(): Observable<VehicleSummaryDto> {
-    return this.http.get<VehicleSummaryDto>(`${this.baseUrl}/summary`);
+  //OBTENER RESUMEN ESTADISTICO DE LOS VEHICULOS
+  getStatisticalSummaryOfVehicles(): Observable<Result<SummaryStatisticalOfVehicleModel>> {
+    return this.http.get<Result<SummaryStatisticalOfVehicleModel>>(`${this.baseUrl}/GetSummaryStatisticalOfVehicles`);
   }
-  
+  //OBTENER CONDUCTORES
   getDrivers(): Observable<Result<DriverModel[]>> {
     return this.http.get<Result<DriverModel[]>>(`${this.baseUrl}/GetDrivers`);
   }
-
-  deleteVehicle(unitId: string): Observable<any> {
-    const params = new HttpParams().set('unitId', unitId);
-    return this.http.post(`${this.baseUrl}/DeleteVehicle`, null, { params });
-  }
-
-  updateVehicle(unitId: string, dto: CreateVehicleModel): Observable<Result<boolean>> {
-    const params = new HttpParams().set('unitId', unitId);
-    return this.http.post<Result<boolean>>(`${this.baseUrl}/UpdateVehicle`, dto, { params });
+  //EDITAR VEHICULO
+  EditVehicle(newData: EditVehicleModel): Observable<Result<boolean>> {
+    return this.http.put<Result<boolean>>(`${this.baseUrl}/EditVehicle`, newData);
   }
   //OBTENER ESTADOS DE VEHICULOS
-  getAllStateVehicle(): Observable<Result<StateVehicleModel[]>>{
+  getAllStateVehicle(): Observable<Result<StateVehicleModel[]>> {
     return this.http.get<Result<StateVehicleModel[]>>(`${this.baseUrl}/GetAllStateVehicles`);
   }
 }

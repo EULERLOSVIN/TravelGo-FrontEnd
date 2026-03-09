@@ -1,10 +1,15 @@
 export interface DetailVehicleModel{
-    idVehicle: number;
-    photoBase64: string;
-    type: string;
-    plate: string;
-    route: string;
-    driver: string;
-    state: string;
-    expirationSoatDate: string; 
+  idVehicle: number
+  plate: string
+  type: string
+  model: string
+  seatNumber: number
+  driver: string
+  idDriver: number
+  route: string
+  idRoute: number
+  state: string
+  idState: number
+  expirationSoatDate: string
+  photoBase64: string
 }

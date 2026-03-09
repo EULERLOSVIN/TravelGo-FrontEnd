@@ -3,7 +3,6 @@ export interface TravelRouteModel {
     nameRoute: string; // "Origen - Destino"
     price: number;
     idPlaceA: number;
-
     idPlaceB: number;
     isActive?: boolean;
 }
