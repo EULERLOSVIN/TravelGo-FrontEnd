@@ -23,7 +23,7 @@ export class AuthService {
           localStorage.setItem('token', response.value.token);
           localStorage.setItem('userEmail', response.value.email);
           localStorage.setItem('userRole', response.value.rol);
-          localStorage.setItem('idAccount',response.value.idAccount.toString());
+          localStorage.setItem('idAccount', response.value.idAccount.toString());
         }
       })
     );
@@ -35,5 +35,10 @@ export class AuthService {
 
   logout(): void {
     localStorage.clear();
+  }
+
+  // auth.service.ts
+  public getUserRole(): string | null {
+    return localStorage.getItem('userRole');
   }
 }

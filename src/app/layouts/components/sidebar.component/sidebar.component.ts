@@ -14,7 +14,7 @@ export class SidebarComponent implements OnInit {
 
   hasAlerts = true;
   collapsed = false;
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
   private router = inject(Router);
 
   userEmail: string | null = '';
