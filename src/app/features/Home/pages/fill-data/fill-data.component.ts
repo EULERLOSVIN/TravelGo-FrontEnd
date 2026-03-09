@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, ChangeDetectorRef } from '@angular/core'; // Agregué ChangeDetectorRef
+import { Component, OnInit, inject, signal, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core'; // Agregué ChangeDetectorRef
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReniecService } from '../../services/reniec.service';
@@ -8,7 +8,7 @@ import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 
 registerLocaleData(localeEs);
-
+declare var bootstrap: any;
 export interface RegisterBookingModel {
   idRoute: number;
   idVehicle: number;
@@ -44,6 +44,15 @@ export class FillDataComponent implements OnInit {
   isProcessingPayment = signal(false);
   paymentMethod = signal<string>('Yape');
 
+
+
+  @ViewChild('statusModal') statusModal!: ElementRef;
+  
+  modalTitle = signal('');
+  modalMessage = signal('');
+  isSuccess = signal(true);
+  
+
   tripSummary = signal<{
     seats: string[];
     price: number;
@@ -57,6 +66,17 @@ export class FillDataComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.getParamsOfRoute();
+  }
+
+  // Método para mostrar el modal
+  showModal(title: string, message: string, success: boolean) {
+    this.modalTitle.set(title);
+    this.modalMessage.set(message);
+    this.isSuccess.set(success);
+    
+    // Inicializar y mostrar el modal de Bootstrap
+    const modal = new bootstrap.Modal(this.statusModal.nativeElement);
+    modal.show();
   }
 
   initForm() {
@@ -162,15 +182,14 @@ export class FillDataComponent implements OnInit {
       next: (response) => {
         this.isProcessingPayment.set(false);
         if (response.isSuccess) {
-          alert('¡Reserva confirmada con éxito!');
-          console.log();
+          this.showModal('¡Éxito!', 'Reserva confirmada correctamente.', true);
         } else {
-          alert('Error: ' + (response.errorMessage || 'No se pudo procesar la reserva'));
+          this.showModal('Error', response.errorMessage || 'No se pudo procesar la reserva.', false);
         }
       },
       error: (err) => {
         this.isProcessingPayment.set(false);
-        alert('Ocurrió un error al conectar con el servidor.');
+        this.showModal('Error', 'Ocurrió un error al conectar con el servidor.', false);
       }
     });
   }
