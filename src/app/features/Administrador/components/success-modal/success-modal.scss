@@ -1,0 +1,151 @@
+/* Success Modal Styling - Premium Experience */
+.modal-backdrop-success {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-dialog-success {
+    background: white;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-content-success {
+    padding: 2.5rem 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.success-icon-container {
+    margin-bottom: 1.5rem;
+
+    &.success .success-icon-circle {
+        background: linear-gradient(135deg, #198754, #2ecc71);
+        box-shadow: 0 10px 20px rgba(25, 135, 84, 0.3);
+    }
+
+    &.error .success-icon-circle {
+        background: linear-gradient(135deg, #dc3545, #ff4d4d);
+        box-shadow: 0 10px 20px rgba(220, 53, 69, 0.3);
+    }
+
+    &.warning .success-icon-circle {
+        background: linear-gradient(135deg, #ffc107, #ffdb4d);
+        box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
+    }
+}
+
+.success-icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2.5rem;
+    animation: pulseIcon 2s infinite;
+}
+
+.success-title {
+    font-weight: 800;
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
+
+.success-message {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.btn-success-modal {
+    width: 100%;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    &.btn-success {
+        background: linear-gradient(135deg, #198754, #2ecc71);
+        box-shadow: 0 6px 15px rgba(25, 135, 84, 0.25);
+    }
+
+    &.btn-error {
+        background: linear-gradient(135deg, #dc3545, #ff4d4d);
+        box-shadow: 0 6px 15px rgba(220, 53, 69, 0.25);
+    }
+
+    &.btn-warning {
+        background: linear-gradient(135deg, #ffc107, #ffdb4d);
+        box-shadow: 0 6px 15px rgba(255, 193, 7, 0.25);
+        color: #2c3e50;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulseIcon {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.4);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 15px rgba(25, 135, 84, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+    }
+}

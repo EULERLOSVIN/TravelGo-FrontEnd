@@ -1,88 +1,459 @@
-<div class="dashboard-container">
-  <!-- Header / Greeting -->
-  <header class="dashboard-header">
-    <div class="greeting-info">
-      <h1>¡Bienvenido, {{ adminName }}!</h1>
-      <p><i class="bi bi-calendar3"></i> {{ formatDate(currentTime) }} · <span>Sistema en línea</span></p>
-    </div>
-  </header>
+<!-- ===================================================
+     DASHBOARD – TravelGo Administrador
+     Bootstrap 5 · Solo HTML · Prototipo visual
+     Patrón: KPIs → Gráficas/Tablas → Alertas
+=================================================== -->
 
-  <!-- KPI Grid -->
-  <section class="kpi-grid">
-    <div class="kpi-card glass" *ngFor="let stat of stats">
-      <div class="kpi-icon" [style.background-color]="stat.color + '20'" [style.color]="stat.color">
-        <i class="bi" [ngClass]="stat.icon"></i>
-      </div>
-      <div class="kpi-data">
-        <span class="label">{{ stat.label }}</span>
-        <h3 class="value">{{ stat.value }}</h3>
-        <span class="trend" [ngClass]="{'positive': stat.trend.includes('+'), 'negative': stat.trend.includes('-')}">
-          {{ stat.trend }} vs ayer
-        </span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Main Grid Content -->
-  <div class="dashboard-main-grid">
-    <!-- Left Column: Recent Activity -->
-    <section class="dashboard-card recent-activity glass">
-      <div class="card-header">
-        <h3><i class="bi bi-clock-history"></i> Actividad Reciente</h3>
-        <button class="btn-primary-gradient" type="button">
-          <i class="bi bi-eye"></i>
-          Ver todo
-        </button>
-      </div>
-      <div class="activity-timeline">
-        <div class="activity-item" *ngFor="let act of recentActivity">
-          <div class="activity-icon-wrapper">
-            <i class="bi" [ngClass]="act.icon"></i>
-          </div>
-          <div class="activity-content">
-            <strong>{{ act.title }}</strong>
-            <span>{{ act.time }}</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Right Column: Quick Actions & Alerts -->
-    <div class="dashboard-side-grid">
-      <section class="dashboard-card quick-actions glass">
-        <h3>Acciones Rápidas</h3>
-        <div class="actions-grid">
-          <button class="action-btn" *ngFor="let action of quickActions" [style.background-color]="action.color"
-            [style.color]="action.textColor" (click)="handleAction(action.label)">
-            <i class="bi" [ngClass]="action.icon"></i>
-            {{ action.label }}
-          </button>
-        </div>
-      </section>
-
-      <section class="dashboard-card system-status glass">
-        <div class="status-header">
-          <h3>Estado del Sistema</h3>
-          <span class="dot pulse"></span>
-        </div>
-        <div class="status-list">
-          <div class="status-item">
-            <span>Base de Datos</span>
-            <span class="badge success">OK</span>
-          </div>
-          <div class="status-item">
-            <span>Servidor API</span>
-            <span class="badge success">OK</span>
-          </div>
-          <div class="status-item">
-            <span>Servicio de Tickets</span>
-            <span class="badge warning">Lento</span>
-          </div>
-        </div>
-      </section>
-    </div>
+<!-- ──────────── CABECERA ──────────── -->
+<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+  <div>
+    <h4 class="fw-bold mb-0 text-dark">Panel de Control</h4>
+    <small class="text-muted">Resumen operativo · Jueves 06 de Marzo, 2026</small>
+  </div>
+  <div class="d-flex align-items-center gap-2">
+    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">
+      <i class="bi bi-circle-fill me-1" style="font-size:.5rem;"></i> En tiempo real
+    </span>
+    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-clockwise me-1"></i>Actualizar</button>
   </div>
 </div>
 
-<!-- Modal para registrar nueva ruta -->
-<app-register-new-route [isOpen]="isModalOpen" (close)="isModalOpen = false"></app-register-new-route>
+<!-- ──────────── NIVEL 1: KPIs GLOBALES ──────────── -->
+<div class="row g-3 mb-4">
+
+  <!-- Ingresos del día -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+          style="width:52px;height:52px;background:#ecfdf5;">
+          <i class="bi bi-cash-stack text-success fs-4"></i>
+        </div>
+        <div class="flex-grow-1 min-w-0">
+          <div class="text-muted small mb-1">Ingresos del Día</div>
+          <div class="fw-bold fs-5 text-dark">S/ 4,250.00</div>
+          <small class="text-success"><i class="bi bi-arrow-up-short"></i>+12% vs ayer</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pasajes vendidos -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+          style="width:52px;height:52px;background:#eff6ff;">
+          <i class="bi bi-ticket-perforated text-primary fs-4"></i>
+        </div>
+        <div class="flex-grow-1 min-w-0">
+          <div class="text-muted small mb-1">Pasajes Vendidos</div>
+          <div class="fw-bold fs-5 text-dark">138</div>
+          <small class="text-primary"><i class="bi bi-arrow-up-short"></i>+8 vs ayer</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tasa de ocupación -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+          style="width:52px;height:52px;background:#fef9c3;">
+          <i class="bi bi-bar-chart-line text-warning fs-4"></i>
+        </div>
+        <div class="flex-grow-1 min-w-0">
+          <div class="text-muted small mb-1">Tasa de Ocupación</div>
+          <div class="fw-bold fs-5 text-dark">76%</div>
+          <!-- mini barra de progreso -->
+          <div class="progress mt-1" style="height:4px;">
+            <div class="progress-bar bg-warning" style="width:76%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buses en ruta -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+          style="width:52px;height:52px;background:#fdf2f8;">
+          <i class="bi bi-bus-front text-purple fs-4" style="color:#9333ea;"></i>
+        </div>
+        <div class="flex-grow-1 min-w-0">
+          <div class="text-muted small mb-1">Vehiculos en Ruta</div>
+          <div class="fw-bold fs-5 text-dark">12 <span class="text-muted fs-6 fw-normal">/ 18</span></div>
+          <small class="text-muted">6 disponibles en cola</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /NIVEL 1 -->
+
+<!-- ──────────── NIVEL 2: GRÁFICAS Y DESGLOSE ──────────── -->
+<div class="row g-3 mb-4">
+
+  <!-- RUTAS MÁS RENTABLES (barra horizontal simulada) -->
+  <div class="col-12 col-lg-5">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white border-0 pb-0 pt-3">
+        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-map text-success"></i> Rutas Más Rentables del Mes
+        </h6>
+        <small class="text-muted">Ingresos acumulados por ruta</small>
+      </div>
+      <div class="card-body">
+        <!-- Barra simulada -->
+        <div class="mb-3">
+          <div class="d-flex justify-content-between small mb-1">
+            <span class="fw-semibold">Lima → Huánuco</span><span class="text-muted">S/ 18,400</span>
+          </div>
+          <div class="progress" style="height:8px;">
+            <div class="progress-bar bg-success" style="width:92%;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between small mb-1">
+            <span class="fw-semibold">Lima → Tingo María</span><span class="text-muted">S/ 14,750</span>
+          </div>
+          <div class="progress" style="height:8px;">
+            <div class="progress-bar bg-primary" style="width:74%;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between small mb-1">
+            <span class="fw-semibold">Lima → Pucallpa</span><span class="text-muted">S/ 11,200</span>
+          </div>
+          <div class="progress" style="height:8px;">
+            <div class="progress-bar bg-info" style="width:56%;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between small mb-1">
+            <span class="fw-semibold">Huánuco → Tingo María</span><span class="text-muted">S/ 7,600</span>
+          </div>
+          <div class="progress" style="height:8px;">
+            <div class="progress-bar bg-warning" style="width:38%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="d-flex justify-content-between small mb-1">
+            <span class="fw-semibold">Lima → La Merced</span><span class="text-muted">S/ 4,900</span>
+          </div>
+          <div class="progress" style="height:8px;">
+            <div class="progress-bar bg-secondary" style="width:24%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENTAS POR HORARIO (línea simulada con badges) -->
+  <div class="col-12 col-lg-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white border-0 pb-0 pt-3">
+        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-clock-history text-primary"></i> Demanda por Horario (Hoy)
+        </h6>
+        <small class="text-muted">Pico de ventas durante el día</small>
+      </div>
+      <div class="card-body d-flex flex-column justify-content-center">
+        <!-- Mini grafica de barras simulada -->
+        <div class="d-flex align-items-end gap-1 justify-content-between" style="height:90px;">
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-primary rounded-1" style="width:100%;height:20%;min-height:4px;"></div>
+            <small class="text-muted" style="font-size:.6rem;">6am</small>
+          </div>
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-primary rounded-1" style="width:100%;height:45%;"></div>
+            <small class="text-muted" style="font-size:.6rem;">8am</small>
+          </div>
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-primary rounded-1" style="width:100%;height:80%;"></div>
+            <small class="text-muted" style="font-size:.6rem;">10am</small>
+          </div>
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-success rounded-1 border border-success" style="width:100%;height:100%;"></div>
+            <small class="text-success fw-bold" style="font-size:.6rem;">12pm</small>
+          </div>
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-primary rounded-1" style="width:100%;height:75%;"></div>
+            <small class="text-muted" style="font-size:.6rem;">2pm</small>
+          </div>
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-primary rounded-1" style="width:100%;height:60%;"></div>
+            <small class="text-muted" style="font-size:.6rem;">4pm</small>
+          </div>
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-primary rounded-1" style="width:100%;height:88%;"></div>
+            <small class="text-muted" style="font-size:.6rem;">6pm</small>
+          </div>
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-primary rounded-1" style="width:100%;height:50%;"></div>
+            <small class="text-muted" style="font-size:.6rem;">8pm</small>
+          </div>
+          <div class="d-flex flex-column align-items-center gap-1" style="flex:1">
+            <div class="bg-primary rounded-1" style="width:100%;height:20%;"></div>
+            <small class="text-muted" style="font-size:.6rem;">10pm</small>
+          </div>
+        </div>
+        <hr class="my-3">
+        <div class="d-flex justify-content-between small text-muted">
+          <span>Pico alto: <strong class="text-dark">12 pm</strong></span>
+          <span>42 pasajes vendidos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENTAS POR CANAL (anillo simulado) -->
+  <div class="col-12 col-lg-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white border-0 pb-0 pt-3">
+        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-pie-chart text-warning"></i> Ventas por Canal
+        </h6>
+        <small class="text-muted">Distribución del mes</small>
+      </div>
+      <div class="card-body d-flex flex-column justify-content-center gap-3">
+        <!-- Anillo simulado como stack de progreso -->
+        <div class="position-relative mx-auto" style="width:110px;height:110px;">
+          <svg viewBox="0 0 36 36" style="width:100%;transform:rotate(-90deg);">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e9ecef" stroke-width="3.5" />
+            <!-- Canal físico 58% -->
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0d6efd" stroke-width="3.5" stroke-dasharray="58 42"
+              stroke-linecap="round" />
+            <!-- Canal web 28% -->
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#198754" stroke-width="3.5" stroke-dasharray="42 72"
+              stroke-dashoffset="-58" stroke-linecap="round" />
+
+          </svg>
+          <div class="position-absolute top-50 start-50 translate-middle text-center">
+            <div class="fw-bold small">138</div>
+            <div style="font-size:.6rem;color:#6c757d;">pasajes</div>
+          </div>
+        </div>
+        <div class="d-flex flex-column gap-2">
+          <div class="d-flex align-items-center justify-content-between small">
+            <span><span class="badge bg-primary me-1">&nbsp;</span>Terminal Física</span>
+            <strong>58%</strong>
+          </div>
+          <div class="d-flex align-items-center justify-content-between small">
+            <span><span class="badge bg-success me-1">&nbsp;</span>Web</span>
+            <strong>42%</strong>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /NIVEL 2 -->
+
+<!-- ──────────── NIVEL 3: TABLA OPERATIVA + ALERTAS ──────────── -->
+<div class="row g-3">
+
+  <!-- PRÓXIMAS SALIDAS -->
+  <div class="col-12 col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white border-0 pt-3 pb-0 d-flex align-items-center justify-content-between">
+        <div>
+          <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+            <i class="bi bi-send text-success"></i> Próximas Salidas
+          </h6>
+          <small class="text-muted">Control operativo en tiempo real</small>
+        </div>
+        <span class="badge bg-light text-muted border">Hoy</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0 small">
+            <thead class="table-light">
+              <tr>
+                <th class="ps-3">Hora</th>
+                <th>Ruta</th>
+                <th>Chofer</th>
+                <th>Placa</th>
+                <th class="text-center">Ocupación</th>
+                <th class="text-center">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ps-3 fw-semibold">10:00</td>
+                <td>Lima → Huánuco</td>
+                <td><i class="bi bi-person-circle me-1 text-muted"></i>Carlos Ríos</td>
+                <td><span class="font-monospace">AXP-456</span></td>
+                <td class="text-center">
+                  <div class="progress mx-auto" style="width:60px;height:6px;">
+                    <div class="progress-bar bg-success" style="width:93%;"></div>
+                  </div>
+                  <small class="text-success fw-semibold">93%</small>
+                </td>
+                <td class="text-center"><span
+                    class="badge bg-success-subtle text-success border border-success-subtle">Listo</span></td>
+              </tr>
+              <tr>
+                <td class="ps-3 fw-semibold">11:30</td>
+                <td>Lima → Tingo María</td>
+                <td><i class="bi bi-person-circle me-1 text-muted"></i>Luis Paredes</td>
+                <td><span class="font-monospace">BRP-789</span></td>
+                <td class="text-center">
+                  <div class="progress mx-auto" style="width:60px;height:6px;">
+                    <div class="progress-bar bg-warning" style="width:60%;"></div>
+                  </div>
+                  <small class="text-warning fw-semibold">60%</small>
+                </td>
+                <td class="text-center"><span
+                    class="badge bg-warning-subtle text-warning border border-warning-subtle">Cargando</span></td>
+              </tr>
+              <!-- ALERTA – bus con 10% ocupación -->
+              <tr class="table-danger">
+                <td class="ps-3 fw-semibold">12:00</td>
+                <td>Lima → La Merced <i class="bi bi-exclamation-triangle-fill text-danger ms-1"></i></td>
+                <td><i class="bi bi-person-circle me-1 text-muted"></i>Pedro Torres</td>
+                <td><span class="font-monospace">CQT-112</span></td>
+                <td class="text-center">
+                  <div class="progress mx-auto" style="width:60px;height:6px;">
+                    <div class="progress-bar bg-danger" style="width:10%;"></div>
+                  </div>
+                  <small class="text-danger fw-semibold">10%</small>
+                </td>
+                <td class="text-center"><span class="badge bg-danger-subtle text-danger border border-danger-subtle">⚠
+                    Baja ocupación</span></td>
+              </tr>
+              <tr>
+                <td class="ps-3 fw-semibold">14:00</td>
+                <td>Lima → Pucallpa</td>
+                <td><i class="bi bi-person-circle me-1 text-muted"></i>Marco Solis</td>
+                <td><span class="font-monospace">DLP-334</span></td>
+                <td class="text-center">
+                  <div class="progress mx-auto" style="width:60px;height:6px;">
+                    <div class="progress-bar bg-primary" style="width:78%;"></div>
+                  </div>
+                  <small class="text-primary fw-semibold">78%</small>
+                </td>
+                <td class="text-center"><span
+                    class="badge bg-primary-subtle text-primary border border-primary-subtle">Pendiente</span></td>
+              </tr>
+              <tr>
+                <td class="ps-3 fw-semibold">16:30</td>
+                <td>Huánuco → Lima</td>
+                <td><i class="bi bi-person-circle me-1 text-muted"></i>Jorge Meza</td>
+                <td><span class="font-monospace">ELP-901</span></td>
+                <td class="text-center">
+                  <div class="progress mx-auto" style="width:60px;height:6px;">
+                    <div class="progress-bar bg-success" style="width:85%;"></div>
+                  </div>
+                  <small class="text-success fw-semibold">85%</small>
+                </td>
+                <td class="text-center"><span
+                    class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Programado</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer bg-white border-0 pt-0">
+        <a href="#" class="btn btn-link btn-sm text-muted p-0">Ver todas las salidas <i
+            class="bi bi-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTAS + ACTIVIDAD RECIENTE -->
+  <div class="col-12 col-lg-4 d-flex flex-column gap-3">
+
+    <!-- Alertas críticas -->
+    <div class="card border-0 shadow-sm border-start border-danger border-4">
+      <div class="card-header bg-white border-0 pt-3 pb-0">
+        <h6 class="fw-bold mb-0 text-danger d-flex align-items-center gap-2">
+          <i class="bi bi-exclamation-octagon-fill"></i> Alertas Activas
+        </h6>
+      </div>
+      <div class="card-body p-3 d-flex flex-column gap-2">
+        <div class="d-flex align-items-start gap-2 p-2 rounded-2 bg-danger-subtle">
+          <i class="bi bi-wrench-adjustable text-danger mt-1 flex-shrink-0"></i>
+          <div class="small">
+            <div class="fw-semibold text-danger">Mantenimiento requerido</div>
+            <div class="text-muted">Bus AXP-456 · Revision de frenos</div>
+          </div>
+        </div>
+        <div class="d-flex align-items-start gap-2 p-2 rounded-2 bg-warning-subtle">
+          <i class="bi bi-person-x text-warning mt-1 flex-shrink-0"></i>
+          <div class="small">
+            <div class="fw-semibold text-warning">Chofer sin asignar</div>
+            <div class="text-muted">Ruta Lima → Cerro de Pasco · 18:00</div>
+          </div>
+        </div>
+        <div class="d-flex align-items-start gap-2 p-2 rounded-2 bg-danger-subtle">
+          <i class="bi bi-graph-down-arrow text-danger mt-1 flex-shrink-0"></i>
+          <div class="small">
+            <div class="fw-semibold text-danger">Baja ocupación crítica</div>
+            <div class="text-muted">Bus CQT-112 · 10% · Salida en 45 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad reciente -->
+    <div class="card border-0 shadow-sm flex-grow-1">
+      <div class="card-header bg-white border-0 pt-3 pb-0">
+        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-activity text-primary"></i> Actividad Reciente
+        </h6>
+      </div>
+      <div class="card-body p-3">
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex gap-2 align-items-start">
+            <div class="rounded-circle bg-success-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+              style="width:30px;height:30px;">
+              <i class="bi bi-currency-dollar text-success small"></i>
+            </div>
+            <div class="small">
+              <div class="fw-semibold">Meta de ventas alcanzada</div>
+              <div class="text-muted">Hace 2 horas</div>
+            </div>
+          </div>
+          <div class="d-flex gap-2 align-items-start">
+            <div class="rounded-circle bg-primary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+              style="width:30px;height:30px;">
+              <i class="bi bi-plus-circle text-primary small"></i>
+            </div>
+            <div class="small">
+              <div class="fw-semibold">Nueva ruta: Lima → La Merced</div>
+              <div class="text-muted">Hace 3 horas</div>
+            </div>
+          </div>
+          <div class="d-flex gap-2 align-items-start">
+            <div class="rounded-circle bg-warning-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+              style="width:30px;height:30px;">
+              <i class="bi bi-tools text-warning small"></i>
+            </div>
+            <div class="small">
+              <div class="fw-semibold">Mantenimiento programado: Bus B-402</div>
+              <div class="text-muted">Hace 5 horas</div>
+            </div>
+          </div>
+          <div class="d-flex gap-2 align-items-start">
+            <div class="rounded-circle bg-success-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+              style="width:30px;height:30px;">
+              <i class="bi bi-person-check text-success small"></i>
+            </div>
+            <div class="small">
+              <div class="fw-semibold">Chofer Prueba asignado a cola</div>
+              <div class="text-muted">Hace 6 horas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /alertas + actividad -->
+
+</div><!-- /NIVEL 3 -->

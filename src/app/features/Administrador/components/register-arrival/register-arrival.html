@@ -1,0 +1,70 @@
+<!-- rutas=darwin -->
+<div class="modal-backdrop-custom" *ngIf="isOpen" (click)="onClose()">
+    <div class="modal-dialog-custom" (click)="$event.stopPropagation()">
+        <!-- Header -->
+        <div class="modal-header-custom bg-primary text-white">
+            <h5 class="m-0 d-flex align-items-center gap-2">
+                <i class="bi bi-geo-alt-fill"></i> Registrar Llegada
+            </h5>
+            <button class="btn-close-custom text-white" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body-custom p-4">
+            <p class="text-muted small mb-4">
+                Busque al chofer por DNI para registrar su llegada y finalizar su viaje en curso.
+            </p>
+
+            <div class="mb-4">
+                <label class="form-label text-secondary small fw-bold">DNI del Chofer</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" class="form-control" [(ngModel)]="driverDni" (input)="onDniInput($event)"
+                        placeholder="Ej: 76423123" maxlength="8" pattern="\d{8}">
+                </div>
+                <div *ngIf="isLoadingInfo" class="mt-2 text-primary small">
+                    <i class="bi bi-hourglass-split me-1"></i> Buscando...
+                </div>
+                <div *ngIf="errorMessage" class="mt-2 text-danger small bg-danger-subtle p-2 rounded">
+                    <i class="bi bi-exclamation-circle me-1"></i> {{ errorMessage }}
+                </div>
+            </div>
+
+            <!-- Info Card Component -->
+            <div *ngIf="driverInfo" class="card border-success border-opacity-50 mt-3 shadow-sm"
+                style="transition: all 0.3s ease;">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="bg-success text-white rounded-circle d-flex justify-content-center align-items-center shadow-sm"
+                            style="width: 45px; height: 45px;">
+                            <i class="bi bi-person-check-fill fs-5"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 min-w-0">
+                        <h6 class="mb-1 text-dark fw-bold text-truncate">{{ driverInfo.driverFullName }}</h6>
+                        <div class="d-flex align-items-center gap-2 text-muted small">
+                            <span><i class="bi bi-car-front me-1"></i>{{ driverInfo.vehiclePlate }}</span>
+                            <span *ngIf="driverInfo.vehicleModel">- {{ driverInfo.vehicleModel }}</span>
+                        </div>
+                        <div *ngIf="driverInfo.destinationName"
+                            class="mt-1 d-flex align-items-center gap-1 text-primary small">
+                            <i class="bi bi-signpost-split-fill"></i>
+                            <span class="fw-semibold">Ruta anterior:</span> {{ driverInfo.destinationName }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer-custom bg-light p-3 d-flex justify-content-between border-top">
+            <button class="btn btn-outline-secondary px-4" (click)="onClose()">Cancelar</button>
+            <button class="btn btn-primary px-4 d-flex align-items-center gap-2"
+                [disabled]="!driverInfo || isSubmitting" (click)="onConfirm()">
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status"
+                    aria-hidden="true"></span>
+                <i class="bi bi-check2-circle" *ngIf="!isSubmitting"></i> Confirmar Llegada
+            </button>
+        </div>
+    </div>
+</div>

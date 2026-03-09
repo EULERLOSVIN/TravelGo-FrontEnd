@@ -60,7 +60,7 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'summary',
+                redirectTo: 'app-administrator',
                 pathMatch: 'full'
             },
             {

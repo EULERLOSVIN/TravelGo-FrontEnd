@@ -1,184 +1,318 @@
-<div class="container-fluid p-0">
+<div class="container-fluid p-4 bg-light d-flex flex-column gap-4 min-vh-100">
 
     <div class="row g-3 mb-3">
-        <div class="col-12 col-md-8 col-xl-9 col-xxl-10 order-lg-1">
+        <div class="col-12 col-md-5 col-xl-6 order-lg-1">
             <div class="header-content">
                 <h2>Gestión de Cola</h2>
                 <p>Control de despachos y asignación de rutas por sede.</p>
             </div>
         </div>
+
         <div
-            class="col-12 col-md-4 col-xl-3 col-xxl-2 order-lg-2 order-xxl-3 d-flex flex-column gap-2 justify-content-end">
-            <select class="custom-select form-select" [(ngModel)]="selectedHeadquarterId"
-                (change)="onHeadquarterChange()">
-                <option *ngFor="let hq of headquarters" [ngValue]="hq.idHeadquarter">
-                    Sede: {{ hq.headquarterName }}
-                </option>
-            </select>
+            class="col-12 col-md-7 col-xl-6 order-lg-2 d-flex flex-column gap-3 justify-content-end align-items-md-end">
+            <!-- HQ Selector -->
+            <div class="d-flex align-items-center gap-2 w-100 justify-content-md-end">
+                <span class="text-muted fw-bold small text-uppercase">Sede Actual:</span>
+                <select class="custom-select form-select w-auto shadow-sm border-0" [(ngModel)]="selectedHeadquarterId"
+                    (change)="onHeadquarterChange()" style="min-width: 200px;">
+                    <option [ngValue]="0" disabled selected>Seleccione una sede</option>
+                    <option *ngFor="let hq of headquarters" [ngValue]="hq.idHeadquarter">
+                        {{ hq.headquarterName }}
+                    </option>
+                </select>
+            </div>
 
-            <!-- Now Destination is also a Select -->
-            <select class="custom-select form-select bg-white" [(ngModel)]="selectedRouteId" (change)="onRouteSelect()">
-                <option *ngFor="let route of routes" [ngValue]="route.idRoute">
-                    Destino: {{ route.destinationName.replace('Hacia ', '') }} ({{ route.inQueueCount }})
-                </option>
-            </select>
+            <!-- Type Tabs Removed as per new plan -->
         </div>
     </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-12 col-lg-4">
-            <div class="stat-card bg-white p-4 rounded-4 border shadow-sm h-100">
-                <small class="text-uppercase fw-bold text-secondary"
-                    style="font-size: 0.70rem; letter-spacing: 0.1em;">EN ESPERA TOTAL</small>
-                <p class="value fs-3 fw-bold text-dark my-2">{{ queue.length }}</p>
-                <div class="bar bg-light rounded-pill overflow-hidden" style="height: 6px;">
-                    <div class="fill bg-dark h-100" style="width: 100%"></div>
-                </div>
+    <!-- MAIN CONTENT BLOCK -->
+    <ng-container *ngIf="selectedHeadquarterId > 0; else noHqSelected">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4 mt-2"
+            *ngIf="getCurrentHeadquarter()?.hasRoutes">
+            <!-- Route Selector -->
+            <div class="route-selector flex-grow-1" style="max-width: 400px;">
+                <label class="form-label text-uppercase fw-bold text-secondary small" style="letter-spacing: 0.1em;">
+                    Ruta Específica
+                </label>
+                <select class="custom-select form-select bg-white border shadow-sm" [(ngModel)]="selectedRouteId"
+                    (change)="onRouteSelect()">
+                    <option *ngIf="routes.length === 0" disabled selected>Cargando rutas...</option>
+                    <option *ngFor="let route of routes" [ngValue]="route.idRoute">
+                        {{ route.destinationName.replace('Hacia ', '') }} ({{ route.inQueueCount }})
+                    </option>
+                </select>
             </div>
         </div>
 
-        <div class="col-12 col-lg-4">
-            <div class="stat-card bg-white p-4 rounded-4 border shadow-sm h-100">
-                <small class="text-uppercase fw-bold text-secondary"
-                    style="font-size: 0.70rem; letter-spacing: 0.1em;">ACTIVOS (ESTA RUTA)</small>
-                <p class="value fs-3 fw-bold text-success my-2">{{ queue.length }}</p>
-                <div class="bar bg-light rounded-pill overflow-hidden" style="height: 6px;">
-                    <div class="fill bg-success h-100" style="width: 80%"></div>
-                </div>
-            </div>
-        </div>
+        <ng-container *ngIf="getCurrentHeadquarter()?.hasRoutes; else emptyRoutes">
 
-        <div class="col-12 col-lg-4 d-flex align-items-center justify-content-center justify-content-lg-end">
-            <!-- Modal Trigger Button -->
-            <button class="btn btn-success rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-2 w-100"
-                style="height: 50px; max-width: 250px;" (click)="openAddDriverModal()" data-bs-toggle="modal"
-                data-bs-target="#addDriverModal">
-                <i class="bi bi-person-plus-fill fs-5"></i>
-                <span>Añadir a Cola</span>
-            </button>
-        </div>
-    </div>
-
-    <section class="queue-list-container">
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
-            <h5 class="m-0 fw-bold fs-5 d-flex align-items-center gap-2">
-                <i class="bi bi-list-ol text-success"></i> Lista de Espera
-                <span class="badge bg-success rounded-pill ms-2">{{filteredQueue.length}}</span>
-            </h5>
-
-            <div class="d-flex align-items-center gap-2 flex-grow-1" style="max-width: 350px;">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control border-start-0 ps-0 shadow-none"
-                        placeholder="Buscar chofer o placa..." [(ngModel)]="searchTerm">
-                </div>
-
-                <button class="btn btn-sm btn-light text-muted text-nowrap" (click)="loadQueue()">
-                    <i class="bi bi-arrow-clockwise"></i> Actualizar
-                </button>
-            </div>
-        </div>
-
-        <div class="queue-list">
-            @for (item of filteredQueue; track item.idAssignQueue; let i = $index) {
-            <div class="queue-item card border-0 shadow-sm mb-3 rounded-4 overflow-hidden position-relative"
-                [class.border-start]="i === 0" [class.border-success]="i === 0" [class.border-5]="i === 0"
-                style="transition: all 0.2s ease-in-out;">
-                <div
-                    class="card-body p-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-
-                    <!-- Driver Info & Turn Number -->
-                    <div class="d-flex align-items-center gap-3 pe-3" style="min-width: 30%;">
-                        <div class="turn-num fw-bold fs-4 d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
-                            [ngClass]="i === 0 ? 'bg-success text-white border border-4 border-success-subtle' : 'bg-light text-secondary'"
-                            style="width: 50px; height: 50px;">
-                            {{ i + 1 }}
-                        </div>
-                        <div>
-                            <h6 class="mb-1 fw-bold text-dark fs-6">{{ item.driverFullName }} <small
-                                    class="text-muted fw-normal ms-1">({{item.driverDni}})</small></h6>
-                            <div class="d-flex align-items-center gap-2">
-                                <div
-                                    class="badge bg-secondary-subtle text-secondary border border-secondary border-opacity-25 rounded-pill px-2 py-1 flex-shrink-0">
-                                    <i class="bi bi-car-front-fill me-1"></i> {{ item.vehiclePlate || 'S/N' }}
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+                        <div class="d-flex flex-column h-100">
+                            <span class="text-uppercase fw-bold text-muted small mb-2" style="letter-spacing: 0.1em;">
+                                Total</span>
+                            <h3 class="display-6 fw-bold text-dark mb-3">{{ departureCount + arrivalCount }}</h3>
+                            <div class="mt-auto">
+                                <div class="progress rounded-pill shadow-none"
+                                    style="height: 6px; background-color: #f1f5f9;">
+                                    <div class="progress-bar bg-dark rounded-pill" role="progressbar"
+                                        style="width: 100%">
+                                    </div>
                                 </div>
-                                <small class="text-muted text-truncate" style="max-width: 150px;">{{ item.vehicleModel
-                                    || 'Vehículo sin registrar' }}</small>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Info block -->
-                    <div class="d-flex flex-wrap gap-4 flex-grow-1 bg-light rounded-3 p-2 px-3 align-items-center">
-                        <div class="d-flex flex-column">
-                            <small class="text-muted text-uppercase fw-semibold"
-                                style="font-size: 0.65rem;">Destino</small>
-                            <span class="fw-bold text-primary">{{ item.destinationName | uppercase }}</span>
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+                        <div class="d-flex flex-column h-100">
+                            <span class="text-uppercase fw-bold text-muted small mb-2" style="letter-spacing: 0.1em;">
+                                {{ viewType === 'arrival' ? 'En Camino' : 'En Cola' }}</span>
+                            <h3 class="display-6 fw-bold text-success mb-3">{{ viewType === 'departure' ? departureCount
+                                : arrivalCount }}</h3>
+                            <div class="mt-auto">
+                                <div class="progress rounded-pill shadow-none"
+                                    style="height: 6px; background-color: #f1f5f9;">
+                                    <div class="progress-bar bg-success rounded-pill" role="progressbar"
+                                        style="width: 75%">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="vr bg-secondary opacity-25"></div>
-                        <div class="d-flex flex-column">
-                            <small class="text-muted text-uppercase fw-semibold"
-                                style="font-size: 0.65rem;">Asientos</small>
-                            <span class="fw-semibold text-dark"><i class="bi bi-people-fill text-info me-1"></i> {{
-                                item.occupiedSeats }} / {{ item.totalSeats }}</span>
-                        </div>
-                        <div class="vr bg-secondary opacity-25"></div>
-                        <div class="d-flex flex-column">
-                            <small class="text-muted text-uppercase fw-semibold"
-                                style="font-size: 0.65rem;">Salida</small>
-                            <span class="fw-semibold text-dark"><i class="bi bi-clock text-warning"></i> {{
-                                item.scheduledDepartureTime | date:'hh:mm a' }}</span>
-                        </div>
-                        <div class="vr bg-secondary opacity-25"></div>
-                        <div class="d-flex flex-column">
-                            <small class="text-muted text-uppercase fw-semibold"
-                                style="font-size: 0.65rem;">Falta</small>
-                            <span class="fw-bold text-danger"><i class="bi bi-hourglass-split"></i> {{
-                                item.remainingMinutes }} mins</span>
-                        </div>
-                        <div class="vr bg-secondary opacity-25"></div>
-                        <div class="d-flex flex-column">
-                            <small class="text-muted text-uppercase fw-semibold"
-                                style="font-size: 0.65rem;">Estado</small>
-                            <span class="badge" [class.bg-success]="item.status === 'EN TURNO'"
-                                [class.bg-secondary]="item.status !== 'EN TURNO'">
-                                {{ item.status }}
-                            </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 d-flex flex-column justify-content-center gap-3"
+                    *ngIf="viewType === 'departure'">
+                    <button
+                        class="btn btn-outline-success fw-bold rounded-pill p-3 shadow-sm d-flex align-items-center justify-content-center gap-2 w-100 border-2"
+                        (click)="openArrivalModal()">
+                        <i class="bi bi-box-arrow-in-down fs-5"></i>
+                        <span>REGISTRAR LLEGADA</span>
+                    </button>
+                    <button
+                        class="btn btn-success fw-bold rounded-pill p-3 shadow-sm d-flex align-items-center justify-content-center gap-2 w-100"
+                        (click)="openAddDriverModal()" data-bs-toggle="modal" data-bs-target="#addDriverModal">
+                        <i class="bi bi-plus-circle-fill fs-5"></i>
+                        <span>AÑADIR A COLA</span>
+                    </button>
+                </div>
+            </div>
+
+            <section class="queue-list-container">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <h5 class="m-0 fw-bold fs-5 d-flex align-items-center gap-2">
+                            <i class="bi bi-list-ol text-success"></i>
+                            {{ viewType === 'arrival' ? 'Vehículos en Camino' : 'Lista de Espera' }}
+                            <span class="badge bg-success rounded-pill ms-2">{{filteredQueue.length}}</span>
+                        </h5>
+
+                        <!-- Segmented Control Filter (Placeholder Functionality) -->
+                        <div class="btn-group btn-group-sm p-1 bg-light rounded-pill shadow-none border" role="group">
+                            <input type="radio" class="btn-check" name="btnFilter" id="filterSalidas"
+                                [checked]="viewType === 'departure'" (click)="setViewType('departure')">
+                            <label class="btn btn-outline-success border-0 rounded-pill px-3 fw-bold"
+                                for="filterSalidas">Salidas</label>
+
+                            <input type="radio" class="btn-check" name="btnFilter" id="filterEnRuta"
+                                [checked]="viewType === 'arrival'" (click)="setViewType('arrival')">
+                            <label class="btn btn-outline-success border-0 rounded-pill px-3 fw-bold"
+                                for="filterEnRuta">En Ruta</label>
                         </div>
                     </div>
 
-                    <!-- Actions -->
-                    <div class="actions d-flex gap-2 justify-content-end">
-                        <button class="btn btn-primary fw-bold px-4 rounded-pill" (click)="editRoute(item)"
-                            data-bs-toggle="modal" data-bs-target="#editRouteModal">
-                            <i class="bi bi-pencil-square me-1"></i> Editar
-                        </button>
-                        <button
-                            class="btn btn-outline-danger shadow-sm rounded-circle d-flex align-items-center justify-content-center"
-                            style="width: 40px; height: 40px;" (click)="openDeleteModal(item)" data-bs-toggle="modal"
-                            data-bs-target="#deleteDriverModal" title="Remover">
-                            <i class="bi bi-trash"></i>
+                    <div class="d-flex align-items-center gap-2 flex-grow-1" style="max-width: 350px;">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                    class="bi bi-search"></i></span>
+                            <input type="text" class="form-control border-start-0 ps-0 shadow-none"
+                                placeholder="Buscar chofer o placa..." [(ngModel)]="searchTerm">
+                        </div>
+
+                        <button class="btn btn-sm btn-light text-muted text-nowrap" (click)="loadQueue()">
+                            <i class="bi bi-arrow-clockwise"></i> Actualizar
                         </button>
                     </div>
                 </div>
-            </div>
-            } @empty {
-            <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-light">
-                <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
-                <h5 class="text-secondary fw-bold">Cola Vacía</h5>
-                <p class="text-muted mb-0">No hay choferes formados para esta ruta actualmente.</p>
-            </div>
-            }
+
+                <div class="row g-3">
+                    @for (item of filteredQueue; track item.idAssignQueue; let i = $index) {
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden" [class.border-start]="i === 0"
+                            [class.border-success]="i === 0" [class.border-5]="i === 0">
+                            <div class="card-body p-3 p-md-4">
+                                <div class="row align-items-center g-3">
+                                    <!-- Driver Info & Turn -->
+                                    <div class="col-12 col-md-auto d-flex align-items-center gap-3"
+                                        style="min-width: 250px;">
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold fs-4 flex-shrink-0"
+                                            [ngClass]="(i === 0 && viewType === 'departure') ? 'bg-success text-white shadow-sm' : 'bg-light text-secondary'"
+                                            style="width: 52px; height: 52px;">
+                                            {{ viewType === 'arrival' ? '✈️' : (i + 1) }}
+                                        </div>
+                                        <div class="overflow-hidden">
+                                            <h6 class="mb-1 fw-bold text-dark text-truncate">{{ item.driverFullName }}
+                                            </h6>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="badge bg-light text-dark border rounded-pill fw-medium">
+                                                    <i class="bi bi-person-badge me-1"></i>{{ item.driverDni }}
+                                                </span>
+                                                <span class="badge bg-light text-primary border rounded-pill fw-medium">
+                                                    <i class="bi bi-car-front-fill me-1"></i>{{ item.vehiclePlate ||
+                                                    'S/N'
+                                                    }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Middle Info (Responsive Grid) -->
+                                    <div class="col-12 col-md flex-grow-1">
+                                        <div class="bg-light rounded-4 p-3 px-4">
+                                            <div
+                                                class="row row-cols-2 row-cols-lg-4 g-3 align-items-center justify-content-between">
+                                                <div class="d-flex flex-column">
+                                                    <span class="text-muted text-uppercase fw-bold"
+                                                        style="font-size: 0.65rem; letter-spacing: 0.05em;">{{ viewType
+                                                        ===
+                                                        'arrival' ? 'Origen' : 'Destino' }}</span>
+                                                    <span class="fw-bold text-dark">{{ item.destinationName | uppercase
+                                                        }}</span>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <span class="text-muted text-uppercase fw-bold"
+                                                        style="font-size: 0.65rem; letter-spacing: 0.05em;">Asientos</span>
+                                                    <span class="fw-semibold text-dark">
+                                                        <i class="bi bi-people-fill text-info me-1"></i>
+                                                        {{ item.occupiedSeats }} / {{ item.totalSeats }}
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <span class="text-muted text-uppercase fw-bold"
+                                                        style="font-size: 0.65rem; letter-spacing: 0.05em;">{{ viewType
+                                                        ===
+                                                        'arrival' ? 'H. Salida' : 'Salida' }}</span>
+                                                    <span class="fw-semibold text-dark">
+                                                        <i class="bi bi-clock text-warning me-1"></i>
+                                                        {{ item.scheduledDepartureTime }}
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <span class="text-muted text-uppercase fw-bold"
+                                                        style="font-size: 0.65rem; letter-spacing: 0.05em;">Estado</span>
+                                                    <div>
+                                                        <span class="badge rounded-pill px-3 py-2 fw-bold shadow-sm"
+                                                            [ngClass]="{
+                                                            'bg-success text-white': item.status === 'EN TURNO',
+                                                            'bg-primary text-white': item.status === 'EN COLA',
+                                                            'bg-info text-dark': item.status === 'EN RUTA'
+                                                        }">
+                                                            {{ item.status }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="col-12 col-md-auto" *ngIf="viewType === 'departure'">
+                                        <div class="d-flex gap-2 justify-content-end align-items-center">
+                                            <!-- Dispatch Button (Only for Turn 1 in Departure View) -->
+                                            <button *ngIf="i === 0"
+                                                class="btn btn-primary fw-bold rounded-pill px-4 shadow-sm d-flex align-items-center gap-2"
+                                                (click)="dispatchVehicle(item)">
+                                                <i class="bi bi-send-fill"></i>
+                                                DESPACHAR
+                                            </button>
+
+                                            <!-- 
+                                            <button
+                                                class="btn btn-light border-0 rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                                                style="width: 42px; height: 42px;" (click)="editRoute(item)"
+                                                data-bs-toggle="modal" data-bs-target="#editRouteModal" title="Editar">
+                                                <i class="bi bi-pencil-fill text-primary"></i>
+                                            </button>
+                                            -->
+                                            <button
+                                                class="btn btn-light border-0 rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                                                style="width: 42px; height: 42px;" (click)="openDeleteModal(item)"
+                                                data-bs-toggle="modal" data-bs-target="#deleteDriverModal"
+                                                title="Retirar">
+                                                <i class="bi bi-trash-fill text-danger"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    } @empty {
+                    <div class="col-12">
+                        <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-light">
+                            <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
+                            <h5 class="text-secondary fw-bold">Cola Vacía</h5>
+                            <p class="text-muted mb-0">No hay choferes formados para esta ruta actualmente.</p>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </section>
+        </ng-container>
+    </ng-container>
+
+    <!-- EMPTY STATES -->
+    <ng-template #noHqSelected>
+        <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-light mt-4">
+            <i class="bi bi-geo-alt fs-1 text-primary mb-3 d-block" style="font-size: 4rem !important;"></i>
+            <h4 class="text-secondary fw-bold">Seleccione una Sede</h4>
+            <p class="text-muted mb-0 mx-auto" style="max-width: 500px;">
+                Para ver y gestionar las colas, por favor elija una sede en el selector superior.
+            </p>
         </div>
-    </section>
+    </ng-template>
+
+    <ng-template #emptyRoutes>
+        <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-light mt-4">
+            <i class="bi bi-cone-striped fs-1 text-warning mb-3 d-block" style="font-size: 4rem !important;"></i>
+            <h4 class="text-secondary fw-bold">Sin Rutas Asignadas</h4>
+            <p class="text-muted mb-0 mx-auto" style="max-width: 500px;">
+                A esta sede no se le asignaron rutas activas con vehículos vinculados.
+                <br>Por favor, regístrelas en la sección de <a href="#" routerLink="/admin/routes"
+                    class="text-decoration-none fw-bold">Gestión de Rutas</a>.
+            </p>
+        </div>
+    </ng-template>
 
     <!-- Extracted Modal Components -->
-    <app-register-queue (onAddQueue)="confirmAddDriverFromComponent($event)">
+    <app-register-queue (onAddQueue)="confirmAddDriverFromComponent($event)"
+        (onError)="showAlert('Error de Registro', $event, 'warning')">
     </app-register-queue>
 
+    <!-- 
     <app-edit-queue [itemToEdit]="itemToEdit" [routes]="routes" (onSubmit)="confirmEditRouteFromComponent($event)">
     </app-edit-queue>
+    -->
 
     <app-delete-queue [item]="itemToDelete" (onSubmit)="confirmDeleteDriverFromComponent()">
     </app-delete-queue>
+
+    <app-register-arrival [isOpen]="modalArrivalOpen" (close)="modalArrivalOpen = false"
+        (confirm)="confirmArrivalFromComponent($event)">
+    </app-register-arrival>
+
+    <!-- Feedback Modal -->
+    <app-success-modal [isOpen]="feedbackModalOpen" [title]="feedbackModalTitle" [message]="feedbackModalMessage"
+        [type]="feedbackModalType" (close)="feedbackModalOpen = false">
+    </app-success-modal>
+
+    <!-- Dispatch Confirmation Modal -->
+    <app-confirm-modal [isOpen]="confirmModalOpen" [title]="confirmModalTitle" [message]="confirmModalMessage"
+        confirmText="DESPACHAR" cancelText="CANCELAR" type="primary" (confirm)="confirmDispatch()"
+        (close)="confirmModalOpen = false">
+    </app-confirm-modal>
 </div>

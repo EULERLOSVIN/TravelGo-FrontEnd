@@ -23,4 +23,5 @@ export interface RouteFilter {
 export interface HeadquarterContext {
     idHeadquarter: number;
     headquarterName: string;
+    hasRoutes: boolean;
 }
