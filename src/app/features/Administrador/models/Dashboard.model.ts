@@ -43,6 +43,12 @@ export interface RecentActivityModel {
     date: string;
 }
 
+export interface SalesChannelModel {
+    channelName: string;
+    count: number;
+    percentage: number;
+}
+
 export interface DashboardModel {
     dailyMetrics: DailyMetricsModel;
     topRoutes: RouteProfitabilityModel[];
@@ -50,4 +56,5 @@ export interface DashboardModel {
     upcomingDepartures: UpcomingDepartureModel[];
     activeAlerts: ActiveAlertModel[];
     recentActivity: RecentActivityModel[];
+    salesByChannel: SalesChannelModel[];
 }
