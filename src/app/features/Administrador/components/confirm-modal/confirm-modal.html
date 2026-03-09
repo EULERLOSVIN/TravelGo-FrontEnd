@@ -1,0 +1,22 @@
+<div class="modal-backdrop-confirm" *ngIf="isOpen" (click)="onClose()">
+    <div class="modal-dialog-confirm" (click)="$event.stopPropagation()">
+        <div class="modal-content-confirm">
+            <div class="info-icon-container" [ngClass]="type">
+                <div class="info-icon-circle">
+                    <i class="bi bi-question-lg" *ngIf="type === 'primary'"></i>
+                    <i class="bi bi-exclamation-triangle-fill" *ngIf="type === 'danger'"></i>
+                    <i class="bi bi-info-lg" *ngIf="type === 'warning'"></i>
+                </div>
+            </div>
+            <div class="modal-body-confirm text-center px-4">
+                <h3 class="confirm-title mb-2">{{ title }}</h3>
+                <p class="confirm-message text-muted">{{ message }}</p>
+            </div>
+            <div class="modal-footer-confirm w-100 mt-4 px-4 d-flex gap-3">
+                <button class="btn-cancel-modal" (click)="onClose()">{{ cancelText }}</button>
+                <button class="btn-confirm-modal" [ngClass]="'btn-' + type" (click)="onConfirm()">{{ confirmText
+                    }}</button>
+            </div>
+        </div>
+    </div>
+</div>

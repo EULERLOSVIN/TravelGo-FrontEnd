@@ -7,11 +7,13 @@ import { RegisterQueue } from '../../components/register-queue/register-queue';
 import { EditQueue } from '../../components/edit-queue/edit-queue';
 import { DeleteQueue } from '../../components/delete-queue/delete-queue';
 import { RegisterArrival } from '../../components/register-arrival/register-arrival';
+import { SuccessModal } from '../../components/success-modal/success-modal';
+import { ConfirmModal } from '../../components/confirm-modal/confirm-modal';
 
 @Component({
   selector: 'app-admin-queue-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RegisterQueue, EditQueue, DeleteQueue, RegisterArrival],
+  imports: [CommonModule, FormsModule, RegisterQueue, DeleteQueue, RegisterArrival, SuccessModal, ConfirmModal],
   templateUrl: './admin-queue.page.html',
   styleUrl: './admin-queue.page.scss'
 })
@@ -44,6 +46,18 @@ export class AdminQueuePage implements OnInit, OnDestroy {
   // Arrival Modal State
   modalArrivalOpen: boolean = false;
 
+  // Feedback Modal State (using SuccessModal component)
+  feedbackModalOpen: boolean = false;
+  feedbackModalTitle: string = '';
+  feedbackModalMessage: string = '';
+  feedbackModalType: 'success' | 'error' | 'warning' = 'success';
+
+  // Confirm Modal State
+  confirmModalOpen: boolean = false;
+  confirmModalTitle: string = '';
+  confirmModalMessage: string = '';
+  itemToDispatch: QueueItem | null = null;
+
   // View type logic now handled within the table filter
   viewType: 'departure' | 'arrival' = 'departure';
 
@@ -60,6 +74,14 @@ export class AdminQueuePage implements OnInit, OnDestroy {
       item.driverDni.includes(lowerTerm) ||
       (item.vehiclePlate && item.vehiclePlate.toLowerCase().includes(lowerTerm))
     );
+  }
+
+  showAlert(title: string, message: string, type: 'success' | 'error' | 'warning' = 'success'): void {
+    this.feedbackModalTitle = title;
+    this.feedbackModalMessage = message;
+    this.feedbackModalType = type;
+    this.feedbackModalOpen = true;
+    this.cdr.detectChanges();
   }
 
   getCurrentHeadquarter(): HeadquarterContext | undefined {
@@ -116,21 +138,33 @@ export class AdminQueuePage implements OnInit, OnDestroy {
 
         this.loadQueue();
       } else {
+        this.selectedRouteId = 0;
         this.queue = [];
+        this.resetCounters();
       }
       this.cdr.detectChanges();
     });
   }
 
+  resetCounters(): void {
+    this.departureCount = 0;
+    this.arrivalCount = 0;
+  }
+
   setViewType(type: 'departure' | 'arrival'): void {
     if (this.viewType !== type) {
       this.viewType = type;
+      this.queue = [];
+      this.resetCounters();
       this.loadRoutesForHeadquarter();
     }
   }
 
   onHeadquarterChange(): void {
     this.selectedHeadquarterId = Number(this.selectedHeadquarterId);
+    this.selectedRouteId = 0;
+    this.queue = [];
+    this.resetCounters();
     this.loadRoutesForHeadquarter();
   }
 
@@ -181,25 +215,23 @@ export class AdminQueuePage implements OnInit, OnDestroy {
     this.queueService.registerArrival(dni).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          alert('Llegada registrada exitosamente.');
+          this.showAlert('¡Llegada Registrada!', 'La llegada del vehículo se ha registrado correctamente y el viaje ha finalizado.', 'success');
           this.modalArrivalOpen = false;
           // Refresh the queue since the trip finished
           this.loadQueue();
-          this.cdr.detectChanges();
         } else {
-          alert(res.errorMessage || 'Error al registrar llegada.');
-          this.cdr.detectChanges();
+          this.showAlert('Error', res.errorMessage || 'Error al registrar llegada.', 'error');
         }
       },
       error: (err) => {
-        alert(err.error?.errorMessage || err.error || 'Error de conexión al registrar llegada.');
+        this.showAlert('Error de Conexión', err.error?.errorMessage || err.error || 'Error de conexión al registrar llegada.', 'error');
       }
     });
   }
 
   confirmAddDriverFromComponent(data: { dni: string, idTravelRoute: number }): void {
     if (!data.dni || data.dni.trim().length < 8) {
-      alert('Por favor ingrese un DNI válido.');
+      this.showAlert('DNI Inválido', 'Por favor ingrese un DNI válido.', 'warning');
       return;
     }
 
@@ -212,13 +244,11 @@ export class AdminQueuePage implements OnInit, OnDestroy {
           this.loadRoutesForHeadquarter();
           this.cdr.detectChanges();
         } else {
-          alert(res.errorMessage || 'Error al agregar chofer a la cola.');
-          this.cdr.detectChanges();
+          this.showAlert('Error', res.errorMessage || 'Error al agregar chofer a la cola.', 'error');
         }
       },
       error: (err) => {
-        alert(err.error?.errorMessage || err.error || 'Error al agregar chofer a la cola. Verifique que tenga un vehículo y ruta asignados.');
-        this.cdr.detectChanges();
+        this.showAlert('Error', err.error?.errorMessage || err.error || 'Error al agregar chofer a la cola. Verifique que tenga un vehículo y ruta asignados.', 'error');
       }
     });
   }
@@ -237,12 +267,13 @@ export class AdminQueuePage implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          alert(err.error || 'Error al quitar chofer de la cola.');
+          this.showAlert('Error', err.error || 'Error al quitar chofer de la cola.', 'error');
         }
       });
     }
   }
 
+  /*
   editRoute(item: QueueItem): void {
     this.itemToEdit = item;
   }
@@ -258,32 +289,42 @@ export class AdminQueuePage implements OnInit, OnDestroy {
             this.cdr.detectChanges();
           },
           error: (err) => {
-            alert(err.error || 'Error al cambiar la ruta del chofer.');
+            this.showAlert('Error', err.error || 'Error al cambiar la ruta del chofer.', 'error');
           }
         });
       }
     }
   }
+  */
 
   dispatchVehicle(item: QueueItem): void {
     if (!item.idAssignQueue) return;
+    this.itemToDispatch = item;
+    this.confirmModalTitle = 'Confirmar Despacho';
+    this.confirmModalMessage = `¿Está seguro de despachar el vehículo ${item.vehiclePlate} de ${item.driverFullName}? Esto iniciará el viaje y lo moverá a la lista de llegadas.`;
+    this.confirmModalOpen = true;
+  }
 
-    if (confirm(`¿Está seguro de despachar el vehículo ${item.vehiclePlate} de ${item.driverFullName}? Esto iniciará el viaje y lo moverá a la lista de llegadas.`)) {
-      this.queueService.dispatchVehicle(item.idAssignQueue).subscribe({
-        next: (res) => {
-          if (res.isSuccess) {
-            this.loadQueue();
-            this.loadRoutesForHeadquarter();
-            this.cdr.detectChanges();
-          } else {
-            alert(res.errorMessage || 'Error al despachar el vehículo.');
-            this.cdr.detectChanges();
-          }
-        },
-        error: (err) => {
-          alert('Error de conexión al despachar el vehículo.');
+  confirmDispatch(): void {
+    if (!this.itemToDispatch || !this.itemToDispatch.idAssignQueue) return;
+
+    const item = this.itemToDispatch;
+    this.confirmModalOpen = false;
+
+    this.queueService.dispatchVehicle(item.idAssignQueue).subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          this.showAlert('Vehículo Despachado', `El vehículo ${item.vehiclePlate} ha sido despachado exitosamente e inició su ruta.`, 'success');
+
+          this.loadQueue();
+          this.loadRoutesForHeadquarter();
+        } else {
+          this.showAlert('Error de Despacho', res.errorMessage || 'Error al despachar el vehículo.', 'error');
         }
-      });
-    }
+      },
+      error: (err) => {
+        this.showAlert('Error de Conexión', 'Error de conexión al despachar el vehículo.', 'error');
+      }
+    });
   }
 }

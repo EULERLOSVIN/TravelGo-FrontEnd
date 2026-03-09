@@ -13,6 +13,7 @@ import { QueueManagementService } from '../../services/queue-management.service'
 export class RegisterQueue implements OnChanges {
   @Input() routes: RouteFilter[] = [];
   @Output() onAddQueue = new EventEmitter<{ dni: string, idTravelRoute: number }>();
+  @Output() onError = new EventEmitter<string>();
 
   driverDni: string = '';
   driverInfo: any = null;
@@ -79,7 +80,7 @@ export class RegisterQueue implements OnChanges {
 
   submit(): void {
     if (!this.driverInfo || !this.selectedRouteId || this.selectedRouteId === 0) {
-      alert('Debe buscar un chofer validó y seleccionar una ruta de la lista.');
+      this.onError.emit('Debe buscar un chofer válido y seleccionar una ruta de la lista.');
       return;
     }
 

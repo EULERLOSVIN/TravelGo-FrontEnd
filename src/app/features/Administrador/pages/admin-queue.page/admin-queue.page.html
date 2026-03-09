@@ -230,12 +230,14 @@
                                                 DESPACHAR
                                             </button>
 
+                                            <!-- 
                                             <button
                                                 class="btn btn-light border-0 rounded-circle d-flex align-items-center justify-content-center shadow-sm"
                                                 style="width: 42px; height: 42px;" (click)="editRoute(item)"
                                                 data-bs-toggle="modal" data-bs-target="#editRouteModal" title="Editar">
                                                 <i class="bi bi-pencil-fill text-primary"></i>
                                             </button>
+                                            -->
                                             <button
                                                 class="btn btn-light border-0 rounded-circle d-flex align-items-center justify-content-center shadow-sm"
                                                 style="width: 42px; height: 42px;" (click)="openDeleteModal(item)"
@@ -287,11 +289,14 @@
     </ng-template>
 
     <!-- Extracted Modal Components -->
-    <app-register-queue (onAddQueue)="confirmAddDriverFromComponent($event)">
+    <app-register-queue (onAddQueue)="confirmAddDriverFromComponent($event)"
+        (onError)="showAlert('Error de Registro', $event, 'warning')">
     </app-register-queue>
 
+    <!-- 
     <app-edit-queue [itemToEdit]="itemToEdit" [routes]="routes" (onSubmit)="confirmEditRouteFromComponent($event)">
     </app-edit-queue>
+    -->
 
     <app-delete-queue [item]="itemToDelete" (onSubmit)="confirmDeleteDriverFromComponent()">
     </app-delete-queue>
@@ -299,4 +304,15 @@
     <app-register-arrival [isOpen]="modalArrivalOpen" (close)="modalArrivalOpen = false"
         (confirm)="confirmArrivalFromComponent($event)">
     </app-register-arrival>
+
+    <!-- Feedback Modal -->
+    <app-success-modal [isOpen]="feedbackModalOpen" [title]="feedbackModalTitle" [message]="feedbackModalMessage"
+        [type]="feedbackModalType" (close)="feedbackModalOpen = false">
+    </app-success-modal>
+
+    <!-- Dispatch Confirmation Modal -->
+    <app-confirm-modal [isOpen]="confirmModalOpen" [title]="confirmModalTitle" [message]="confirmModalMessage"
+        confirmText="DESPACHAR" cancelText="CANCELAR" type="primary" (confirm)="confirmDispatch()"
+        (close)="confirmModalOpen = false">
+    </app-confirm-modal>
 </div>

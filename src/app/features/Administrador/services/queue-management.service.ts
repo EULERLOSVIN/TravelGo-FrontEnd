@@ -51,9 +51,7 @@ export class QueueManagementService {
     }
 
     getQueue(headquarterId: number, idRoute: number, isArrival: boolean = false): Observable<QueueItem[]> {
-        // We leave headquarterId in the signature so we don't break existing calls wildly, 
-        // but we only pass idRoute and isArrival to the backend.
-        return this.http.get<Result<any[]>>(`${this.apiUrl}/getActiveQueue/${idRoute}?isArrival=${isArrival}`).pipe(
+        return this.http.get<Result<any[]>>(`${this.apiUrl}/getActiveQueue/${headquarterId}/${idRoute}?isArrival=${isArrival}`).pipe(
             map(response => {
                 if (!response.isSuccess || !response.value) return [];
                 return response.value.map(item => ({

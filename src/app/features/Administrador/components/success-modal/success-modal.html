@@ -1,0 +1,20 @@
+<div class="modal-backdrop-success" *ngIf="isOpen" (click)="onClose()">
+    <div class="modal-dialog-success" (click)="$event.stopPropagation()">
+        <div class="modal-content-success">
+            <div class="success-icon-container" [ngClass]="type">
+                <div class="success-icon-circle">
+                    <i class="bi bi-check-lg" *ngIf="type === 'success'"></i>
+                    <i class="bi bi-exclamation-triangle-fill" *ngIf="type === 'error'"></i>
+                    <i class="bi bi-exclamation-lg" *ngIf="type === 'warning'"></i>
+                </div>
+            </div>
+            <div class="modal-body-success text-center px-4">
+                <h3 class="success-title mb-2">{{ title }}</h3>
+                <p class="success-message text-muted">{{ message }}</p>
+            </div>
+            <div class="modal-footer-success w-100 mt-4 px-4">
+                <button class="btn-success-modal" [ngClass]="'btn-' + type" (click)="onClose()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
